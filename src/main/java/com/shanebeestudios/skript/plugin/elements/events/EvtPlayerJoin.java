@@ -12,11 +12,12 @@ import org.jetbrains.annotations.Nullable;
 public class EvtPlayerJoin extends SkriptEvent {
 
     public static void register(SkriptRegistration registration) {
-        registration.newEvent(EvtPlayerJoin.class,
-                "player connect", "player ready", "player quit")
+        registration.newEvent(EvtPlayerJoin.class, "player connect", "player ready", "player quit")
             .setHandledContexts(PlayerEventContext.class)
-            .addContextValue(PlayerEventContext.class, Player.class, "player", PlayerEventContext::getPlayer)
             .register();
+
+        registration.addContextValue(PlayerEventContext.class, Player.class,
+            true, "player", PlayerEventContext::getPlayer);
     }
 
     private int pattern;

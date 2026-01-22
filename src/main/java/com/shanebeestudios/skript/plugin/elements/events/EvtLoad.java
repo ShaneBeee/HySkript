@@ -14,8 +14,9 @@ public class EvtLoad extends SkriptEvent {
     public static void register(SkriptRegistration registration) {
         registration.newEvent(EvtLoad.class, "load[ing]")
             .setHandledContexts(ScriptLoadContext.class)
-            .addContextValue(ScriptLoadContext.class, CommandSender.class, "sender", ScriptLoadContext::getSender)
             .register();
+
+        registration.addContextValue(ScriptLoadContext.class, CommandSender.class, true,"sender", ScriptLoadContext::getSender);
     }
 
     @Override
