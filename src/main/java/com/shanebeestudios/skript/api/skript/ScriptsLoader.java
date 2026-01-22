@@ -48,6 +48,7 @@ public class ScriptsLoader {
             if (file.isDirectory()) {
                 loadScriptsInDirectory(file);
             } else {
+                if (!file.getName().endsWith(".sk")) continue;
                 Utils.log("Loading script " + file.getName() + "...");
                 List<LogEntry> logEntries = ScriptLoader.loadScript(file.toPath(), false);
                 this.loadedScriptCount++;
