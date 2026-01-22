@@ -16,7 +16,7 @@ repositories {
 dependencies {
     compileOnly(files("/Users/ShaneBee/Desktop/Server/Hytale/Assets/HytaleServer.jar"))
     compileOnly("org.jetbrains:annotations:26.0.2")
-    implementation("com.github.Mwexim:skript-parser:master-SNAPSHOT")
+    implementation("com.github.SkriptDev:skript-parser:master-SNAPSHOT")
 }
 
 tasks {
