@@ -32,7 +32,7 @@ public class EffBroadcast extends Effect {
         if (expressions.length > 1) {
             this.worlds = (Expression<World>) expressions[1];
         }
-        return false;
+        return true;
     }
 
     @Override
