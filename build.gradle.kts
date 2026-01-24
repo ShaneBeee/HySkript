@@ -21,7 +21,7 @@ repositories {
 dependencies {
     compileOnly("com.hypixel.hytale:Server:${hytaleVersion}")
     compileOnly("org.jetbrains:annotations:26.0.2")
-    implementation("com.github.SkriptDev:skript-parser:1.0.0") { // temp version (jitpack not pulling master)
+    implementation("com.github.SkriptDev:skript-parser:master-SNAPSHOT") {
         isTransitive = false
     }
 }
