@@ -6,6 +6,7 @@ public class EventHandler {
 
     public static void register(SkriptRegistration registration) {
         EvtLoad.register(registration);
+        EvtPlayerChat.register(registration);
         EvtPlayerJoin.register(registration);
     }
 
