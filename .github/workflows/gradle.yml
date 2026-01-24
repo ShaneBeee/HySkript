@@ -37,4 +37,4 @@ jobs:
           # Artifact name
           name: HySkript-Artifact
           # A file, directory or wildcard pattern that describes what to upload
-          path: build/libs/HySkript*.jar
+          path: build/libs/HySkript-*.jar
