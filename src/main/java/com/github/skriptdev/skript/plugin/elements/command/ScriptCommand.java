@@ -34,7 +34,7 @@ import io.github.syst3ms.skriptparser.variables.Variables;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -165,8 +165,8 @@ public class ScriptCommand extends SkriptEvent {
 
     private String command;
     private int commandType;
-    private final Map<String, CommandArg> args = new HashMap<>();
-    private final Map<String, Argument<?, ?>> argsFromCommand = new HashMap<>();
+    private final Map<String, CommandArg> args = new LinkedHashMap<>();
+    private final Map<String, Argument<?, ?>> argsFromCommand = new LinkedHashMap<>();
 
     @Override
     public boolean init(Expression<?> @NotNull [] expressions, int matchedPattern, ParseContext parseContext) {
