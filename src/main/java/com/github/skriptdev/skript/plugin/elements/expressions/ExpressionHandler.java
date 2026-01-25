@@ -13,6 +13,7 @@ public class ExpressionHandler {
         ExprItemType.register(registration);
         ExprLocationOf.register(registration);
         ExprName.register(registration);
+        ExprNPCType.register(registration);
         ExprUUID.register(registration);
         ExprUUIDRandom.register(registration);
         ExprVector3d.register(registration);

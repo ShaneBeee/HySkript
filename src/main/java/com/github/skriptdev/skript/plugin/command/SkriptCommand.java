@@ -3,9 +3,12 @@ package com.github.skriptdev.skript.plugin.command;
 import com.github.skriptdev.skript.api.utils.Utils;
 import com.github.skriptdev.skript.plugin.HySk;
 import com.github.skriptdev.skript.plugin.Skript;
+import com.hypixel.hytale.common.util.java.ManifestUtil;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.AbstractCommand;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.CommandRegistry;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
@@ -38,8 +41,10 @@ public class SkriptCommand extends AbstractCommandCollection {
         super("skript", "Skript commands");
         addAliases("sk");
 
-        addSubCommand(new ReloadCommand());
+        // Keep these in alphabetical order
         addSubCommand(docsCommand());
+        addSubCommand(infoCommand());
+        addSubCommand(new ReloadCommand());
 
         registry.registerCommand(this);
     }
@@ -73,7 +78,16 @@ public class SkriptCommand extends AbstractCommandCollection {
         return new AbstractCommand("docs", "Print docs to file.") {
             @Override
             protected CompletableFuture<Void> execute(@NotNull CommandContext commandContext) {
-                return CompletableFuture.runAsync(() -> print());
+                return CompletableFuture.runAsync(() -> printDocs());
+            }
+        };
+    }
+
+    private AbstractCommand infoCommand() {
+        return new AbstractCommand("info", "Get info about HySkript.") {
+            @Override
+            protected CompletableFuture<Void> execute(@NotNull CommandContext commandContext) {
+                return CompletableFuture.runAsync(() -> printInfo(commandContext.sender()));
             }
         };
     }
@@ -100,7 +114,19 @@ public class SkriptCommand extends AbstractCommandCollection {
         return file;
     }
 
-    private void print() {
+    private void printInfo(CommandSender sender) {
+        Utils.sendMessage(sender, "HySkript Version: %s", HySk.getInstance().getManifest().getVersion());
+        Utils.sendMessage(sender, "Hytale Version: %s", ManifestUtil.getImplementationVersion());
+        Utils.sendMessage(sender, "Java Version: %s", System.getProperty("java.version"));
+
+        Message link = Message.raw("https://github.com/SkriptDev/HySkript")
+            .link("https://github.com/SkriptDev/HySkript")
+            .color("#0CE8C3");
+        Message website = Message.raw("Website: ").insert(link);
+        sender.sendMessage(website);
+    }
+
+    private void printDocs() {
         Skript skript = HySk.getInstance().getSkript();
         SkriptRegistration registration = skript.getRegistration();
 

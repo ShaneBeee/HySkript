@@ -2,6 +2,7 @@ package com.github.skriptdev.skript.plugin.elements.types;
 
 import com.github.skriptdev.skript.api.skript.registration.AssetStoreRegistry;
 import com.github.skriptdev.skript.api.skript.registration.EnumRegistry;
+import com.github.skriptdev.skript.api.skript.registration.NPCRegistry;
 import com.github.skriptdev.skript.api.utils.Utils;
 import com.hypixel.hytale.assetstore.AssetRegistry;
 import com.hypixel.hytale.builtin.hytalegenerator.assets.biomes.BiomeAsset;
@@ -35,8 +36,7 @@ import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
-import com.hypixel.hytale.server.npc.NPCPlugin;
-import com.hypixel.hytale.server.npc.role.Role;
+import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import io.github.syst3ms.skriptparser.types.TypeManager;
 
@@ -110,14 +110,14 @@ public class Types {
     }
 
     private static void registerEntityTypes(SkriptRegistration registration) {
-        registration.newType(Role.class, "npcrole", "npcrole@s")
+        registration.newType(NPCRegistry.NPCRole.class, "npcrole", "npcrole@s")
             .name("NPC Role")
             .description("Represents the type of NPCs in the game.")
             .examples("coming soon") // TODO
-            .usage(String.join(", ", NPCPlugin.get().getRoleTemplateNames(false).stream().sorted().toList()))
+            .usage(NPCRegistry.getTypeUsage())
             .since("INSERT VERSION")
-            .toStringFunction(Role::getRoleName)
-            // TODO figure out parsing (it's a nightmare)
+            .toStringFunction(NPCRegistry.NPCRole::name)
+            .literalParser(NPCRegistry::parse)
             .register();
         registration.newType(Entity.class, "entity", "entit@y@ies")
             .toStringFunction(Entity::toString) // TODO get its name or something
@@ -129,7 +129,13 @@ public class Types {
             .name("Living Entity")
             .description("Represents any living entity in the game, including players and mobs.")
             .since("INSERT VERSION")
-            .toStringFunction(LivingEntity::toString) // TODO get its name or something
+            .toStringFunction(LivingEntity::getLegacyDisplayName)
+            .register();
+        registration.newType(NPCEntity.class, "npcentity", "npcEntit@y@ies")
+            .name("NPC Entity")
+            .description("Represents an NPC entity in the game.")
+            .since("INSERT VERSION")
+            .toStringFunction(NPCRegistry::stringify)
             .register();
         registration.newType(Player.class, "player", "player@s")
             .name("Player")

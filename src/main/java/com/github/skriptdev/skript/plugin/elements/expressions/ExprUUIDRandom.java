@@ -22,7 +22,7 @@ public class ExprUUIDRandom implements Expression<UUID> {
 
     @Override
     public boolean init(Expression<?> @NotNull [] expressions, int matchedPattern, @NotNull ParseContext parseContext) {
-        return false;
+        return true;
     }
 
     @Override

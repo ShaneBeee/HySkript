@@ -6,6 +6,7 @@ import com.github.skriptdev.skript.plugin.elements.effects.EffectHandler;
 import com.github.skriptdev.skript.plugin.elements.events.EventHandler;
 import com.github.skriptdev.skript.plugin.elements.expressions.ExpressionHandler;
 import com.github.skriptdev.skript.plugin.elements.listeners.ListenerHandler;
+import com.github.skriptdev.skript.plugin.elements.sections.SectionHandler;
 import com.github.skriptdev.skript.plugin.elements.types.Types;
 import io.github.syst3ms.skriptparser.Parser;
 import io.github.syst3ms.skriptparser.lang.Trigger;
@@ -36,6 +37,9 @@ public class ElementRegistration {
 
         // EXPRESSIONS
         ExpressionHandler.register(this.registration);
+
+        // SECTIONS
+        SectionHandler.register(this.registration);
 
         // EVENTS
         EventHandler.register(this.registration);

@@ -1,8 +1,9 @@
 package com.github.skriptdev.skript.api.utils;
 
+import com.github.skriptdev.skript.plugin.HySk;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
-import com.github.skriptdev.skript.plugin.HySk;
+import io.github.syst3ms.skriptparser.log.LogEntry;
 
 import java.awt.*;
 import java.util.logging.Level;
@@ -38,6 +39,16 @@ public class Utils {
 
     public static void log(String message, Object... args) {
         log(Level.INFO, message, args);
+    }
+
+    public static void log(LogEntry logEntry) {
+        String message = logEntry.getMessage();
+        switch (logEntry.getType()) {
+            case DEBUG -> log(Level.FINE, message);
+            case INFO -> log(message);
+            case ERROR -> error(message);
+            case WARNING -> warn(message);
+        }
     }
 
     public static void error(String message, Object... args) {
