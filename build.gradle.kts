@@ -24,6 +24,9 @@ dependencies {
     implementation("com.github.SkriptDev:skript-parser:master-SNAPSHOT") {
         isTransitive = false
     }
+    implementation("com.github.SkriptDev:TinyMessage:dev~jitpack-SNAPSHOT") {
+        isTransitive = false
+    }
 }
 
 tasks {
@@ -47,6 +50,7 @@ tasks {
     shadowJar {
         archiveFileName = project.name + "-" + projectVersion + ".jar"
         relocate("io.github.syst3ms", "com.github.skriptdev.skript")
+        relocate("fi.sulku.hytale", "com.github.skriptdev.skript.tinymessage")
     }
     jar {
         dependsOn(shadowJar)
