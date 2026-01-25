@@ -1,11 +1,11 @@
 package com.github.skriptdev.skript.plugin;
 
 import com.github.skriptdev.skript.api.skript.ScriptsLoader;
+import com.github.skriptdev.skript.api.utils.ReflectionUtils;
 import com.github.skriptdev.skript.api.utils.Utils;
 import com.github.skriptdev.skript.plugin.elements.ElementRegistration;
 import io.github.syst3ms.skriptparser.Parser;
 import io.github.syst3ms.skriptparser.lang.Trigger;
-import io.github.syst3ms.skriptparser.log.ErrorType;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
 import io.github.syst3ms.skriptparser.registration.SkriptAddon;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
@@ -34,6 +34,7 @@ public class Skript extends SkriptAddon {
     }
 
     private void setup() {
+        ReflectionUtils.init();
         this.registration = new SkriptRegistration(this);
         this.elementRegistration = new ElementRegistration(this);
         this.elementRegistration.registerElements();
