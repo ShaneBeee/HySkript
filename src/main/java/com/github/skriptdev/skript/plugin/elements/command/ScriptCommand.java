@@ -232,6 +232,7 @@ public class ScriptCommand extends SkriptEvent {
                     ScriptCommandContext context = new ScriptCommandContext(ScriptCommand.this.command, sender, player, world);
                     createLocalVariables(commandContext, context);
                     Statement.runAll(trigger, context);
+                    Variables.clearLocalVariables(context);
                 }
             };
             case 2 -> new AbstractWorldCommand(this.command, description) {
@@ -241,6 +242,7 @@ public class ScriptCommand extends SkriptEvent {
                     ScriptCommandContext context = new ScriptCommandContext(ScriptCommand.this.command, commandContext.sender(), null, world);
                     createLocalVariables(commandContext, context);
                     Statement.runAll(trigger, context);
+                    Variables.clearLocalVariables(context);
                 }
             };
             default -> new AbstractCommand(this.command, description) {
@@ -251,10 +253,11 @@ public class ScriptCommand extends SkriptEvent {
                         CommandSender sender = commandContext.sender();
                         Player player = null;
                         if (sender instanceof Player p) player = p;
-                        ScriptCommandContext ctx = new ScriptCommandContext(ScriptCommand.this.command, sender, player, null);
+                        ScriptCommandContext context = new ScriptCommandContext(ScriptCommand.this.command, sender, player, null);
 
-                        createLocalVariables(commandContext, ctx);
-                        Statement.runAll(trigger, ctx);
+                        createLocalVariables(commandContext, context);
+                        Statement.runAll(trigger, context);
+                        Variables.clearLocalVariables(context);
                     });
                     return null;
                 }
