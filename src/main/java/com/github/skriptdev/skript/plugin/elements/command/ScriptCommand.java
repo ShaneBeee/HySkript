@@ -1,4 +1,4 @@
-package com.github.skriptdev.skript.plugin.elements.events;
+package com.github.skriptdev.skript.plugin.elements.command;
 
 import com.github.skriptdev.skript.api.command.ArgUtils;
 import com.github.skriptdev.skript.api.command.CommandArg;
@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public class Command extends SkriptEvent {
+public class ScriptCommand extends SkriptEvent {
 
     public static class ScriptCommandContext implements TriggerContext {
 
@@ -81,7 +81,7 @@ public class Command extends SkriptEvent {
 
     public static void register(SkriptRegistration registration) {
         ArgUtils.init();
-        registration.newEvent(Command.class,
+        registration.newEvent(ScriptCommand.class,
                 "*[global] command <.+>",
                 "*player command <.+>",
                 "*world command <.+>")
@@ -229,7 +229,7 @@ public class Command extends SkriptEvent {
 
                     CommandSender sender = commandContext.sender();
                     Player player = store.getComponent(ref, Player.getComponentType());
-                    ScriptCommandContext context = new ScriptCommandContext(Command.this.command, sender, player, world);
+                    ScriptCommandContext context = new ScriptCommandContext(ScriptCommand.this.command, sender, player, world);
                     createLocalVariables(commandContext, context);
                     Statement.runAll(trigger, context);
                 }
@@ -238,7 +238,7 @@ public class Command extends SkriptEvent {
 
                 @Override
                 protected void execute(@NotNull CommandContext commandContext, @NotNull World world, @NotNull Store<EntityStore> store) {
-                    ScriptCommandContext context = new ScriptCommandContext(Command.this.command, commandContext.sender(), null, world);
+                    ScriptCommandContext context = new ScriptCommandContext(ScriptCommand.this.command, commandContext.sender(), null, world);
                     createLocalVariables(commandContext, context);
                     Statement.runAll(trigger, context);
                 }
@@ -251,7 +251,7 @@ public class Command extends SkriptEvent {
                         CommandSender sender = commandContext.sender();
                         Player player = null;
                         if (sender instanceof Player p) player = p;
-                        ScriptCommandContext ctx = new ScriptCommandContext(Command.this.command, sender, player, null);
+                        ScriptCommandContext ctx = new ScriptCommandContext(ScriptCommand.this.command, sender, player, null);
 
                         createLocalVariables(commandContext, ctx);
                         Statement.runAll(trigger, ctx);
