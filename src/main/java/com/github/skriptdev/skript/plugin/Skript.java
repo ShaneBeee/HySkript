@@ -27,7 +27,7 @@ public class Skript extends SkriptAddon {
         INSTANCE = this;
         this.hySk = hySk;
         this.scriptsPath = hySk.getDataDirectory().resolve("scripts");
-        this.logger = new SkriptLogger();
+        this.logger = new SkriptLogger(true);
 
         Utils.log("Setting up HySkript!");
         setup();
@@ -90,35 +90,6 @@ public class Skript extends SkriptAddon {
 
     public ScriptsLoader getScriptsLoader() {
         return this.scriptsLoader;
-    }
-
-    /**
-     * Send an error.
-     * ErrorType defaults to SEMANTIC_ERROR.
-     *
-     * @param error Error to send
-     */
-    public static void error(String error) {
-        error(error, ErrorType.SEMANTIC_ERROR);
-    }
-
-    /**
-     * Send an error.
-     *
-     * @param error     Error to send
-     * @param errorType Type of error
-     */
-    public static void error(String error, ErrorType errorType) {
-        INSTANCE.getLogger().error(error, errorType);
-    }
-
-    /**
-     * Send a warning.
-     *
-     * @param warning Warning to send
-     */
-    public static void warn(String warning) {
-        INSTANCE.getLogger().warn(warning);
     }
 
     @Override
