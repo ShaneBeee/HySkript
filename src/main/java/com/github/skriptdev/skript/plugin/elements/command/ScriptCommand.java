@@ -267,10 +267,10 @@ public class ScriptCommand extends SkriptEvent {
         };
         this.args.forEach((key, arg) -> {
             if (arg.isOptional()) {
-                OptionalArg<?> optionalArg = hyCommand.withOptionalArg(arg.getName(), arg.getDescription(), arg.getType());
+                OptionalArg<?> optionalArg = hyCommand.withOptionalArg(key, arg.getDescription(), arg.getType());
                 this.argsFromCommand.put(key, optionalArg);
             } else {
-                RequiredArg<?> requiredArg = hyCommand.withRequiredArg(arg.getName(), arg.getDescription(), arg.getType());
+                RequiredArg<?> requiredArg = hyCommand.withRequiredArg(key, arg.getDescription(), arg.getType());
                 this.argsFromCommand.put(key, requiredArg);
             }
         });
