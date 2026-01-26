@@ -1,6 +1,7 @@
 package com.github.skriptdev.skript.plugin.elements.expressions;
 
 import com.github.skriptdev.skript.api.skript.registration.NPCRegistry;
+import com.github.skriptdev.skript.api.skript.registration.NPCRegistry.NPCRole;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import io.github.syst3ms.skriptparser.lang.properties.PropertyExpression;
@@ -8,11 +9,11 @@ import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ExprNPCType extends PropertyExpression<NPCRegistry.NPCRole, Entity> {
+public class ExprNPCType extends PropertyExpression<Entity, NPCRole> {
 
     public static void register(SkriptRegistration registration) {
-        registration.newPropertyExpression(ExprNPCType.class, NPCRegistry.NPCRole.class,
-                "entities", "npc type")
+        registration.newPropertyExpression(ExprNPCType.class, NPCRole.class,
+                "npc (type|role)", "entities")
             .name("NPC Type of Entity")
             .description("Returns the NPC type of an NPC entity.")
             .examples("set {_type} to npc type of target entity",
@@ -22,7 +23,7 @@ public class ExprNPCType extends PropertyExpression<NPCRegistry.NPCRole, Entity>
     }
 
     @Override
-    public @Nullable NPCRegistry.NPCRole getProperty(@NotNull Entity owner) {
+    public @Nullable NPCRole getProperty(@NotNull Entity owner) {
         if (owner instanceof NPCEntity npcEntity) {
             return NPCRegistry.getByIndex(npcEntity.getRoleIndex());
         }

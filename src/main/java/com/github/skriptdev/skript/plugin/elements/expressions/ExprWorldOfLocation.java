@@ -12,11 +12,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class ExprWorldOfLocation extends PropertyExpression<World, Location> {
+public class ExprWorldOfLocation extends PropertyExpression<Location, World> {
 
     public static void register(SkriptRegistration registration) {
         registration.newPropertyExpression(ExprWorldOfLocation.class, World.class,
-                "locations", "world")
+                "world", "locations")
             .name("World of Location")
             .description("Returns the world of a location.",
                 "The world of a location can also be set.")

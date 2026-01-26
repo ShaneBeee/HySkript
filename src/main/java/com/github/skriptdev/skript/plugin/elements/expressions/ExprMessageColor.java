@@ -11,11 +11,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class ExprMessageColor extends PropertyExpression<String, Message> {
+public class ExprMessageColor extends PropertyExpression<Message, String> {
 
     public static void register(SkriptRegistration registration) {
         registration.newPropertyExpression(ExprMessageColor.class, String.class,
-                "messages", "message color")
+                "message color", "messages")
             .name("Message Color")
             .description("Get/set the color of a message.")
             .examples("set message color of {_msg} to \"\"",

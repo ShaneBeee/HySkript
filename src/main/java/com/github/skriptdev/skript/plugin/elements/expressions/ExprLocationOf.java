@@ -8,11 +8,11 @@ import io.github.syst3ms.skriptparser.lang.properties.PropertyExpression;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import org.jetbrains.annotations.Nullable;
 
-public class ExprLocationOf extends PropertyExpression<Location, Entity> {
+public class ExprLocationOf extends PropertyExpression<Entity, Location> {
 
     public static void register(SkriptRegistration registration) {
         registration.newPropertyExpression(ExprLocationOf.class, Location.class,
-                "entities", "location")
+                "location", "entities")
             .name("Location of Entity")
             .description("Returns the location of an entity.")
             .examples("set {_loc} to location of context-player")

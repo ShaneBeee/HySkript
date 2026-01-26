@@ -11,11 +11,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class ExprMessageLink extends PropertyExpression<String, Message> {
+public class ExprMessageLink extends PropertyExpression<Message,String> {
 
     public static void register(SkriptRegistration registration) {
-        registration.newPropertyExpression(ExprMessageLink.class, String.class, "message",
-                "message link")
+        registration.newPropertyExpression(ExprMessageLink.class, String.class,
+                "message link", "message")
             .name("Message Link")
             .description("Get/set the link of a message.")
             .examples("on player ready:",

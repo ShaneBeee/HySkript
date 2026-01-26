@@ -19,13 +19,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ExprWorldSpawn extends PropertyExpression<Location, World> {
+public class ExprWorldSpawn extends PropertyExpression<World, Location> {
 
     private static final UUID RANDOM_UUID = UUID.randomUUID();
 
     public static void register(SkriptRegistration registration) {
         registration.newPropertyExpression(ExprWorldSpawn.class, Location.class,
-                "worlds", "world spawn [location]")
+                "world spawn [location]", "worlds")
             .name("World Spawn Location")
             .description("Get/set the spawn location of a world.",
                 "When setting you can use a location, vector3i, vector3d, or a vector3f.")

@@ -8,11 +8,10 @@ import io.github.syst3ms.skriptparser.lang.properties.PropertyExpression;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import org.jetbrains.annotations.Nullable;
 
-public class ExprName extends PropertyExpression<String, Object> {
+public class ExprName extends PropertyExpression<Object, String> {
 
     public static void register(SkriptRegistration registration) {
-        registration.newPropertyExpression(ExprName.class, String.class, "object",
-                "name[s]")
+        registration.newPropertyExpression(ExprName.class, String.class, "name[s]", "object")
             .name("Name of Object")
             .description("Returns the name of an object.",
                 "Currently supports players, entities, and worlds.")

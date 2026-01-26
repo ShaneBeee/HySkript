@@ -10,11 +10,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class ExprUUID extends PropertyExpression<UUID, Object> {
+public class ExprUUID extends PropertyExpression<Object, UUID> {
 
     public static void register(SkriptRegistration registration) {
-        registration.newPropertyExpression(ExprUUID.class, UUID.class, "objects",
-                "uuid")
+        registration.newPropertyExpression(ExprUUID.class, UUID.class, "uuid", "objects")
             .name("UUID of Object")
             .description("Get the UUID of a player, player ref, entity, or world.")
             .examples("set {_uuid} to uuid of {_player}")

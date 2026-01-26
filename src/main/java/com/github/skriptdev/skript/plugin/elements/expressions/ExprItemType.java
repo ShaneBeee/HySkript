@@ -6,11 +6,11 @@ import io.github.syst3ms.skriptparser.lang.properties.PropertyExpression;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import org.jetbrains.annotations.Nullable;
 
-public class ExprItemType extends PropertyExpression<Item, ItemStack> {
+public class ExprItemType extends PropertyExpression<ItemStack, Item> {
 
     public static void register(SkriptRegistration registration) {
         registration.newPropertyExpression(ExprItemType.class, Item.class,
-                "itemstack", "item[[ ]type]")
+                "item[[ ]type]", "itemstack")
             .name("Item Type")
             .description("Returns the item type of an itemstack.")
             .examples("set {_item} to itemtype of {_item}")

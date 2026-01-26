@@ -6,11 +6,11 @@ import io.github.syst3ms.skriptparser.lang.properties.PropertyExpression;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import org.jetbrains.annotations.Nullable;
 
-public class ExprWorldOfEntity extends PropertyExpression<World, Entity> {
+public class ExprWorldOfEntity extends PropertyExpression<Entity, World> {
 
     public static void register(SkriptRegistration registration) {
         registration.newPropertyExpression(ExprWorldOfEntity.class, World.class,
-                "entities", "world")
+                "world", "entities")
             .name("World of Entity")
             .description("Returns the world of an entity.")
             .examples("set {_world} to world of context-player")
