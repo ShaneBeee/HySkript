@@ -270,8 +270,8 @@ public class SkriptCommand extends AbstractCommandCollection {
                 // Asset store stuff gets really long, so plop them on another page
                 // GitHub's wiki pages seem to have a limit
                 Utils.log("Creating asset store link for: " + documentation.getName());
-                writer.println("[Click Here](https://github.com/SkriptDev/HySkript/wiki/usage-" + documentation.getName().replace(" ", "-") + ")");
-                File usageFile = getFile("usage-" + documentation.getName());
+                writer.println("[Click Here](https://github.com/SkriptDev/HySkript/wiki/_usage-" + documentation.getName().replace(" ", "-") + ")");
+                File usageFile = getFile("_usage-" + documentation.getName());
                 try {
                     PrintWriter usageWriter = new PrintWriter(usageFile, StandardCharsets.UTF_8);
                     usageWriter.println("### Usage: " + documentation.getName());
