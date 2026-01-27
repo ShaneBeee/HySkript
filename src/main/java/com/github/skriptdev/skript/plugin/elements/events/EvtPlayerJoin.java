@@ -1,10 +1,10 @@
 package com.github.skriptdev.skript.plugin.elements.events;
 
+import com.github.skriptdev.skript.api.skript.event.PlayerEventContext;
 import com.github.skriptdev.skript.plugin.HySk;
 import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.github.skriptdev.skript.api.skript.event.PlayerEventContext;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
@@ -34,9 +34,9 @@ public class EvtPlayerJoin extends SkriptEvent {
             .register();
     }
 
-    private static EventRegistration<Void, PlayerConnectEvent> connectListeners;
-    private static EventRegistration<String, PlayerReadyEvent> readyListener;
-    private static EventRegistration<Void, PlayerDisconnectEvent> disconnectListener;
+    private EventRegistration<Void, PlayerConnectEvent> connectListeners;
+    private EventRegistration<String, PlayerReadyEvent> readyListener;
+    private EventRegistration<Void, PlayerDisconnectEvent> disconnectListener;
     private int pattern;
 
     @Override
@@ -44,26 +44,20 @@ public class EvtPlayerJoin extends SkriptEvent {
         this.pattern = matchedPattern;
 
         EventRegistry registry = HySk.getInstance().getEventRegistry();
-        if (connectListeners == null) {
-            connectListeners = registry.register(PlayerConnectEvent.class, playerConnectEvent -> {
-                Player player = playerConnectEvent.getHolder().getComponent(Player.getComponentType());
-                for (Trigger trigger : this.getTriggers()) {
-                    Statement.runAll(trigger, new PlayerEventContext(player, 0));
-                }
-            });
-        }
-        if (readyListener == null) {
-            readyListener = registry.registerGlobal(PlayerReadyEvent.class, playerReadyEvent -> {
-                Player player = playerReadyEvent.getPlayer();
-                for (Trigger trigger : this.getTriggers()) {
-                    Statement.runAll(trigger, new PlayerEventContext(player, 1));
-                }
-            });
-        }
-        if (disconnectListener == null) {
-            disconnectListener = registry.register(PlayerDisconnectEvent.class, playerDisconnectEvent -> {
-            });
-        }
+        this.connectListeners = registry.register(PlayerConnectEvent.class, playerConnectEvent -> {
+            Player player = playerConnectEvent.getHolder().getComponent(Player.getComponentType());
+            for (Trigger trigger : this.getTriggers()) {
+                Statement.runAll(trigger, new PlayerEventContext(player, 0));
+            }
+        });
+        this.readyListener = registry.registerGlobal(PlayerReadyEvent.class, playerReadyEvent -> {
+            Player player = playerReadyEvent.getPlayer();
+            for (Trigger trigger : this.getTriggers()) {
+                Statement.runAll(trigger, new PlayerEventContext(player, 1));
+            }
+        });
+        this.disconnectListener = registry.register(PlayerDisconnectEvent.class, playerDisconnectEvent -> {
+        });
         return true;
     }
 
@@ -76,6 +70,14 @@ public class EvtPlayerJoin extends SkriptEvent {
 
     public int getPattern() {
         return this.pattern;
+    }
+
+    @Override
+    public void clearTrigger(String scriptName) {
+        this.connectListeners.unregister();
+        this.readyListener.unregister();
+        this.disconnectListener.unregister();
+        super.clearTrigger(scriptName);
     }
 
     @Override

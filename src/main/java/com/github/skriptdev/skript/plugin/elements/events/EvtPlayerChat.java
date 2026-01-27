@@ -34,21 +34,19 @@ public class EvtPlayerChat extends SkriptEvent {
         registration.addIEventContext(PlayerChatEvent.class, PlayerRef.class, "playerref", PlayerChatEvent::getSender);
     }
 
-    private static EventRegistration<String, PlayerChatEvent> chatListener;
+    private EventRegistration<String, PlayerChatEvent> chatListener;
 
     @Override
     public boolean init(Expression<?> @NotNull [] expressions, int matchedPattern, @NotNull ParseContext parseContext) {
-        if (chatListener == null) {
-            chatListener = HySk.getInstance().getEventRegistry().registerAsyncGlobal(PlayerChatEvent.class, future -> {
-                future.thenAccept(event -> {
-                    IEventContext<PlayerChatEvent> ctx = new IEventContext<>(event);
-                    for (Trigger trigger : this.getTriggers()) {
-                        Statement.runAll(trigger, ctx);
-                    }
-                });
-                return future;
+        this.chatListener = HySk.getInstance().getEventRegistry().registerAsyncGlobal(PlayerChatEvent.class, future -> {
+            future.thenAccept(event -> {
+                IEventContext<PlayerChatEvent> ctx = new IEventContext<>(event);
+                for (Trigger trigger : this.getTriggers()) {
+                    Statement.runAll(trigger, ctx);
+                }
             });
-        }
+            return future;
+        });
         return true;
     }
 
@@ -57,6 +55,11 @@ public class EvtPlayerChat extends SkriptEvent {
         return true;
     }
 
+    @Override
+    public void clearTrigger(String scriptName) {
+        this.chatListener.unregister();
+        super.clearTrigger(scriptName);
+    }
 
     @Override
     public String toString(@NotNull TriggerContext ctx, boolean debug) {
