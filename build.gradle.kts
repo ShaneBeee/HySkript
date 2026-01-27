@@ -24,7 +24,7 @@ dependencies {
     implementation("com.github.SkriptDev:skript-parser:master-SNAPSHOT") {
         isTransitive = false
     }
-    implementation("com.github.SkriptDev:TinyMessage:dev~jitpack-SNAPSHOT") {
+    implementation("com.github.Zoltus:TinyMessage:2.0.1") {
         isTransitive = false
     }
 }
@@ -43,7 +43,7 @@ tasks {
         }
     }
     compileJava {
-        options.release = 21
+        options.release = 25
         options.compilerArgs.add("-Xlint:unchecked")
         options.compilerArgs.add("-Xlint:deprecation")
     }
