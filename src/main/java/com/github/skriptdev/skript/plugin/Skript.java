@@ -10,10 +10,12 @@ import com.github.skriptdev.skript.plugin.elements.ElementRegistration;
 import io.github.syst3ms.skriptparser.Parser;
 import io.github.syst3ms.skriptparser.config.Config;
 import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
+import io.github.syst3ms.skriptparser.lang.Structure;
 import io.github.syst3ms.skriptparser.log.ErrorType;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
 import io.github.syst3ms.skriptparser.registration.SkriptAddon;
+import io.github.syst3ms.skriptparser.registration.SkriptEventInfo;
 import io.github.syst3ms.skriptparser.variables.Variables;
 
 import java.nio.file.Path;
@@ -78,18 +80,34 @@ public class Skript extends SkriptAddon {
     }
 
     private void printSyntaxCount() {
-        io.github.syst3ms.skriptparser.registration.SkriptRegistration mainRegistration = Parser.getMainRegistration();
+        var mainRegistration = Parser.getMainRegistration();
 
-        int eventSize = this.registration.getEvents().size() + mainRegistration.getEvents().size();
+        int structureSize = 0;
+        int eventSize = 0;
+        for (SkriptEventInfo<?> event : this.registration.getEvents()) {
+            if (Structure.class.isAssignableFrom(event.getSyntaxClass())) {
+                structureSize++;
+            } else {
+                eventSize++;
+            }
+        }
+        for (SkriptEventInfo<?> event : mainRegistration.getEvents()) {
+            if (Structure.class.isAssignableFrom(event.getSyntaxClass())) {
+                structureSize++;
+            } else {
+                eventSize++;
+            }
+        }
         int effectSize = this.registration.getEffects().size() + mainRegistration.getEffects().size();
         int expsSize = this.registration.getExpressions().size() + mainRegistration.getExpressions().size();
         int secSize = this.registration.getSections().size() + mainRegistration.getSections().size();
         int typeSize = this.registration.getTypes().size() + mainRegistration.getTypes().size();
 
-        int total = eventSize + effectSize + expsSize + secSize + typeSize;
+        int total = structureSize + eventSize + effectSize + expsSize + secSize + typeSize;
 
         Utils.log("Loaded HySkript %s elements:", total);
         Utils.log("- Types: %s", typeSize);
+        Utils.log("- Structures: %s", structureSize);
         Utils.log("- Events: %s ", eventSize);
         Utils.log("- Effects: %s", effectSize);
         Utils.log("- Expressions: %s", expsSize);
