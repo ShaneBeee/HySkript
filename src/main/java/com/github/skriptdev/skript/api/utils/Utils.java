@@ -38,7 +38,7 @@ public class Utils {
         if (receiver == null) {
             HySk.getInstance().getLogger().at(level).log(message);
         } else {
-            Color color = level == Level.SEVERE ? Color.RED : level == Level.WARNING ? Color.YELLOW : Color.WHITE;
+            Color color = level == Level.SEVERE ? Color.RED : level == Level.WARNING ? Color.YELLOW : level == Level.FINE ? Color.PINK : Color.WHITE;
             Message coloredMessage = Message.raw(message).color(color);
 
             Message m = Message.empty().insert(CORE_PREFIX).insert(coloredMessage);
@@ -58,9 +58,9 @@ public class Utils {
         String message = logEntry.getMessage();
         switch (logEntry.getType()) {
             case DEBUG -> log(receiver, Level.FINE, message);
-            case INFO -> log(receiver, message);
-            case ERROR -> error(receiver, message);
-            case WARNING -> warn(receiver, message);
+            case INFO -> log(receiver, Level.INFO, message);
+            case ERROR -> log(receiver, Level.SEVERE, message);
+            case WARNING -> log(receiver, Level.WARNING, message);
         }
     }
 
