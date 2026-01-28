@@ -1,8 +1,10 @@
 package com.github.skriptdev.skript.plugin;
 
+import com.github.skriptdev.skript.api.utils.Utils;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.github.skriptdev.skript.plugin.command.SkriptCommand;
+import io.github.syst3ms.skriptparser.variables.Variables;
 import org.jetbrains.annotations.NotNull;
 
 public class HySk extends JavaPlugin {
@@ -23,6 +25,13 @@ public class HySk extends JavaPlugin {
     protected void start() {
         this.skript = new Skript(this);
         new SkriptCommand(getCommandRegistry());
+    }
+
+    @Override
+    protected void shutdown() {
+        Utils.log("Shutting down HySkript...");
+        this.skript.shutdown();
+        Utils.log("HySkript shutdown complete!");
     }
 
     public Skript getSkript() {

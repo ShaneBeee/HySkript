@@ -7,8 +7,6 @@ import com.github.skriptdev.skript.api.skript.variables.JsonVariableStorage;
 import com.github.skriptdev.skript.api.utils.ReflectionUtils;
 import com.github.skriptdev.skript.api.utils.Utils;
 import com.github.skriptdev.skript.plugin.elements.ElementRegistration;
-import com.google.errorprone.annotations.Var;
-import com.hypixel.hytale.server.core.console.ConsoleSender;
 import io.github.syst3ms.skriptparser.Parser;
 import io.github.syst3ms.skriptparser.file.FileElement;
 import io.github.syst3ms.skriptparser.file.FileParser;
@@ -17,7 +15,6 @@ import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
 import io.github.syst3ms.skriptparser.registration.SkriptAddon;
 import io.github.syst3ms.skriptparser.util.FileUtils;
-import io.github.syst3ms.skriptparser.variables.VariableStorage;
 import io.github.syst3ms.skriptparser.variables.Variables;
 
 import java.io.IOException;
@@ -68,6 +65,12 @@ public class Skript extends SkriptAddon {
 
         // FINALIZE SCRIPT LOADING
         Parser.getMainRegistration().getRegisterer().finishedLoading();
+    }
+
+    public void shutdown() {
+        Utils.log("Saving variables...");
+        Variables.shutdown();
+        Utils.log("Variable saving complete!");
     }
 
     private void printSyntaxCount() {
@@ -126,7 +129,7 @@ public class Skript extends SkriptAddon {
             }
         }
 
-        SkriptLogger logger = new SkriptLogger(true);
+        SkriptLogger logger = new SkriptLogger(false);
         List<String> strings;
         try {
             strings = FileUtils.readAllLines(configPath);
