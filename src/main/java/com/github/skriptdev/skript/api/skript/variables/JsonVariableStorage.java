@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.util.BsonUtil;
-import io.github.syst3ms.skriptparser.file.FileSection;
+import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
 import io.github.syst3ms.skriptparser.log.ErrorType;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
 import io.github.syst3ms.skriptparser.variables.VariableStorage;
@@ -57,8 +57,8 @@ public class JsonVariableStorage extends VariableStorage {
     }
 
     @Override
-    protected boolean load(@NotNull FileSection section) {
-        String fileType = getConfigurationValue(section, "file-type");
+    protected boolean load(@NotNull ConfigSection section) {
+        String fileType = section.getString("file-type");
         if (fileType == null) {
             this.logger.error("No 'file-type' specified for database '" + this.name + "'!", ErrorType.EXCEPTION);
             return false;
@@ -71,7 +71,7 @@ public class JsonVariableStorage extends VariableStorage {
                 yield null;
             }
         };
-        this.logger.error("Database '" + this.name + "' loaded with filetype '" + this.type + "'", ErrorType.EXCEPTION);
+        this.logger.info("Database '" + this.name + "' loaded with filetype '" + this.type + "'");
         return this.type != null;
     }
 
