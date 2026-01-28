@@ -16,6 +16,7 @@ import org.bson.BsonBinaryWriter;
 import org.bson.BsonDocument;
 import org.bson.BsonReader;
 import org.bson.BsonString;
+import org.bson.BsonType;
 import org.bson.BsonValue;
 import org.bson.ByteBufNIO;
 import org.bson.codecs.BsonDocumentCodec;
@@ -159,8 +160,12 @@ public class JsonVariableStorage extends VariableStorage {
                 // Use a BsonDocumentCodec to decode the BSON into a BsonDocument object
                 BsonDocumentCodec codec = new BsonDocumentCodec();
                 DecoderContext decoderContext = DecoderContext.builder().build();
-
-                this.bsonDocument = codec.decode(reader, decoderContext);
+                BsonType type = reader.getCurrentBsonType();
+                if (type == null || type == BsonType.NULL || type == BsonType.END_OF_DOCUMENT) {
+                    this.bsonDocument = new BsonDocument();
+                } else {
+                    this.bsonDocument = codec.decode(reader, decoderContext);
+                }
             }
         }
     }
