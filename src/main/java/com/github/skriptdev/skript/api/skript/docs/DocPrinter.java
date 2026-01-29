@@ -9,6 +9,8 @@ import io.github.syst3ms.skriptparser.docs.Documentation;
 import io.github.syst3ms.skriptparser.lang.CodeSection;
 import io.github.syst3ms.skriptparser.lang.Effect;
 import io.github.syst3ms.skriptparser.lang.Structure;
+import io.github.syst3ms.skriptparser.lang.base.ConditionalExpression;
+import io.github.syst3ms.skriptparser.lang.base.ExecutableExpression;
 import io.github.syst3ms.skriptparser.pattern.PatternElement;
 import io.github.syst3ms.skriptparser.pattern.TextElement;
 import io.github.syst3ms.skriptparser.registration.ExpressionInfo;
@@ -49,11 +51,13 @@ public class DocPrinter {
             File file = getFile("expressions");
             PrintWriter writer = new PrintWriter(file, StandardCharsets.UTF_8);
             PrintWriter condWriter = new PrintWriter(getFile("conditions"), StandardCharsets.UTF_8);
-            printExpressions(writer, condWriter, registration);
-            printExpressions(writer, condWriter, Parser.getMainRegistration());
+            PrintWriter effCondWriter = new PrintWriter(getFile("effect-expressions"), StandardCharsets.UTF_8);
+            printExpressions(writer, condWriter, effCondWriter, registration);
+            printExpressions(writer, condWriter, effCondWriter, Parser.getMainRegistration());
 
             condWriter.close();
             writer.close();
+            effCondWriter.close();
 
             // EFFECTS
             Utils.log("Printing effects");
@@ -160,7 +164,7 @@ public class DocPrinter {
         });
     }
 
-    private static void printExpressions(PrintWriter exprWriter, PrintWriter condWriter, SkriptRegistration registration) {
+    private static void printExpressions(PrintWriter exprWriter, PrintWriter condWriter, PrintWriter exprEffWriter, SkriptRegistration registration) {
         List<List<ExpressionInfo<?, ?>>> values = new ArrayList<>(registration.getExpressions().values());
         values.sort(Comparator.comparing(k -> k.getFirst().getSyntaxClass().getSimpleName()));
 
@@ -170,7 +174,11 @@ public class DocPrinter {
                 if (documentation.isNoDoc()) return;
 
                 String returnType = getLinkForType(expressionInfo.getReturnType().getType(), expressionInfo.getReturnType().isSingle());
-                if (expressionInfo.getSyntaxClass().getSimpleName().startsWith("Cond")) {
+                Class<?> syntaxClass = expressionInfo.getSyntaxClass();
+                if (ExecutableExpression.class.isAssignableFrom(syntaxClass)) {
+                    printDocumentation("Effect Expression", exprEffWriter, documentation, expressionInfo.getPatterns());
+                    condWriter.println("- **Return Type**: " + returnType);
+                } else if (ConditionalExpression.class.isAssignableFrom(syntaxClass)) {
                     printDocumentation("Condition", condWriter, documentation, expressionInfo.getPatterns());
                     condWriter.println("- **Return Type**: " + returnType);
                 } else {
