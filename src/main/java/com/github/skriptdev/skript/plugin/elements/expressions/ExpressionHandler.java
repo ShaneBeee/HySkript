@@ -1,6 +1,36 @@
 package com.github.skriptdev.skript.plugin.elements.expressions;
 
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockAt;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockType;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityHealth;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityStat;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprNPCType;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprName;
+import com.github.skriptdev.skript.plugin.elements.expressions.item.ExprInventory;
+import com.github.skriptdev.skript.plugin.elements.expressions.item.ExprItemContainer;
+import com.github.skriptdev.skript.plugin.elements.expressions.item.ExprItemStack;
+import com.github.skriptdev.skript.plugin.elements.expressions.item.ExprItemType;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprClassInfoOf;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprLocationDirection;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprLocationOf;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprMessage;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprMessageColor;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprMessageLink;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprMessageParam;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprMessageProperties;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprUUID;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprUUIDRandom;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprVector3d;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprVector3f;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprVector3i;
+import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprAllPlayers;
+import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprChatMessage;
+import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerSpawns;
+import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprConsole;
+import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorld;
+import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorldOf;
+import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorldSpawn;
 
 public class ExpressionHandler {
 
