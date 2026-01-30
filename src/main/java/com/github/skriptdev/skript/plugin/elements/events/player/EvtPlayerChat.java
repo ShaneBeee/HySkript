@@ -1,18 +1,21 @@
 package com.github.skriptdev.skript.plugin.elements.events.player;
 
 import com.github.skriptdev.skript.api.skript.event.CancellableContext;
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.Statement;
 import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import org.jetbrains.annotations.NotNull;
 
-public class EvtPlayerChat extends EventRegistrationEvent {
+public class EvtPlayerChat extends SkriptEvent {
 
     public static void register(SkriptRegistration registration) {
         registration.newEvent(EvtPlayerChat.class, "[player] chat")
@@ -34,18 +37,22 @@ public class EvtPlayerChat extends EventRegistrationEvent {
             true, "playerref", PlayerChatContext::getSender);
     }
 
+    private static EventRegistration<String, PlayerChatEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?> @NotNull [] expressions, int matchedPattern, @NotNull ParseContext parseContext) {
-        applyListener(registry ->
-            registry.registerAsyncGlobal(PlayerChatEvent.class, future -> {
+        if (LISTENER == null) {
+            // Only register listener once
+            LISTENER = HySk.getInstance().getEventRegistry().registerAsyncGlobal(PlayerChatEvent.class, future -> {
                 future.thenAccept(event -> {
                     PlayerChatContext ctx = new PlayerChatContext(event);
-                    for (Trigger trigger : EvtPlayerChat.this.getTriggers()) {
+                    for (Trigger trigger : TriggerMap.getTriggersByContext(PlayerChatContext.class)) {
                         Statement.runAll(trigger, ctx);
                     }
                 });
                 return future;
-            }));
+            });
+        }
         return true;
     }
 

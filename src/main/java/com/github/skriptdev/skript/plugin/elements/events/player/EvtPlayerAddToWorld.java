@@ -1,19 +1,20 @@
 package com.github.skriptdev.skript.plugin.elements.events.player;
 
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
 import com.hypixel.hytale.component.Holder;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 
-public class EvtPlayerAddToWorld extends EventRegistrationEvent {
+public class EvtPlayerAddToWorld extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtPlayerAddToWorld.class,
@@ -29,14 +30,16 @@ public class EvtPlayerAddToWorld extends EventRegistrationEvent {
         reg.addContextValue(AddContext.class, Player.class, true, "player", AddContext::getPlayer);
     }
 
+    private static EventRegistration<String, AddPlayerToWorldEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
-        applyListener(registry -> registry.registerGlobal(AddPlayerToWorldEvent.class, event -> {
-            AddContext context = new AddContext(event);
-            for (Trigger trigger : this.getTriggers()) {
-                Statement.runAll(trigger, context);
-            }
-        }));
+        if (LISTENER == null) {
+            LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(AddPlayerToWorldEvent.class, event -> {
+                AddContext context = new AddContext(event);
+                TriggerMap.callTriggersByContext(context);
+            });
+        }
         return true;
     }
 

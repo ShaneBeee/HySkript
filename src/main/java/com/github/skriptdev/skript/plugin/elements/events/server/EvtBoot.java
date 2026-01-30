@@ -1,16 +1,19 @@
 package com.github.skriptdev.skript.plugin.elements.events.server;
 
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.server.core.event.events.BootEvent;
 import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.Statement;
 import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import org.jetbrains.annotations.NotNull;
 
-public class EvtBoot extends EventRegistrationEvent {
+public class EvtBoot extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtBoot.class, "boot", "server boot")
@@ -20,14 +23,18 @@ public class EvtBoot extends EventRegistrationEvent {
             .register();
     }
 
+    private static EventRegistration<Void, BootEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
-        applyListener(registry -> registry.registerGlobal(BootEvent.class, event -> {
-            BootContext bootContext = new BootContext(event);
-            for (Trigger trigger : this.getTriggers()) {
-                Statement.runAll(trigger, bootContext);
-            }
-        }));
+        if (LISTENER == null) {
+            LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(BootEvent.class, event -> {
+                BootContext bootContext = new BootContext(event);
+                for (Trigger trigger : TriggerMap.getTriggersByContext(BootContext.class)) {
+                    Statement.runAll(trigger, bootContext);
+                }
+            });
+        }
         return true;
     }
 
@@ -38,7 +45,7 @@ public class EvtBoot extends EventRegistrationEvent {
 
     @Override
     public String toString(@NotNull TriggerContext ctx, boolean debug) {
-        return "server boot";
+        return "server boot event";
     }
 
     private record BootContext(BootEvent event) implements TriggerContext {

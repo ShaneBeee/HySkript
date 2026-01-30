@@ -1,15 +1,17 @@
 package com.github.skriptdev.skript.plugin.elements.events.server;
 
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.server.core.event.events.ShutdownEvent;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
+import org.jetbrains.annotations.NotNull;
 
-public class EvtShutdown extends EventRegistrationEvent {
+public class EvtShutdown extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtShutdown.class, "shutdown", "server shutdown")
@@ -19,14 +21,16 @@ public class EvtShutdown extends EventRegistrationEvent {
             .register();
     }
 
+    private static EventRegistration<Void, ShutdownEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
-        applyListener(registry -> registry.registerGlobal(ShutdownEvent.class, event -> {
-            ShutdownContext shutdownContext = new ShutdownContext(event);
-            for (Trigger trigger : this.getTriggers()) {
-                Statement.runAll(trigger, shutdownContext);
-            }
-        }));
+        if (LISTENER == null) {
+            LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(ShutdownEvent.class, event -> {
+                ShutdownContext shutdownContext = new ShutdownContext(event);
+                TriggerMap.callTriggersByContext(shutdownContext);
+            });
+        }
         return true;
     }
 
@@ -36,8 +40,8 @@ public class EvtShutdown extends EventRegistrationEvent {
     }
 
     @Override
-    public String toString(TriggerContext ctx, boolean debug) {
-        return "server shutdown";
+    public String toString(@NotNull TriggerContext ctx, boolean debug) {
+        return "server shutdown event";
     }
 
     private record ShutdownContext(ShutdownEvent event) implements TriggerContext {

@@ -1,19 +1,20 @@
 package com.github.skriptdev.skript.plugin.elements.events.player;
 
 import com.github.skriptdev.skript.api.skript.event.CancellableContext;
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.server.core.event.events.player.PlayerSetupConnectEvent;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class EvtPlayerSetupConnect extends EventRegistrationEvent {
+public class EvtPlayerSetupConnect extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtPlayerSetupConnect.class, "player setup connect")
@@ -28,14 +29,16 @@ public class EvtPlayerSetupConnect extends EventRegistrationEvent {
         reg.addContextValue(PlayerSetupConnectContext.class, String.class, true, "reason", PlayerSetupConnectContext::getReason);
     }
 
+    private static EventRegistration<Void, PlayerSetupConnectEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
-        applyListener(registry -> registry.registerGlobal(PlayerSetupConnectEvent.class, event -> {
-            PlayerSetupConnectContext context = new PlayerSetupConnectContext(event);
-            for (Trigger trigger : this.getTriggers()) {
-                Statement.runAll(trigger, context);
-            }
-        }));
+        if (LISTENER == null) {
+            LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(PlayerSetupConnectEvent.class, event -> {
+                PlayerSetupConnectContext context = new PlayerSetupConnectContext(event);
+                TriggerMap.callTriggersByContext(context);
+            });
+        }
         return true;
     }
 
@@ -46,7 +49,7 @@ public class EvtPlayerSetupConnect extends EventRegistrationEvent {
 
     @Override
     public String toString(@NotNull TriggerContext ctx, boolean debug) {
-        return "player setup connect";
+        return "player setup connect event";
     }
 
     private record PlayerSetupConnectContext(

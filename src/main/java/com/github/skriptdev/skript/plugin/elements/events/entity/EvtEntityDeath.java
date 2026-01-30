@@ -3,7 +3,6 @@ package com.github.skriptdev.skript.plugin.elements.events.entity;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.plugin.HySk;
 import com.hypixel.hytale.component.CommandBuffer;
-import com.hypixel.hytale.component.ComponentRegistryProxy;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
@@ -17,9 +16,8 @@ import com.hypixel.hytale.server.core.modules.entity.damage.DeathSystems;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import org.jetbrains.annotations.NotNull;
@@ -65,8 +63,8 @@ public class EvtEntityDeath extends SkriptEvent {
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
         if (LISTENER == null) {
-            ComponentRegistryProxy<EntityStore> entityStoreRegistry = HySk.getInstance().getEntityStoreRegistry();
-            LISTENER = new EntityDeathListener(entityStoreRegistry, this);
+            LISTENER = new EntityDeathListener();
+            HySk.getInstance().getEntityStoreRegistry().registerSystem(LISTENER);
         }
         this.pattern = matchedPattern;
         return true;
@@ -89,13 +87,6 @@ public class EvtEntityDeath extends SkriptEvent {
 
     private static class EntityDeathListener extends DeathSystems.OnDeathSystem {
 
-        private final EvtEntityDeath event;
-
-        public EntityDeathListener(ComponentRegistryProxy<EntityStore> registry, EvtEntityDeath event) {
-            this.event = event;
-            registry.registerSystem(this);
-        }
-
         @SuppressWarnings("DataFlowIssue")
         @Override
         public void onComponentAdded(@NotNull Ref<EntityStore> ref, @NotNull DeathComponent deathComponent, @NotNull Store<EntityStore> store, @NotNull CommandBuffer<EntityStore> buffer) {
@@ -112,9 +103,7 @@ public class EvtEntityDeath extends SkriptEvent {
                 victim = npc;
             } else return;
 
-            for (Trigger trigger : this.event.getTriggers()) {
-                Statement.runAll(trigger, new EntityDeathContext(pattern, victim, deathComponent));
-            }
+            TriggerMap.callTriggersByContext(new EntityDeathContext(pattern, victim, deathComponent));
         }
 
         @Override

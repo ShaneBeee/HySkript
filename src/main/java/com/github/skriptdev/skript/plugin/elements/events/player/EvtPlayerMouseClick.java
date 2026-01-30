@@ -1,8 +1,9 @@
 package com.github.skriptdev.skript.plugin.elements.events.player;
 
 import com.github.skriptdev.skript.api.skript.event.CancellableContext;
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.protocol.MouseButtonEvent;
 import com.hypixel.hytale.protocol.Vector2f;
@@ -14,9 +15,12 @@ import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.Statement;
 import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
+import org.jetbrains.annotations.NotNull;
 
-public class EvtPlayerMouseClick extends EventRegistrationEvent {
+public class EvtPlayerMouseClick extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtPlayerMouseClick.class, "player mouse button", "player mouse click")
@@ -34,15 +38,18 @@ public class EvtPlayerMouseClick extends EventRegistrationEvent {
         reg.addContextValue(MouseClickContext.class, MouseButtonEvent.class, true, "mouse-button", MouseClickContext::getMouseButton);
     }
 
+    private static EventRegistration<Void, PlayerMouseButtonEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
-        applyListener(eventRegistry ->
-            eventRegistry.registerGlobal(PlayerMouseButtonEvent.class, event -> {
+        if (LISTENER == null) {
+            LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(PlayerMouseButtonEvent.class, event -> {
                 MouseClickContext context = new MouseClickContext(event);
-                for (Trigger trigger : this.getTriggers()) {
+                for (Trigger trigger : TriggerMap.getTriggersByContext(MouseClickContext.class)) {
                     Statement.runAll(trigger, context);
                 }
-            }));
+            });
+        }
         return true;
     }
 
@@ -52,7 +59,7 @@ public class EvtPlayerMouseClick extends EventRegistrationEvent {
     }
 
     @Override
-    public String toString(TriggerContext ctx, boolean debug) {
+    public String toString(@NotNull TriggerContext ctx, boolean debug) {
         return "player mouse click";
     }
 

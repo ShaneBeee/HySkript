@@ -1,8 +1,9 @@
 package com.github.skriptdev.skript.plugin.elements.events.player;
 
 import com.github.skriptdev.skript.api.skript.event.CancellableContext;
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.protocol.MouseMotionEvent;
 import com.hypixel.hytale.protocol.Vector2f;
@@ -11,12 +12,13 @@ import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerMouseMotionEvent;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
+import org.jetbrains.annotations.NotNull;
 
-public class EvtPlayerMouseMove extends EventRegistrationEvent {
+public class EvtPlayerMouseMove extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtPlayerMouseClick.class, "player mouse motion", "player mouse move")
@@ -34,15 +36,16 @@ public class EvtPlayerMouseMove extends EventRegistrationEvent {
         reg.addContextValue(MouseMoveContext.class, MouseMotionEvent.class, true, "mouse-motion", MouseMoveContext::getMouseMotion);
     }
 
+    private static EventRegistration<Void, PlayerMouseMotionEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
-        applyListener(eventRegistry ->
-            eventRegistry.registerGlobal(PlayerMouseMotionEvent.class, event -> {
+        if (LISTENER == null) {
+            LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(PlayerMouseMotionEvent.class, event -> {
                 MouseMoveContext context = new MouseMoveContext(event);
-                for (Trigger trigger : this.getTriggers()) {
-                    Statement.runAll(trigger, context);
-                }
-            }));
+                TriggerMap.callTriggersByContext(context);
+            });
+        }
         return true;
     }
 
@@ -52,8 +55,8 @@ public class EvtPlayerMouseMove extends EventRegistrationEvent {
     }
 
     @Override
-    public String toString(TriggerContext ctx, boolean debug) {
-        return "player mouse motion";
+    public String toString(@NotNull TriggerContext ctx, boolean debug) {
+        return "player mouse motion event";
     }
 
     private record MouseMoveContext(PlayerMouseMotionEvent event) implements TriggerContext, CancellableContext {

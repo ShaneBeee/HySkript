@@ -1,7 +1,8 @@
 package com.github.skriptdev.skript.plugin.elements.events.entity;
 
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.event.events.entity.EntityRemoveEvent;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -9,9 +10,12 @@ import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.Statement;
 import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
+import org.jetbrains.annotations.NotNull;
 
-public class EvtEntityRemove extends EventRegistrationEvent {
+public class EvtEntityRemove extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtEntityRemove.class,
@@ -25,16 +29,18 @@ public class EvtEntityRemove extends EventRegistrationEvent {
         reg.addContextValue(EntityRemoveEventContext.class, World.class, true, "world", EntityRemoveEventContext::getWorld);
     }
 
+    private static EventRegistration<String, EntityRemoveEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
-        applyListener(registry -> {
-            return registry.registerGlobal(EntityRemoveEvent.class, event -> {
+        if (LISTENER == null) {
+            LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(EntityRemoveEvent.class, event -> {
                 EntityRemoveEventContext context = new EntityRemoveEventContext(event);
-                for (Trigger trigger : this.getTriggers()) {
+                for (Trigger trigger : TriggerMap.getTriggersByContext(EntityRemoveEventContext.class)) {
                     Statement.runAll(trigger, context);
                 }
             });
-        });
+        }
         return true;
     }
 
@@ -44,8 +50,8 @@ public class EvtEntityRemove extends EventRegistrationEvent {
     }
 
     @Override
-    public String toString(TriggerContext ctx, boolean debug) {
-        return "entity remove";
+    public String toString(@NotNull TriggerContext ctx, boolean debug) {
+        return "entity remove event";
     }
 
     private record EntityRemoveEventContext(EntityRemoveEvent event) implements TriggerContext {

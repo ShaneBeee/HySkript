@@ -1,17 +1,18 @@
 package com.github.skriptdev.skript.plugin.elements.events.player;
 
-import com.github.skriptdev.skript.api.skript.event.EventRegistrationEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.plugin.HySk;
+import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.server.core.event.events.player.DrainPlayerFromWorldEvent;
 import com.hypixel.hytale.server.core.universe.world.World;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
+import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import org.jetbrains.annotations.NotNull;
 
-public class EvtPlayerDrainFromWorld extends EventRegistrationEvent {
+public class EvtPlayerDrainFromWorld extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtPlayerDrainFromWorld.class,
@@ -23,14 +24,16 @@ public class EvtPlayerDrainFromWorld extends EventRegistrationEvent {
         reg.addContextValue(DrainContext.class, World.class, true, "world", DrainContext::getWorld);
     }
 
+    private static EventRegistration<String, DrainPlayerFromWorldEvent> LISTENER;
+
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
-        applyListener(registry -> registry.registerGlobal(DrainPlayerFromWorldEvent.class, event -> {
-            DrainContext context = new DrainContext(event);
-            for (Trigger trigger : this.getTriggers()) {
-                Statement.runAll(trigger, context);
-            }
-        }));
+        if (LISTENER == null) {
+            LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(DrainPlayerFromWorldEvent.class, event -> {
+                DrainContext context = new DrainContext(event);
+                TriggerMap.callTriggersByContext(context);
+            });
+        }
         return true;
     }
 
