@@ -4,7 +4,6 @@ import com.github.skriptdev.skript.api.hytale.Block;
 import com.github.skriptdev.skript.api.skript.event.CancellableContext;
 import com.github.skriptdev.skript.api.skript.event.SystemEvent;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
-import com.github.skriptdev.skript.plugin.HySk;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
@@ -20,38 +19,13 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class EvtPlayerBreakBlock extends SystemEvent<EntityEventSystem<EntityStore, BreakBlockEvent>> {
-
-    private static final Map<String, List<Trigger>> TRIGGER_MAP = new HashMap<>();
-    private static BlockBreakEventSystem SYSTEM;
-
-    public List<Trigger> getTriggers() {
-        return TRIGGER_MAP.values().stream().flatMap(List::stream).toList();
-    }
-
-    public void addTrigger(String scriptName, Trigger trigger) {
-        if (!TRIGGER_MAP.containsKey(scriptName)) {
-            TRIGGER_MAP.put(scriptName, new ArrayList<>());
-        }
-        TRIGGER_MAP.get(scriptName).add(trigger);
-    }
-
-    public void clearTrigger(String scriptName) {
-        TRIGGER_MAP.put(scriptName, new ArrayList<>());
-    }
-
 
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtPlayerBreakBlock.class, "player block break", "player break block", "player breaks block")
@@ -70,6 +44,8 @@ public class EvtPlayerBreakBlock extends SystemEvent<EntityEventSystem<EntitySto
         reg.addContextValue(BreakBlockEventContext.class, BlockType.class, true, "blocktype", BreakBlockEventContext::getBlockType);
         reg.addContextValue(BreakBlockEventContext.class, ItemStack.class, true, "item-in-hand", BreakBlockEventContext::getItemInHand);
     }
+
+    private static BlockBreakEventSystem SYSTEM;
 
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, ParseContext parseContext) {
@@ -151,9 +127,7 @@ public class EvtPlayerBreakBlock extends SystemEvent<EntityEventSystem<EntitySto
             if (player == null) return;
 
             BreakBlockEventContext context = new BreakBlockEventContext(event, player);
-            for (Trigger trigger : TRIGGER_MAP.values().stream().flatMap(List::stream).toList()) {
-                Statement.runAll(trigger, context);
-            }
+            TriggerMap.callTriggersByContext(context);
         }
 
         @Override
