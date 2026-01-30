@@ -272,6 +272,11 @@ public class DocPrinter {
 
     private static void printDocumentation(String type, PrintWriter writer, Documentation documentation, List<PatternElement> patterns) {
         writer.println("## " + documentation.getName());
+        if (documentation.isExperimental()) {
+            writer.println("> [!WARNING]");
+            writer.println("> **This is an experimental feature!**  ");
+            writer.println("> Things may not work as expected and may change without notice.  ");
+        }
         String[] description = documentation.getDescription();
         if (description != null) {
             writer.println("- **Description**:");

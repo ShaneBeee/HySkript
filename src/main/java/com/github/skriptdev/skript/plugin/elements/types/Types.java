@@ -271,6 +271,7 @@ public class Types {
             .name("Item Container")
             .description("Represents an item container within an inventory (such as the armor container).")
             .since("INSERT VERSION")
+            .experimental()
             .toStringFunction(ItemContainer::toString)
             .serializer(new TypeSerializer<>() {
                 @Override
