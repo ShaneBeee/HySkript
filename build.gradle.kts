@@ -8,7 +8,7 @@ java.sourceCompatibility = JavaVersion.VERSION_25
 
 group = "com.github.SkriptDev"
 val projectVersion = "1.0.0"
-val hytaleVersion = "2026.01.27-734d39026"
+val hytaleVersion = "2026.01.29-301e13929"
 
 repositories {
     mavenCentral()
