@@ -39,6 +39,8 @@ import com.hypixel.hytale.server.core.entity.LivingEntity;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
+import com.hypixel.hytale.server.core.inventory.container.CombinedItemContainer;
+import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageCause;
 import com.hypixel.hytale.server.core.modules.entitystats.asset.EntityStatType;
@@ -51,6 +53,7 @@ import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import io.github.syst3ms.skriptparser.types.TypeManager;
 import io.github.syst3ms.skriptparser.types.changers.TypeSerializer;
 import org.bson.BsonDocument;
+import org.bson.BsonString;
 import org.bson.BsonValue;
 import org.jetbrains.annotations.NotNull;
 
@@ -264,7 +267,42 @@ public class Types {
     }
 
     private static void registerItemTypes(SkriptRegistration registration) {
-        registration.newType(ItemStack.class, "itemstack", "itemstack@s")
+        registration.newType(ItemContainer.class, "itemcontainer", "itemContainer@s")
+            .name("Item Container")
+            .description("Represents an item container within an inventory (such as the armor container).")
+            .since("INSERT VERSION")
+            .toStringFunction(ItemContainer::toString)
+            .serializer(new TypeSerializer<>() {
+                @Override
+                public JsonElement serialize(@NotNull Gson gson, @NotNull ItemContainer value) {
+                    BsonDocument document;
+                    if (value instanceof CombinedItemContainer cic) {
+                        document = CombinedItemContainer.CODEC.encode(cic, new ExtraInfo()).asDocument();
+                        document.put("type", new BsonString("combined"));
+                    } else {
+                        document = ItemContainer.CODEC.encode(value, new ExtraInfo()).asDocument();
+                        document.put("type", new BsonString("container"));
+                    }
+
+                    return gson.fromJson(document.toJson(), JsonElement.class);
+                }
+
+                @Override
+                public ItemContainer deserialize(@NotNull Gson gson, @NotNull JsonElement element) {
+                    BsonDocument parse = BsonDocument.parse(element.toString());
+                    String type = parse.getString("type").getValue();
+                    if (type == null) return null;
+
+                    if (type.equals("combined")) {
+                        return CombinedItemContainer.CODEC.decode(parse, new ExtraInfo());
+                    } else if (type.equals("container")) {
+                        return ItemContainer.CODEC.decode(parse, new ExtraInfo());
+                    }
+                    return null;
+                }
+            })
+            .register();
+        registration.newType(ItemStack.class, "itemstack", "itemStack@s")
             .name("Item Stack")
             .description("Represents an item in an inventory slot.")
             .examples("set {_i} to itemstack of Food_Fish_Grilled")
@@ -410,7 +448,6 @@ public class Types {
             .since("INSERT VERSION")
             .toStringFunction(Item::getId)
             .serializer(new TypeSerializer<>() {
-
                 @Override
                 public JsonElement serialize(@NotNull Gson gson, @NotNull Item value) {
                     BsonValue encode = Item.CODEC.encode(value, new ExtraInfo());
