@@ -1,5 +1,6 @@
 package com.github.skriptdev.skript.plugin.command;
 
+import com.github.skriptdev.skript.api.skript.addon.HySkriptAddon;
 import com.github.skriptdev.skript.api.skript.docs.JsonDocPrinter;
 import com.github.skriptdev.skript.api.skript.docs.MarkdownDocPrinter;
 import com.github.skriptdev.skript.api.utils.Utils;
@@ -10,6 +11,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.AbstractCommand;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.CommandRegistry;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.arguments.system.FlagArg;
 import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
@@ -39,6 +41,7 @@ public class SkriptCommand extends AbstractCommandCollection {
         addAliases("sk");
 
         // Keep these in alphabetical order
+        addSubCommand(addonsCommand());
         addSubCommand(new DocsCommand());
         addSubCommand(infoCommand());
         addSubCommand(new ReloadCommand());
@@ -135,6 +138,30 @@ public class SkriptCommand extends AbstractCommandCollection {
             @Override
             protected CompletableFuture<Void> execute(@NotNull CommandContext commandContext) {
                 return CompletableFuture.runAsync(() -> printInfo(commandContext.sender()));
+            }
+        };
+    }
+
+    private AbstractCommand addonsCommand() {
+        return new AbstractCommand("addons", "Get info about loaded addons.") {
+            @Override
+            protected CompletableFuture<Void> execute(@NotNull CommandContext commandContext) {
+                return CompletableFuture.runAsync(() -> {
+                    List<SkriptAddon> addons = SkriptAddon.getAddons().stream()
+                        .filter(addon -> !addon.getAddonName().equalsIgnoreCase("skript-parser") && !addon.getAddonName().equalsIgnoreCase("HySkript"))
+                        .toList();
+                    if (addons.isEmpty()) return;
+                    CommandSender sender = commandContext.sender();
+                    Utils.sendMessage(sender, "Loaded Addons:");
+                    addons.forEach(addon -> {
+                        if (addon instanceof HySkriptAddon hySkriptAddon) {
+                            Utils.sendMessage(sender, "  - %s:", hySkriptAddon.getAddonName());
+                            for (Message s : hySkriptAddon.getInfo()) {
+                                sender.sendMessage(Message.raw("     ").insert(s));
+                            }
+                        }
+                    });
+                });
             }
         };
     }
