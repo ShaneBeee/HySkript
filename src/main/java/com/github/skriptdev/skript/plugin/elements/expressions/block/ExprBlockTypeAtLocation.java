@@ -24,6 +24,7 @@ public class ExprBlockTypeAtLocation implements Expression<BlockType> {
             .description("Get/set the BlockType at a given location in a world.")
             .examples("set {_block} to blocktype at location of player",
                 "set {_block} to blocktype at vector3i(1, 2, 3) in world of player",
+                "set blocktype at location of player to empty # This is how Hytale refers to air",
                 "if blocktype at vector3i(1,1,1) = rock_stone_brick:")
             .since("1.0.0")
             .register();
