@@ -10,13 +10,16 @@ import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class CondHasPermission extends ConditionalExpression {
 
     public static void register(SkriptRegistration registration) {
         registration.newExpression(CondHasPermission.class, Boolean.class, true,
-                "%players/playerrefs% (has|have) permission %strings%")
+                "%players/playerrefs/uuid% (has|have) permission %strings%",
+                "%players/playerrefs/uuid% (don't|do not|doesn't|does not) (has|have) permission %strings%")
             .name("Permission")
-            .description("Checks if the specified player(s) have the specified permission.")
+            .description("Checks if the specified players/playerrefs/uuids have/don't have the specified permissions.")
             .examples("if player has permission \"hytale.admin\":")
             .since("1.0.0")
             .register();
@@ -30,23 +33,26 @@ public class CondHasPermission extends ConditionalExpression {
     public boolean init(Expression<?>[] expressions, int matchedPattern, @NotNull ParseContext parseContext) {
         this.players = expressions[0];
         this.permission = (Expression<String>) expressions[1];
+        setNegated(matchedPattern == 1);
         return true;
     }
 
-
     @Override
     public boolean check(@NotNull TriggerContext ctx) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
         this.permission.check(ctx, string -> {
             this.players.check(ctx, p -> {
                 if (p instanceof Player player) {
                     return player.hasPermission(string);
                 } else if (p instanceof PlayerRef playerRef) {
-                    return PermissionsModule.get().hasPermission(playerRef.getUuid(), string);
+                    return permissionsModule.hasPermission(playerRef.getUuid(), string);
+                } else if (p instanceof UUID uuid) {
+                    return permissionsModule.hasPermission(uuid, string);
                 }
                 return false;
-            });
+            }, isNegated());
             return false;
-        });
+        }, isNegated());
         return false;
     }
 

@@ -23,7 +23,8 @@ public class EvtPlayerMouseMove extends SkriptEvent {
     public static void register(SkriptRegistration reg) {
         reg.newEvent(EvtPlayerMouseClick.class, "player mouse motion", "player mouse move")
             .name("Player Mouse Motion")
-            .description("Called when a player moves their mouse.")
+            .description("Called when a player moves their mouse.",
+                "**NOTE**: This event appears to be broken internally and doesn't seem to call")
             .since("1.0.0")
             .setHandledContexts(MouseMoveContext.class)
             .register();

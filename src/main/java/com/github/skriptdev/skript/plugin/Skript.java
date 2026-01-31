@@ -38,6 +38,7 @@ public class Skript extends SkriptAddon {
     private ScriptsLoader scriptsLoader;
 
     Skript(HySk hySk) {
+        super("HySkript");
         INSTANCE = this;
         this.hySk = hySk;
         this.scriptsPath = hySk.getDataDirectory().resolve("scripts");
@@ -59,7 +60,7 @@ public class Skript extends SkriptAddon {
         ReflectionUtils.init();
         ArgUtils.init();
         this.registration = new SkriptRegistration(this);
-        this.elementRegistration = new ElementRegistration(this);
+        this.elementRegistration = new ElementRegistration(this.registration);
         this.elementRegistration.registerElements();
 
         // FINALIZE SETUP
@@ -170,7 +171,7 @@ public class Skript extends SkriptAddon {
      *
      * @return The Skript registration.
      */
-    public @NotNull SkriptRegistration getRegistration() {
+    public @NotNull io.github.syst3ms.skriptparser.registration.SkriptRegistration getSkriptRegistration() {
         return this.registration;
     }
 

@@ -4,6 +4,7 @@ import com.github.skriptdev.skript.api.utils.Utils;
 import com.github.skriptdev.skript.plugin.HySk;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.util.BsonUtil;
 import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
@@ -13,7 +14,11 @@ import io.github.syst3ms.skriptparser.variables.VariableStorage;
 import io.github.syst3ms.skriptparser.variables.Variables;
 import org.bson.BsonBinaryReader;
 import org.bson.BsonBinaryWriter;
+import org.bson.BsonBoolean;
 import org.bson.BsonDocument;
+import org.bson.BsonDouble;
+import org.bson.BsonInt32;
+import org.bson.BsonInt64;
 import org.bson.BsonString;
 import org.bson.BsonValue;
 import org.bson.codecs.BsonDocumentCodec;
@@ -89,7 +94,6 @@ public class JsonVariableStorage extends VariableStorage {
             if (this.changes.get() >= this.changesToSave) {
                 try {
                     saveVariables(false);
-                    this.logger.info("Saved " + this.changes.get() + " changes to '" + this.file.getName() + "'"); // TODO REMOVE (debug)
                     this.changes.set(0);
                 } catch (IOException e) {
                     this.logger.error("Failed to save variable file", ErrorType.EXCEPTION);
@@ -118,6 +122,10 @@ public class JsonVariableStorage extends VariableStorage {
                     JsonObject value = entry.getValue().getAsJsonObject();
                     String type = value.get("type").getAsString();
                     JsonElement jsonValue = value.get("value");
+                    if (jsonValue == null) {
+                        this.logger.error("Skipping variable '" + name + "' due to missing value", ErrorType.STRUCTURE_ERROR);
+                        return;
+                    }
 
                     this.logger.debug("Loading variable '" + name + "' of type '" + type + "' from file. With data '" + jsonValue.toString() + "'");
                     loadVariable(name, type, jsonValue);
@@ -166,6 +174,23 @@ public class JsonVariableStorage extends VariableStorage {
 
                 if (bsonValue instanceof BsonDocument doc) {
                     myDocument.put("value", doc);
+                } else if (value instanceof JsonPrimitive primitive) {
+                    // Bson translate doesn't handle primitives
+                    if (primitive.isNumber()) {
+                        switch (primitive.getAsNumber()) {
+                            case Long l -> myDocument.put("value", new BsonInt64(l));
+                            case Integer i -> myDocument.put("value", new BsonInt32(i));
+                            case Short s -> myDocument.put("value", new BsonInt32(s.intValue()));
+                            case Byte b -> myDocument.put("value", new BsonInt32(b.intValue()));
+                            case Double d -> myDocument.put("value", new BsonDouble(d));
+                            case Float f -> myDocument.put("value", new BsonDouble(f));
+                            case null, default -> myDocument.put("value", bsonValue);
+                        }
+                    } else if (primitive.isBoolean()) {
+                        myDocument.put("value", new BsonBoolean(primitive.getAsBoolean()));
+                    } else if (primitive.isString()) {
+                        myDocument.put("value", new BsonString(primitive.getAsString()));
+                    }
                 } else {
                     myDocument.put("value", bsonValue);
                 }

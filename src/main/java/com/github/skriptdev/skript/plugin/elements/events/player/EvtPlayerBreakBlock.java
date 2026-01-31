@@ -12,6 +12,7 @@ import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
+import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
@@ -42,7 +43,8 @@ public class EvtPlayerBreakBlock extends SystemEvent<EntityEventSystem<EntitySto
         reg.addContextValue(BreakBlockEventContext.class, Block.class, true, "block", BreakBlockEventContext::getBlock);
         reg.addContextValue(BreakBlockEventContext.class, World.class, true, "world", BreakBlockEventContext::getWorld);
         reg.addContextValue(BreakBlockEventContext.class, BlockType.class, true, "blocktype", BreakBlockEventContext::getBlockType);
-        reg.addContextValue(BreakBlockEventContext.class, ItemStack.class, true, "item-in-hand", BreakBlockEventContext::getItemInHand);
+        reg.addContextValue(BreakBlockEventContext.class, Item.class, true, "item-in-hand", BreakBlockEventContext::getItemInHand);
+        reg.addContextValue(BreakBlockEventContext.class, ItemStack.class, true, "itemstack-in-hand", BreakBlockEventContext::getItemStackInHand);
     }
 
     private static BlockBreakEventSystem SYSTEM;
@@ -90,7 +92,13 @@ public class EvtPlayerBreakBlock extends SystemEvent<EntityEventSystem<EntitySto
             return new BlockType[]{this.event.getBlockType()};
         }
 
-        private ItemStack[] getItemInHand() {
+        private Item[] getItemInHand() {
+            ItemStack itemInHand = this.event.getItemInHand();
+            if (itemInHand == null) return null;
+            return new Item[]{itemInHand.getItem()};
+        }
+
+        private ItemStack[] getItemStackInHand() {
             return new ItemStack[]{this.event.getItemInHand()};
         }
 

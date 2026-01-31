@@ -1,9 +1,10 @@
 package com.github.skriptdev.skript.plugin.elements;
 
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
-import com.github.skriptdev.skript.plugin.Skript;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptCommand;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptSubCommand;
+import com.github.skriptdev.skript.plugin.elements.types.DefaultComparators;
+import com.github.skriptdev.skript.plugin.elements.types.DefaultConverters;
 import com.github.skriptdev.skript.plugin.elements.conditions.ConditionHandler;
 import com.github.skriptdev.skript.plugin.elements.effects.EffectHandler;
 import com.github.skriptdev.skript.plugin.elements.events.EventHandler;
@@ -17,8 +18,8 @@ public class ElementRegistration {
 
     private final SkriptRegistration registration;
 
-    public ElementRegistration(Skript skript) {
-        this.registration = skript.getRegistration();
+    public ElementRegistration(SkriptRegistration registration) {
+        this.registration = registration;
     }
 
     public void registerElements() {
@@ -26,6 +27,10 @@ public class ElementRegistration {
 
         // TYPES
         Types.register(this.registration);
+
+        // COMPARATORS/CONVERTERS
+        DefaultComparators.register();
+        DefaultConverters.register();
 
         // CONDITIONS
         ConditionHandler.register(this.registration);
