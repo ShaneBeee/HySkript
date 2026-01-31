@@ -4,6 +4,7 @@ import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockAt;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeOfBlock;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprTargetBlockOfPlayer;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityHealth;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityStat;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprNPCType;
@@ -40,6 +41,7 @@ public class ExpressionHandler {
         ExprBlockAt.register(registration);
         ExprBlockTypeAtLocation.register(registration);
         ExprBlockTypeOfBlock.register(registration);
+        ExprTargetBlockOfPlayer.register(registration);
 
         // ENTITY
         ExprEntityHealth.register(registration);
