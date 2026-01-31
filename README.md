@@ -8,6 +8,10 @@ This way you can program your server to do marvelous things without having to le
 ## Docs/Tutorials:
 Check out our [**wiki**](https://github.com/SkriptDev/HySkript/wiki)
 
+## Support:
+You can find us on the [**SkriptHub Discord server**](https://discord.gg/phpWHGU)   
+Make sure to check out the "HySkript" channels!
+
 ## Requirements:
 - Java 25
 - Hytale Server (version information will come in the future)

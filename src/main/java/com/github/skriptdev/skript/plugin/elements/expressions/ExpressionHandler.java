@@ -2,8 +2,10 @@ package com.github.skriptdev.skript.plugin.elements.expressions;
 
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockAt;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockFluid;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeOfBlock;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockFluidLevel;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprTargetBlockOfPlayer;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityHealth;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityStat;
@@ -40,6 +42,8 @@ public class ExpressionHandler {
     public static void register(SkriptRegistration registration) {
         // BLOCK
         ExprBlockAt.register(registration);
+        ExprBlockFluid.register(registration);
+        ExprBlockFluidLevel.register(registration);
         ExprBlockTypeAtLocation.register(registration);
         ExprBlockTypeOfBlock.register(registration);
         ExprTargetBlockOfPlayer.register(registration);
