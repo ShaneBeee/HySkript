@@ -1,4 +1,4 @@
-package com.github.skriptdev.skript.plugin.elements.comparators;
+package com.github.skriptdev.skript.plugin.elements.types;
 
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.inventory.Inventory;
