@@ -143,8 +143,9 @@ public class TypesAssetStore {
 
     private static String autoGenMessage() {
         String serverVersion = ManifestUtil.getImplementationVersion();
+        String patchline = ManifestUtil.getPatchline();
         return "This type is auto-generated with values from Hytale." +
-            "\nCurrently generated with Hytale Server version `" + serverVersion + "`.";
+            "\nCurrently generated with Hytale Server version `" + serverVersion + " (" + patchline + ")`.";
     }
 
 }
