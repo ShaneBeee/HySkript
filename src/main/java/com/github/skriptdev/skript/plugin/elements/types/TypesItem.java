@@ -2,6 +2,7 @@ package com.github.skriptdev.skript.plugin.elements.types;
 
 import com.github.skriptdev.skript.api.skript.registration.EnumRegistry;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.api.skript.variables.SerializerUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.hypixel.hytale.codec.ExtraInfo;
@@ -10,6 +11,7 @@ import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.CombinedItemContainer;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
+import com.hypixel.hytale.server.core.modules.entity.item.ItemComponent;
 import io.github.syst3ms.skriptparser.types.changers.TypeSerializer;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
@@ -18,6 +20,14 @@ import org.jetbrains.annotations.NotNull;
 public class TypesItem {
 
     static void register(SkriptRegistration registration) {
+        // Please keep in alphabetical order
+        registration.newType(ItemComponent.class, "itemcomponent", "itemComponent@s")
+            .name("Item Component")
+            .description("Represents the component of a dropped item.")
+            .since("INSERT VERSION")
+            .toStringFunction(ic -> String.format("ItemComponent{itemstack=%s}", ic.getItemStack()))
+            .serializer(SerializerUtils.getCodecSerializer(ItemComponent.CODEC))
+            .register();
         registration.newType(ItemContainer.class, "itemcontainer", "itemContainer@s")
             .name("Item Container")
             .description("Represents an item container within an inventory (such as the armor container).")

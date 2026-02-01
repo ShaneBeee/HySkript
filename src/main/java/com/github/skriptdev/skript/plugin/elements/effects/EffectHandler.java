@@ -9,6 +9,7 @@ public class EffectHandler {
         EffBroadcast.register(registration);
         EffCancelEvent.register(registration);
         EffDelay.register(registration);
+        EffDropItem.register(registration);
         EffKick.register(registration);
         EffKill.register(registration);
         EffSendMessage.register(registration);
