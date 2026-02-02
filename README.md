@@ -28,6 +28,11 @@ If you find any issues, please report them on our [**issues page**](https://gith
 ## Building:
 To build run `./gradlew build`
 
+## Branches:
+- `master` = The latest stable release.
+- `dev/feature` = Development branch for new features.
+- `dev/patch` = Development branch for bugfixes.
+
 ## Contributors:
 You can find all of our contributors on the [**contributors page**](https://github.com/SkriptDev/HySkript/graphs/contributors)
 
