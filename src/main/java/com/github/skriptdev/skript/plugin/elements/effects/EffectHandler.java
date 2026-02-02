@@ -8,7 +8,7 @@ import com.github.skriptdev.skript.plugin.elements.effects.entity.EffSendMessage
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffTeleport;
 import com.github.skriptdev.skript.plugin.elements.effects.player.EffBan;
 import com.github.skriptdev.skript.plugin.elements.effects.player.EffBroadcast;
-import com.github.skriptdev.skript.plugin.elements.effects.player.EffCancelEvent;
+import com.github.skriptdev.skript.plugin.elements.effects.other.EffCancelEvent;
 import com.github.skriptdev.skript.plugin.elements.effects.player.EffDelay;
 import com.github.skriptdev.skript.plugin.elements.effects.player.EffKick;
 
