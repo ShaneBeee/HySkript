@@ -18,7 +18,8 @@ public class ExprLocationDirection implements Expression<Location> {
                 "location %direction% [of] %location%",
                 "location %number% [block[s]] %direction% [of] %location%")
             .name("Location Direction")
-            .description("Returns a location at the specified direction and location with an optional offset.")
+            .description("Returns a location at the specified direction and location with an optional offset.",
+                "The parser is broken, and even thought 'of' is optional, you have to put it.")
             .examples("set {_loc} to location above {_loc}",
                 "set {_loc} to location 3 north of location of player",
                 "set {_loc} to location 3 blocks below location of player")
