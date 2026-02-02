@@ -277,7 +277,7 @@ public class MarkdownDocPrinter {
         if (documentation.isExperimental()) {
             writer.println("> [!WARNING]");
             writer.println("> **This is an experimental feature!**  ");
-            writer.println("> Things may not work as expected and may change without notice.  ");
+            writer.println("> " + documentation.getExperimentalMessage());
         }
         String[] description = documentation.getDescription();
         if (description.length > 0) {
