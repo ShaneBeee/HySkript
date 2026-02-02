@@ -29,7 +29,7 @@ public class ExprLocationOf extends PropertyExpression<Object, Location> {
             World world = entity.getWorld();
             assert world != null;
             TransformComponent transform = entity.getTransformComponent();
-            return new Location(world.getName(), transform.getPosition());
+            return new Location(world.getName(), transform.getPosition(), transform.getRotation());
         } else if (owner instanceof Block block) {
             return block.getLocation();
         }
