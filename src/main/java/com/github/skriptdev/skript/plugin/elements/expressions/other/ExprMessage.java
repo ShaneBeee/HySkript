@@ -14,10 +14,10 @@ public class ExprMessage implements Expression<Message> {
 
     public static void register(SkriptRegistration registration) {
         registration.newExpression(ExprMessage.class, Message.class, true,
-                "[new] [raw] message from %string%",
-                "[new] translated message from %string%",
-                "[new] message translation from %string%",
-                "[new] formatted message from %string%")
+                "[new] [raw] message [from] %string%",
+                "[new] translated message [from] %string%",
+                "[new] message translation [from] %string%",
+                "[new] formatted [message] [from] %string%")
             .name("Message")
             .description("Create a new message from a string.",
                 "The translated option will use a translation key from the game's lang file instead of a raw string.",
