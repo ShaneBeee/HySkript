@@ -18,6 +18,7 @@ import com.github.skriptdev.skript.plugin.elements.events.player.EvtPlayerMouseC
 import com.github.skriptdev.skript.plugin.elements.events.player.EvtPlayerMouseMove;
 import com.github.skriptdev.skript.plugin.elements.events.player.EvtPlayerSetupConnect;
 import com.github.skriptdev.skript.plugin.elements.events.player.EvtPlayerSetupDisconnect;
+import com.github.skriptdev.skript.plugin.elements.events.player.EvtPlayerPostUseBlock;
 import com.github.skriptdev.skript.plugin.elements.events.server.EvtBoot;
 import com.github.skriptdev.skript.plugin.elements.events.server.EvtShutdown;
 import com.github.skriptdev.skript.plugin.elements.events.skript.EvtLoad;
@@ -45,6 +46,7 @@ public class EventHandler {
         EvtPlayerMouseMove.register(registration);
         EvtPlayerSetupConnect.register(registration);
         EvtPlayerSetupDisconnect.register(registration);
+        EvtPlayerPostUseBlock.register(registration);
 
         // SERVER
         EvtBoot.register(registration);
