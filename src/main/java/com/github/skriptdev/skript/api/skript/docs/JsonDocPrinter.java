@@ -354,6 +354,9 @@ public class JsonDocPrinter {
                 syntaxDoc.put("examples", exampleArray);
             }
 
+            // SERIALIZABLE
+            syntaxDoc.put("serializable", new BsonBoolean(type.getSerializer().isPresent()));
+
             // SINCE
             String since = documentation.getSince();
             if (since != null) {
