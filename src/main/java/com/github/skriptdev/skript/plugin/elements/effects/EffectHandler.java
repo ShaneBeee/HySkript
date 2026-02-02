@@ -4,6 +4,7 @@ import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.plugin.elements.effects.block.EffBreakBlock;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffDropItem;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffKill;
+import com.github.skriptdev.skript.plugin.elements.effects.entity.EffSpawnEntity;
 import com.github.skriptdev.skript.plugin.elements.effects.other.EffSendMessage;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffTeleport;
 import com.github.skriptdev.skript.plugin.elements.effects.player.EffBan;
@@ -21,6 +22,7 @@ public class EffectHandler {
         // ENTITY
         EffDropItem.register(registration);
         EffKill.register(registration);
+        EffSpawnEntity.register(registration);
         EffTeleport.register(registration);
 
         // OTHER
