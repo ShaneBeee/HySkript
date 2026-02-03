@@ -12,6 +12,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprTargetB
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprActiveSlot;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityHealth;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityStat;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityVelocity;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprHeldItem;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprNPCType;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprName;
@@ -64,6 +65,7 @@ public class ExpressionHandler {
         ExprActiveSlot.register(registration);
         ExprEntityHealth.register(registration);
         ExprEntityStat.register(registration);
+        ExprEntityVelocity.register(registration);
         ExprHeldItem.register(registration);
         ExprName.register(registration);
         ExprNPCType.register(registration);
