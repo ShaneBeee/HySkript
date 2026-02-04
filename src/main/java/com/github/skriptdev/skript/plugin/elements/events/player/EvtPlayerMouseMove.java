@@ -34,7 +34,7 @@ public class EvtPlayerMouseMove extends SkriptEvent {
         reg.addSingleContextValue(MouseMoveContext.class, Entity.class, "target-entity", MouseMoveContext::getTargetEntity);
         reg.addSingleContextValue(MouseMoveContext.class, Vector3i.class, "target-block", MouseMoveContext::getTargetBlock);
         reg.addSingleContextValue(MouseMoveContext.class, Vector2f.class, "screen-point", MouseMoveContext::getScreenPoint);
-        reg.addSingleContextValue(MouseMoveContext.class, MouseMotionEvent.class, "mouse-motion", MouseMoveContext::getMouseMotion);
+        //reg.addSingleContextValue(MouseMoveContext.class, MouseMotionEvent.class, "mouse-motion", MouseMoveContext::getMouseMotion);
     }
 
     private static EventRegistration<Void, PlayerMouseMotionEvent> LISTENER;

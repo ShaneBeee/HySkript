@@ -36,7 +36,7 @@ public class EvtPlayerMouseClick extends SkriptEvent {
         reg.addSingleContextValue(MouseClickContext.class, Entity.class, "target-entity", MouseClickContext::getTargetEntity);
         reg.addSingleContextValue(MouseClickContext.class, Vector3i.class, "target-block", MouseClickContext::getTargetBlock);
         reg.addSingleContextValue(MouseClickContext.class, Vector2f.class, "screen-point", MouseClickContext::getScreenPoint);
-        reg.addSingleContextValue(MouseClickContext.class, MouseButtonEvent.class, "mouse-button", MouseClickContext::getMouseButton);
+        //reg.addSingleContextValue(MouseClickContext.class, MouseButtonEvent.class, "mouse-button", MouseClickContext::getMouseButton);
     }
 
     private static EventRegistration<Void, PlayerMouseButtonEvent> LISTENER;
