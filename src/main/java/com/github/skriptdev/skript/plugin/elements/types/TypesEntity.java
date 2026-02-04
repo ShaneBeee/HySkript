@@ -43,6 +43,7 @@ public class TypesEntity {
             .usage(NPCRegistry.getTypeUsage())
             .since("1.0.0")
             .toStringFunction(NPCRegistry.NPCRole::name)
+            .supplier(NPCRegistry::iterator)
             .literalParser(NPCRegistry::parse)
             .register();
         reg.newType(Player.class, "player", "player@s")

@@ -40,6 +40,7 @@ public class EnumRegistry<E extends Enum<E>> {
         }
         return registration.newType(enumClass, name, pattern)
             .usage(String.join(", ", eEnumRegistry.values.keySet()))
+            .supplier(() -> eEnumRegistry.values.values().iterator())
             .literalParser(s -> eEnumRegistry.values.get(s.toLowerCase(Locale.ROOT).replace(" ", "_")))
             .toStringFunction(Enum::name);
     }

@@ -42,6 +42,7 @@ public class AssetStoreRegistry<AS> {
         assetMap.getAssetMap().forEach((key, value) -> store.assetStoreValues.put(key.toLowerCase(Locale.ROOT), value));
         return registration.newType(c, name, pattern)
             .usage(String.join(", ", store.assetStoreValues.keySet()))
+            .supplier(() -> store.assetStoreValues.values().stream().iterator())
             .literalParser(s -> store.assetStoreValues.get(s.toLowerCase(Locale.ROOT).replace(" ", "_")))
             .toStringFunction(Object::toString);
     }

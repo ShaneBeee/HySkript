@@ -3,6 +3,7 @@ package com.github.skriptdev.skript.api.skript.registration;
 import com.hypixel.hytale.server.npc.NPCPlugin;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,6 +33,10 @@ public class NPCRegistry {
      */
     public static NPCRole getByIndex(int index) {
         return ROLE_INDEX_MAP.get(index);
+    }
+
+    public static Iterator<NPCRole> iterator() {
+        return ROLE_INDEX_MAP.values().iterator();
     }
 
     public static String getTypeUsage() {
