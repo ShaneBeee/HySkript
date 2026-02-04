@@ -19,6 +19,7 @@ import io.github.syst3ms.skriptparser.lang.TriggerContext;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import io.github.syst3ms.skriptparser.parsing.ParserState;
 import io.github.syst3ms.skriptparser.util.Pair;
+import io.github.syst3ms.skriptparser.variables.Variables;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,18 +75,18 @@ public class SecDropItem extends CodeSection {
 
     @Override
     public Optional<? extends Statement> walk(@NotNull TriggerContext ctx) {
-        Optional<? extends Statement> next = getNext();
+        Optional<? extends Statement> nextStatement = getNext();
         Location location = this.location.getSingle(ctx).orElse(null);
-        if (location == null) return next;
+        if (location == null) return nextStatement;
 
         String worldName = location.getWorld();
         World world = Universe.get().getWorld(worldName);
-        if (world == null) return next;
+        if (world == null) return nextStatement;
 
         Store<EntityStore> store = world.getEntityStore().getStore();
 
         Optional<?> single1 = this.items.getSingle(ctx);
-        if (single1.isEmpty()) return next;
+        if (single1.isEmpty()) return nextStatement;
         Object o = single1.get();
 
         ItemStack itemStack;
@@ -94,7 +95,7 @@ public class SecDropItem extends CodeSection {
         } else if (o instanceof Item item) {
             itemStack = new ItemStack(item.getId());
         } else {
-            return next;
+            return nextStatement;
         }
 
         Vector3f velocity;
@@ -123,20 +124,37 @@ public class SecDropItem extends CodeSection {
         }
 
         Optional<? extends Statement> first = getFirst();
-        if (world.isInThread()) {
-            world.execute(() -> {
-                Pair<Entity, ItemComponent> pair = EntityComponentUtils.dropItem(store, itemStack, location, velocity, pickupDelay);
-                first.ifPresent(statement -> {
-                    Statement.runAll(statement, new ItemComponentContext(pair.getFirst(), pair.getSecond()));
-                });
-            });
-        } else {
+        // If there's nothing in the section, let's bounce
+        if (first.isEmpty()) return nextStatement;
+
+        Statement firstStatement = first.get();
+        // Prevent the statement after our section from running.
+        // This prevents the wrong TriggerContext being used
+        setNext(null);
+
+        Runnable dropRunnable = () -> {
             Pair<Entity, ItemComponent> pair = EntityComponentUtils.dropItem(store, itemStack, location, velocity, pickupDelay);
-            first.ifPresent(statement -> {
-                Statement.runAll(statement, new ItemComponentContext(pair.getFirst(), pair.getSecond()));
-            });
+            ItemComponentContext itemContext = new ItemComponentContext(pair.getFirst(), pair.getSecond());
+
+            // Copy variables from the previous context into our section context
+            Variables.copyLocalVariables(ctx, itemContext);
+            Statement.runAll(firstStatement, itemContext);
+
+            // After the section runs, copy variables back into the previous context and clear variables from our section
+            Variables.copyLocalVariables(itemContext, ctx);
+            Variables.clearLocalVariables(itemContext);
+
+            // If the next statement exists, run it
+            nextStatement.ifPresent(statement -> Statement.runAll(statement, ctx));
+        };
+
+        // Make sure we're running on the correct thread.
+        if (world.isInThread()) {
+            world.execute(dropRunnable);
+        } else {
+            dropRunnable.run();
         }
-        return next;
+        return Optional.empty();
     }
 
     @Override
