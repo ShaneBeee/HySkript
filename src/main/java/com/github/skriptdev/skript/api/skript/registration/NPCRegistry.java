@@ -36,7 +36,7 @@ public class NPCRegistry {
     }
 
     public static Iterator<NPCRole> iterator() {
-        return ROLE_INDEX_MAP.values().iterator();
+        return ROLE_NAME_MAP.values().iterator();
     }
 
     public static String getTypeUsage() {
