@@ -44,6 +44,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprChatMe
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerSpawns;
 import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprConsole;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprChunkAtLocation;
+import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprRelativePositionResolve;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorld;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorldOf;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorldSpawn;
@@ -107,6 +108,7 @@ public class ExpressionHandler {
 
         // WORLD
         ExprChunkAtLocation.register(registration);
+        ExprRelativePositionResolve.register(registration);
         ExprWorld.register(registration);
         ExprWorldOf.register(registration);
         ExprWorldSpawn.register(registration);

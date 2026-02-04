@@ -30,6 +30,8 @@ public class ArgUtils {
         register(ArgTypes.PLAYER_REF, "player_ref", "playerref");
 
         // WORLD
+        register(ArgTypes.RELATIVE_BLOCK_POSITION, "relative_block_position");
+        register(ArgTypes.RELATIVE_POSITION, "relative_position");
         register(ArgTypes.ROTATION, "rotation", "vector3f");
         register(ArgTypes.VECTOR3I, "vector3i");
         register(ArgTypes.WORLD, "world");
