@@ -1,6 +1,7 @@
 package com.github.skriptdev.skript.plugin;
 
 import com.github.skriptdev.skript.api.skript.ScriptsLoader;
+import com.github.skriptdev.skript.api.skript.addon.AddonLoader;
 import com.github.skriptdev.skript.api.skript.command.ArgUtils;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.api.skript.variables.JsonVariableStorage;
@@ -36,6 +37,7 @@ public class Skript extends SkriptAddon {
     private final SkriptLogger logger;
     private SkriptRegistration registration;
     private ElementRegistration elementRegistration;
+    private AddonLoader addonLoader;
     private ScriptsLoader scriptsLoader;
 
     Skript(HySk hySk) {
@@ -80,6 +82,12 @@ public class Skript extends SkriptAddon {
         printSyntaxCount();
         Utils.log("HySkript setup complete!");
 
+        // LOAD ADDONS
+        this.logger.info("Loading addons...");
+        this.addonLoader = new AddonLoader(this.logger);
+        this.addonLoader.loadAddonsFromFolder();
+        this.logger.info("Finished loading addons!");
+
         // LOAD VARIABLES
         loadVariables();
 
@@ -95,6 +103,9 @@ public class Skript extends SkriptAddon {
         Utils.log("Saving variables...");
         Variables.shutdown();
         Utils.log("Variable saving complete!");
+
+        // SHUTDOWN ADDONS
+        this.addonLoader.shutdownAddons();
     }
 
     private void printSyntaxCount() {
@@ -192,6 +203,15 @@ public class Skript extends SkriptAddon {
 
     public ScriptsLoader getScriptsLoader() {
         return this.scriptsLoader;
+    }
+
+    /**
+     * Get an instance of Skript.
+     *
+     * @return Instance of Skript.
+     */
+    public static Skript getInstance() {
+        return INSTANCE;
     }
 
 }
