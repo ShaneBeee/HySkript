@@ -10,6 +10,8 @@ import io.github.syst3ms.skriptparser.parsing.ScriptLoader;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class ScriptsLoader {
@@ -51,7 +53,14 @@ public class ScriptsLoader {
         if (directory == null || !directory.isDirectory()) return List.of();
         List<String> loadedScripts = new ArrayList<>();
 
-        for (File file : directory.listFiles()) {
+        File[] files = directory.listFiles();
+        if (files == null) return loadedScripts;
+
+        Arrays.sort(files,
+            Comparator.comparing(File::isDirectory).reversed() // Directories first
+            .thenComparing(File::getName, String.CASE_INSENSITIVE_ORDER)); // Then sort by name alphabetically
+
+        for (File file : files) {
             if (file.isDirectory()) {
                 loadedScripts.addAll(loadScriptsInDirectory(receiver, file));
             } else {
