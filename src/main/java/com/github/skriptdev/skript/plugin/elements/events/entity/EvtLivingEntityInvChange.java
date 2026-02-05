@@ -51,7 +51,7 @@ public class EvtLivingEntityInvChange extends SkriptEvent {
         return "living entity inventory change";
     }
 
-    private static record InvChangeContext(LivingEntityInventoryChangeEvent event) implements TriggerContext {
+    private record InvChangeContext(LivingEntityInventoryChangeEvent event) implements TriggerContext {
 
         private Entity[] getEntity() {
             return new Entity[]{this.event.getEntity()};

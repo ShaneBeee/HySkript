@@ -5,7 +5,6 @@ import com.github.skriptdev.skript.plugin.HySk;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.util.BsonUtil;
 import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
 import io.github.syst3ms.skriptparser.log.ErrorType;
@@ -40,7 +39,6 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -60,7 +58,7 @@ public class JsonVariableStorage extends VariableStorage {
     private BsonDocument bsonDocument;
     private final AtomicInteger changes = new AtomicInteger(0);
     private final int changesToSave = 500;
-    ScheduledFuture<?> schedule;
+    private Thread saveThread;
 
     public JsonVariableStorage(SkriptLogger logger, String name) {
         super(logger, name);
@@ -92,17 +90,32 @@ public class JsonVariableStorage extends VariableStorage {
     }
 
     private void startFileWatcher() {
-        this.schedule = HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(() -> {
-            if (this.changes.get() >= this.changesToSave) {
-                try {
-                    saveVariables(false);
-                    this.changes.set(0);
-                } catch (IOException e) {
-                    Utils.error("Failed to save variable file", ErrorType.EXCEPTION);
-                    throw new RuntimeException(e);
+        this.saveThread = new Thread( () -> {
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    // Sleep for 5 minutes
+                    TimeUnit.MINUTES.sleep(5);
+
+                    // Start checking for variables to save
+                    if (this.changes.get() >= this.changesToSave) {
+                        try {
+                            saveVariables(false);
+                            this.changes.set(0);
+                        } catch (IOException e) {
+                            Utils.error("Failed to save variable file", ErrorType.EXCEPTION);
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
+            } catch (InterruptedException e) {
+                // Restore interrupt status and exit
+                Thread.currentThread().interrupt();
+                Utils.error("Variable Save Thread was interrupted, stopping...");
             }
-        }, 5, 5, TimeUnit.MINUTES);
+
+        },"HySkript-Variable-Save-Thread");
+        this.saveThread.setDaemon(true);
+        this.saveThread.start();
     }
 
     private void loadVariablesFromFile() {
@@ -251,7 +264,7 @@ public class JsonVariableStorage extends VariableStorage {
 
     private void saveVariables(boolean finalSave) throws IOException {
         if (finalSave) {
-            this.schedule.cancel(true);
+            this.saveThread.interrupt();
         }
         try {
             Variables.getLock().lock();

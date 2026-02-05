@@ -19,7 +19,9 @@ public class EffSendMessage extends Effect {
         registration.newEffect(EffSendMessage.class,
                 "send [message[s]] %objects% [to %-messagereceivers%]")
             .name("Send Message")
-            .description("Sends a message to a command sender such as a player or the console.")
+            .description("Sends a message to a command sender such as a player or the console.",
+                "See [Message Format](https://github.com/SkriptDev/HySkript/wiki/Tutorial-Message-Format) on the wiki" +
+                    "for info about formatting messages.")
             .examples("send \"Welcome to the server\" to player")
             .since("1.0.0")
             .register();

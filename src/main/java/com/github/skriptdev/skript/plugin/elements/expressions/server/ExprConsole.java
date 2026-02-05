@@ -25,7 +25,7 @@ public class ExprConsole implements Expression<CommandSender> {
     }
 
     @Override
-    public CommandSender[] getValues(TriggerContext ctx) {;
+    public CommandSender[] getValues(TriggerContext ctx) {
         return new CommandSender[]{ConsoleSender.INSTANCE};
     }
 
@@ -33,4 +33,5 @@ public class ExprConsole implements Expression<CommandSender> {
     public String toString(TriggerContext ctx, boolean debug) {
         return "console";
     }
+
 }

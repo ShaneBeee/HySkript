@@ -1,7 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.types;
 
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
-import com.github.skriptdev.skript.api.utils.Utils;
 import io.github.syst3ms.skriptparser.types.TypeManager;
 
 public class Types {

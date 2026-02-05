@@ -114,7 +114,9 @@ public class EvtEntityDamage extends SkriptEvent {
 
         @SuppressWarnings("DataFlowIssue")
         @Override
-        public void handle(int index, @NotNull ArchetypeChunk<EntityStore> archetypeChunk, @NotNull Store<EntityStore> store, @NotNull CommandBuffer<EntityStore> commandBuffer, @NotNull Damage damage) {
+        public void handle(int index, @NotNull ArchetypeChunk<EntityStore> archetypeChunk,
+                           @NotNull Store<EntityStore> store, @NotNull CommandBuffer<EntityStore> commandBuffer,
+                           @NotNull Damage damage) {
             Ref<EntityStore> ref = archetypeChunk.getReferenceTo(index);
             NPCEntity npc = store.getComponent(ref, NPCEntity.getComponentType());
             Player player = store.getComponent(ref, Player.getComponentType());

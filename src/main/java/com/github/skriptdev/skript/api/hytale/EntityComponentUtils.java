@@ -91,7 +91,6 @@ public class EntityComponentUtils {
         if (itemEntityHolder == null) {
             return new Pair<>(null, null);
         }
-        ;
 
         ItemComponent itemComponent = itemEntityHolder.getComponent(ItemComponent.getComponentType());
         if (itemComponent != null) {

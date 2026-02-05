@@ -31,7 +31,7 @@ public class ArgUtils {
 
         // ASSETS
         register(ArgTypes.BLOCK_TYPE_ASSET, "block_type", "blocktype");
-        register(ArgTypes.EFFECT_ASSET,"entity_effect", "entityeffect");
+        register(ArgTypes.EFFECT_ASSET, "entity_effect", "entityeffect");
         register(ArgTypes.ITEM_ASSET, "item");
         register(ArgTypes.SOUND_CATEGORY, "sound_category");
         register(ArgTypes.SOUND_EVENT_ASSET, "sound_event", "soundevent", "sound");

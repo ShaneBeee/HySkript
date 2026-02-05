@@ -13,10 +13,10 @@ public class CommandArg {
     private final boolean optional;
 
     /**
-     * @param name Name of the argument
+     * @param name        Name of the argument
      * @param description Description of the argument
-     * @param type Type of the argument
-     * @param optional Whether the argument is optional
+     * @param type        Type of the argument
+     * @param optional    Whether the argument is optional
      */
     private CommandArg(String name, String description, ArgumentType<?> type, boolean optional) {
         this.name = name;
@@ -51,7 +51,9 @@ public class CommandArg {
             '}';
     }
 
-    /** Parse a string into a CommandArg.
+    /**
+     * Parse a string into a CommandArg.
+     *
      * @param a String to parse in the format of {@code [<name:type:desc>]} or {@code <name:type:desc>}
      * @return CommandArg
      */
