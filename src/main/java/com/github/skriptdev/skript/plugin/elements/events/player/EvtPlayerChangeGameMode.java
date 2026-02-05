@@ -34,7 +34,6 @@ public class EvtPlayerChangeGameMode extends SystemEvent<EntityEventSystem<Entit
 
         reg.addSingleContextValue(PlayerChangeGameModeContext.class, GameMode.class, "new-game-mode", PlayerChangeGameModeContext::getNewGameMode);
         reg.addSingleContextValue(PlayerChangeGameModeContext.class, GameMode.class, "current-game-mode", PlayerChangeGameModeContext::getOldGameMode);
-        reg.addSingleContextValue(PlayerChangeGameModeContext.class, Player.class, "player", PlayerChangeGameModeContext::getPlayer);
     }
 
     private static ChangeGameModeEventSystem SYSTEM;
