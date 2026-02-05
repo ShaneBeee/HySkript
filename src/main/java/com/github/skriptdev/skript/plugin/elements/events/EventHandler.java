@@ -4,6 +4,7 @@ package com.github.skriptdev.skript.plugin.elements.events;
 import com.github.skriptdev.skript.api.hytale.Block;
 import com.github.skriptdev.skript.api.skript.event.BlockContext;
 import com.github.skriptdev.skript.api.skript.event.PlayerContext;
+import com.github.skriptdev.skript.api.skript.event.PlayerRefContext;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.plugin.elements.events.entity.EvtEntityDamage;
 import com.github.skriptdev.skript.plugin.elements.events.entity.EvtEntityDeath;
@@ -29,6 +30,7 @@ import com.github.skriptdev.skript.plugin.elements.events.server.EvtBoot;
 import com.github.skriptdev.skript.plugin.elements.events.server.EvtShutdown;
 import com.github.skriptdev.skript.plugin.elements.events.skript.EvtLoad;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import io.github.syst3ms.skriptparser.registration.context.ContextValue.Usage;
 
 public class EventHandler {
@@ -70,11 +72,17 @@ public class EventHandler {
     }
 
     private static void registerGlobalContexts(SkriptRegistration reg) {
-        reg.newSingleContextValue(BlockContext.class, Block.class, "block", BlockContext::getBlock)
+        reg.newSingleContextValue(BlockContext.class, Block.class,
+                "block", BlockContext::getBlock)
             .register();
-        reg.newSingleContextValue(PlayerContext.class, Player.class, "player", PlayerContext::getPlayer)
+        reg.newSingleContextValue(PlayerContext.class, Player.class,
+                "player", PlayerContext::getPlayer)
             .setUsage(Usage.EXPRESSION_OR_ALONE)
             .register();
+        reg.addSingleContextValue(PlayerRefContext.class, PlayerRef.class,
+                "playerref", PlayerRefContext::getPlayerRef);
+        reg.addSingleContextValue(PlayerRefContext.class, PlayerRef.class,
+                "player-ref", PlayerRefContext::getPlayerRef);
     }
 
 }
