@@ -57,8 +57,8 @@ public class EvtPlayerChangeGameMode extends SystemEvent<EntityEventSystem<Entit
         return "player change gamemode";
     }
 
-    private record PlayerChangeGameModeContext(ChangeGameModeEvent event,
-                                               Player player) implements PlayerContext, CancellableContext {
+    private record PlayerChangeGameModeContext(ChangeGameModeEvent event,  Player player) 
+    implements PlayerContext, CancellableContext {
 
         public Player getPlayer() {
             return this.player;
