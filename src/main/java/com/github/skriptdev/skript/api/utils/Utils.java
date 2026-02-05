@@ -9,7 +9,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import fi.sulku.hytale.TinyMsg;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.logging.Level;
 
 /**

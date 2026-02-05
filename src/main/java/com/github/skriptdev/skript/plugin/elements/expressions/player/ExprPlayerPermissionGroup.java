@@ -20,7 +20,15 @@ import java.util.UUID;
 public class ExprPlayerPermissionGroup implements Expression<String> {
 
     public static void register(SkriptRegistration reg) {
-        reg.newExpression(ExprPlayerPermissionGroup.class, String.class, false, "permission group[s] of %players/playerrefs/uuids%").name("Player Permission Groups").description("Returns the permission groups of a player.").examples("set {_groups::*} to permission groups of player", "add \"some.group\" to permission groups of player", "remove \"some.group\" from permission groups of player").since("INSERT VERSION").register();
+        reg.newExpression(ExprPlayerPermissionGroup.class, String.class, false,
+                "permission group[s] of %players/playerrefs/uuids%")
+            .name("Player Permission Groups")
+            .description("Returns the permission groups of a player.")
+            .examples("set {_groups::*} to permission groups of player",
+                "add \"some.group\" to permission groups of player",
+                "remove \"some.group\" from permission groups of player")
+            .since("INSERT VERSION")
+            .register();
     }
 
     private Expression<?> permissables;
