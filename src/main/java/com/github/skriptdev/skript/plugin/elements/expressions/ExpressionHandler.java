@@ -46,6 +46,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprVector3
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprVector3i;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprAllPlayers;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprChatMessage;
+import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprGameMode;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerPermissionGroup;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerPermissions;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerSpawns;
@@ -114,6 +115,7 @@ public class ExpressionHandler {
         // PLAYER
         ExprAllPlayers.register(registration);
         ExprChatMessage.register(registration);
+        ExprGameMode.register(registration);
         ExprPlayerPermissionGroup.register(registration);
         ExprPlayerPermissions.register(registration);
         ExprPlayerSpawns.register(registration);
