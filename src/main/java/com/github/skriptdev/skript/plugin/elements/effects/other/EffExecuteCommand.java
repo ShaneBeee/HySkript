@@ -43,6 +43,7 @@ public class EffExecuteCommand extends Effect {
         for (CommandSender sender : commandSenders.getArray(ctx)) {
             commandManager.handleCommand(sender, command);
         }
+
     }
 
     @Override

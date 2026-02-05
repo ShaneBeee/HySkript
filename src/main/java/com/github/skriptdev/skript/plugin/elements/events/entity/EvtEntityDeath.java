@@ -6,6 +6,7 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -15,16 +16,19 @@ import com.hypixel.hytale.server.core.modules.entity.damage.DamageCause;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathComponent;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathSystems;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hypixel.hytale.server.core.util.MessageUtil;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
 import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
+import io.github.syst3ms.skriptparser.registration.context.ContextValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class EvtEntityDeath extends SkriptEvent {
 
@@ -57,8 +61,26 @@ public class EvtEntityDeath extends SkriptEvent {
             Damage.class, "death-info", EntityDeathContext::getDamage);
         reg.addListContextValue(EntityDeathContext.class,
             Item.class, "lost-items", EntityDeathContext::getItemsLostOnDeath);
-        reg.addListContextValue(EntityDeathContext.class,
-            ItemStack.class, "lost-itemstacks", EntityDeathContext::getItemStacksLostOnDeath);
+        reg.newListContextValue(EntityDeathContext.class,
+                ItemStack.class, "lost-itemstacks", EntityDeathContext::getItemStacksLostOnDeath)
+            .setUsage(ContextValue.Usage.EXPRESSION_OR_ALONE)
+            .addListSetter(EntityDeathContext::setItemStacksLostOnDeath)
+            .register();
+        reg.newSingleContextValue(EntityDeathContext.class,
+                Boolean.class, "show-death-menu", EntityDeathContext::isShowDeathMenu)
+            .setUsage(ContextValue.Usage.EXPRESSION_OR_ALONE)
+            .addSetter(EntityDeathContext::setShowDeathMenu)
+            .register();
+        reg.newSingleContextValue(EntityDeathContext.class,
+                Message.class, "death-message", EntityDeathContext::getDeathMessage)
+            .setUsage(ContextValue.Usage.EXPRESSION_OR_ALONE)
+            .addSetter(EntityDeathContext::setDeathMessage)
+            .register();
+        reg.newSingleContextValue(EntityDeathContext.class,
+                String.class, "death-message-string", EntityDeathContext::getDeathMessageString)
+            .setUsage(ContextValue.Usage.EXPRESSION_OR_ALONE)
+            .addSetter(EntityDeathContext::setDeathMessageString)
+            .register();
     }
 
     private static EntityDeathListener LISTENER;
@@ -107,7 +129,9 @@ public class EvtEntityDeath extends SkriptEvent {
             } else if (npc != null) {
                 pattern = 2;
                 victim = npc;
-            } else return;
+            } else {
+                return;
+            }
 
             TriggerMap.callTriggersByContext(new EntityDeathContext(pattern, victim, deathComponent));
         }
@@ -159,6 +183,39 @@ public class EvtEntityDeath extends SkriptEvent {
 
         public ItemStack[] getItemStacksLostOnDeath() {
             return this.component.getItemsLostOnDeath();
+        }
+
+        public void setItemStacksLostOnDeath(ItemStack[] itemStacks) {
+            this.component.setItemsLostOnDeath(List.of(itemStacks));
+        }
+
+        public boolean isShowDeathMenu() {
+            return this.component.isShowDeathMenu();
+        }
+
+        public void setShowDeathMenu(boolean showDeathMenu) {
+            // this.component.setShowDeathMenu(showDeathMenu);  (doesn't seem to work)
+            // So let's respawn instead
+            if (!showDeathMenu && this.getVictim() instanceof Player player) {
+                Ref<EntityStore> reference = player.getReference();
+                DeathComponent.respawn(reference.getStore(), reference);
+            }
+        }
+
+        public Message getDeathMessage() {
+            return this.component.getDeathMessage();
+        }
+
+        public void setDeathMessage(Message deathMessage) {
+            this.component.setDeathMessage(deathMessage);
+        }
+
+        public String getDeathMessageString() {
+            return MessageUtil.toAnsiString(this.component.getDeathMessage()).toAnsi();
+        }
+
+        public void setDeathMessageString(String deathMessage) {
+            this.component.setDeathMessage(Message.raw(deathMessage));
         }
 
         @Override
