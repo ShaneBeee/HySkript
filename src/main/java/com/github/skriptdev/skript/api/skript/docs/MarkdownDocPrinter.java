@@ -223,7 +223,7 @@ public class MarkdownDocPrinter {
                 if (documentation.isNoDoc()) return;
 
                 // Create a pattern for a function
-                String pattern = String.format("%s(%s)", jf.getName(),  String.join(", ", parameterNames));
+                String pattern = String.format("%s(%s)", jf.getName(), String.join(", ", parameterNames));
                 TextElement textElement = new TextElement(pattern);
 
                 printDocumentation("Function", writer, documentation, List.of(textElement));
