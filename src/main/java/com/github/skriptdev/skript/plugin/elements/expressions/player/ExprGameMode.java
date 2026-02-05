@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class ExprGameMode extends PropertyExpression<Object, GameMode> {
+public class ExprGameMode extends PropertyExpression<Player, GameMode> {
 
     public static void register(SkriptRegistration registration) {
         registration.newPropertyExpression(ExprGameMode.class, GameMode.class, "game[(-| )]mode", "players")
@@ -23,11 +23,8 @@ public class ExprGameMode extends PropertyExpression<Object, GameMode> {
     }
 
     @Override
-    public @Nullable GameMode getProperty(@NotNull Object owner) {
-        if (owner instanceof Player player) {
-            return player.getGameMode();
-        }
-        return null;
+    public @Nullable GameMode getProperty(@NotNull Player player) {
+        return player.getGameMode();
     }
 
     @Override
@@ -53,4 +50,5 @@ public class ExprGameMode extends PropertyExpression<Object, GameMode> {
     public Class<? extends GameMode> getReturnType() {
         return GameMode.class;
     }
+
 }

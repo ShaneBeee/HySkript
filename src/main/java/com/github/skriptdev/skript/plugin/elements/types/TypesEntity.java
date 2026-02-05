@@ -5,8 +5,6 @@ import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.entity.LivingEntity;
 import com.hypixel.hytale.server.core.entity.effect.ActiveEntityEffect;
-import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 
 public class TypesEntity {
@@ -45,18 +43,6 @@ public class TypesEntity {
             .toStringFunction(NPCRegistry.NPCRole::name)
             .supplier(NPCRegistry::iterator)
             .literalParser(NPCRegistry::parse)
-            .register();
-        reg.newType(Player.class, "player", "player@s")
-            .name("Player")
-            .description("Represents a player in the game.")
-            .since("1.0.0")
-            .toStringFunction(Player::getDisplayName)
-            .register();
-        reg.newType(PlayerRef.class, "playerref", "playerRef@s")
-            .name("Player Ref")
-            .description("Represents a reference to a player in the game.")
-            .since("1.0.0")
-            .toStringFunction(PlayerRef::getUsername)
             .register();
     }
 

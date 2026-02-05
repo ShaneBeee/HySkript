@@ -65,7 +65,7 @@ public class EvtPlayerChangeGameMode extends SystemEvent<EntityEventSystem<Entit
         return "player change gamemode";
     }
 
-    private record PlayerChangeGameModeContext(ChangeGameModeEvent event,  Player player) 
+    private record PlayerChangeGameModeContext(ChangeGameModeEvent event,  Player player)
     implements PlayerContext, CancellableContext {
 
         public Player getPlayer() {
@@ -107,7 +107,8 @@ public class EvtPlayerChangeGameMode extends SystemEvent<EntityEventSystem<Entit
         }
 
         @Override
-        public void handle(int i, @NotNull ArchetypeChunk<EntityStore> archetypeChunk, @NotNull Store<EntityStore> store, @NotNull CommandBuffer<EntityStore> commandBuffer, @NotNull ChangeGameModeEvent event) {
+        public void handle(int i, @NotNull ArchetypeChunk<EntityStore> archetypeChunk, @NotNull Store<EntityStore> store,
+                           @NotNull CommandBuffer<EntityStore> commandBuffer, @NotNull ChangeGameModeEvent event) {
 
             Ref<EntityStore> ref = archetypeChunk.getReferenceTo(i);
             Player player = store.getComponent(ref, Player.getComponentType());
@@ -121,4 +122,5 @@ public class EvtPlayerChangeGameMode extends SystemEvent<EntityEventSystem<Entit
             return PlayerRef.getComponentType();
         }
     }
+
 }
