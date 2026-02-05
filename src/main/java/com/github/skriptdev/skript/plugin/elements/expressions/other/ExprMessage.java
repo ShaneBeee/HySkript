@@ -21,8 +21,9 @@ public class ExprMessage implements Expression<Message> {
             .name("Message")
             .description("Create a new message from a string.",
                 "The translated option will use a translation key from the game's lang file instead of a raw string.",
-                "The formatted option will parse the string as a TinyMessage string.")
-            // TODO link to a wiki page regarding messages
+                "The formatted option will parse the string as a TinyMessage string.",
+                "See [Message Format](https://github.com/SkriptDev/HySkript/wiki/Tutorial-Message-Format) on the wiki" +
+                    "for more info.")
             .examples("on player ready:",
                 "\tset {_message} to message from \"Welcome to the server %context-player%\"",
                 "\tset message color of {_message} to \"##0CB1F7\"",
