@@ -22,6 +22,7 @@ import com.hypixel.hytale.server.core.asset.type.weather.config.Weather;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageCause;
 import com.hypixel.hytale.server.core.modules.entitystats.asset.EntityStatType;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
+import com.hypixel.hytale.server.core.modules.interaction.interaction.config.RootInteraction;
 import io.github.syst3ms.skriptparser.types.changers.TypeSerializer;
 import org.bson.BsonDocument;
 import org.bson.BsonValue;
@@ -96,6 +97,12 @@ public class TypesAssetStore {
             .description("Represents the types of interactions that can be performed by entities.", autoGenMessage())
             .since("1.0.0")
             .toStringFunction(Interaction::getId)
+            .register();
+        AssetStoreRegistry.register(registration, RootInteraction.class, RootInteraction.getAssetMap(),
+                "rootinteraction", "rootinteraction@s")
+            .name("Interaction - Root")
+            .description("Represents the types of root interactions that can be performed by entities.", autoGenMessage())
+            .since("INSERT VERSION")
             .register();
         AssetStoreRegistry.register(registration, Item.class, Item.getAssetMap(), "item", "item@s")
             .name("Item")

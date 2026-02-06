@@ -17,6 +17,7 @@ import com.github.skriptdev.skript.plugin.elements.effects.other.EffDelay;
 import com.github.skriptdev.skript.plugin.elements.effects.player.EffKick;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffChunkRegenerate;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffExplosion;
+import com.github.skriptdev.skript.plugin.elements.effects.entity.EffInteraction;
 
 public class EffectHandler {
 
@@ -27,6 +28,7 @@ public class EffectHandler {
         // ENTITY
         EffDropItem.register(registration);
         EffEntityEffect.register(registration);
+        EffInteraction.register(registration);
         EffKill.register(registration);
         EffSpawnEntity.register(registration);
         EffTeleport.register(registration);
