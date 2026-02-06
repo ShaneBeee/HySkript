@@ -93,8 +93,6 @@ public class Skript extends SkriptAddon {
         this.scriptsLoader = new ScriptsLoader(this);
         this.scriptsLoader.loadScripts(null, this.scriptsPath, false);
 
-        String s = "testing a really long line to make sure build fails with checkstype.... so that i can remove the checksyle workflow because it seems to run twice and i dont really need to have it run twice, plus it keeps failing cause its being silly billy";
-
         // FINALIZE SCRIPT LOADING
         Parser.getMainRegistration().getRegisterer().finishedLoading();
     }
