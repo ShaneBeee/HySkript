@@ -1,6 +1,5 @@
 package com.github.skriptdev.skript.plugin.elements.types;
 
-import com.github.skriptdev.skript.api.skript.registration.AssetStoreRegistry;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -31,80 +30,75 @@ import org.jetbrains.annotations.NotNull;
 public class TypesAssetStore {
 
     @SuppressWarnings("deprecation") // BlockGroup (maybe we dont keep this?!?!)
-    static void register(SkriptRegistration registration) {
-        AssetStoreRegistry.register(registration, BiomeAsset.class, BiomeAsset.getAssetStore().getAssetMap(), "biome", "biome@s")
+    static void register(SkriptRegistration reg) {
+        // Please keep in alphabetical order
+        reg.newAssetStoreType(BiomeAsset.class, BiomeAsset.getAssetStore().getAssetMap(), "biome", "biome@s")
             .name("Biome")
             .description("Represents the types of biomes in the game.", autoGenMessage())
             .since("1.0.0")
             .toStringFunction(BiomeAsset::getId)
             .register();
-        AssetStoreRegistry.register(registration, BlockGroup.class, AssetRegistry.getAssetStore(BlockGroup.class).getAssetMap(),
+        reg.newAssetStoreType(BlockGroup.class, AssetRegistry.getAssetStore(BlockGroup.class).getAssetMap(),
                 "blockgroup", "blockgroup@s")
             .name("Block Group")
             .description("Represents the groups of blocks in the game.", autoGenMessage())
             .since("1.0.0")
             .toStringFunction(BlockGroup::getId)
             .register();
-        AssetStoreRegistry.register(registration, CraftingRecipe.class, CraftingRecipe.getAssetMap(), "craftingrecipe", "craftingrecipe@s")
-            .name("Crafting Recipe")
-            .description("Represents the crafting recipes in the game.", autoGenMessage())
-            .since("1.0.0")
-            .toStringFunction(CraftingRecipe::getId)
-            .register();
-        AssetStoreRegistry.register(registration, BlockType.class, BlockType.getAssetMap(), "blocktype", "blockType@s")
+        reg.newAssetStoreType(BlockType.class, BlockType.getAssetMap(), "blocktype", "blockType@s")
             .name("BlockType")
             .description("Represents the types of blocks in the game.", autoGenMessage())
             .examples("set {_block} to blocktype of block at player")
             .since("1.0.0")
             .toStringFunction(BlockType::getId)
             .register();
-        AssetStoreRegistry.register(registration, Fluid.class, Fluid.getAssetMap(), "fluid", "fluid@s")
-            .name("Fluid")
-            .description("Represents the types of fluids in the game.", autoGenMessage())
+        reg.newAssetStoreType(CraftingRecipe.class, CraftingRecipe.getAssetMap(), "craftingrecipe", "craftingrecipe@s")
+            .name("Crafting Recipe")
+            .description("Represents the crafting recipes in the game.", autoGenMessage())
             .since("1.0.0")
-            .toStringFunction(Fluid::getId)
+            .toStringFunction(CraftingRecipe::getId)
             .register();
-        AssetStoreRegistry.register(registration, EntityEffect.class, EntityEffect.getAssetMap(),
-                "entityeffect", "entityEffect@s")
-            .name("Entity Effect")
-            .description("Represents the types of effects that can be applied to entities.", autoGenMessage())
-            .since("1.0.0")
-            .toStringFunction(EntityEffect::getId)
-            .register();
-        AssetStoreRegistry.register(registration, EntityStatType.class, EntityStatType.getAssetMap(),
-                "entitystattype", "entityStatType@s")
-            .name("Entity Stat Type")
-            .description("Represents the types of stats that can be applied to entities.", autoGenMessage())
-            .since("1.0.0")
-            .register();
-        AssetStoreRegistry.register(registration, Environment.class, Environment.getAssetMap(),
-                "environment", "environment@s")
-            .name("Environment")
-            .description("Represents the types of environments in the game.", autoGenMessage())
-            .since("1.0.0")
-            .toStringFunction(Environment::getId)
-            .register();
-        AssetStoreRegistry.register(registration, DamageCause.class, DamageCause.getAssetMap(),
+        reg.newAssetStoreType(DamageCause.class, DamageCause.getAssetMap(),
                 "damagecause", "damageCause@s")
             .name("Damage Cause")
             .description("Represents the types of damage that can be caused to entities.", autoGenMessage())
             .since("1.0.0")
             .toStringFunction(DamageCause::getId)
             .register();
-        AssetStoreRegistry.register(registration, Interaction.class, Interaction.getAssetMap(),
+        reg.newAssetStoreType(EntityEffect.class, EntityEffect.getAssetMap(),
+                "entityeffect", "entityEffect@s")
+            .name("Entity Effect")
+            .description("Represents the types of effects that can be applied to entities.", autoGenMessage())
+            .since("1.0.0")
+            .toStringFunction(EntityEffect::getId)
+            .register();
+        reg.newAssetStoreType(EntityStatType.class, EntityStatType.getAssetMap(),
+                "entitystattype", "entityStatType@s")
+            .name("Entity Stat Type")
+            .description("Represents the types of stats that can be applied to entities.", autoGenMessage())
+            .since("1.0.0")
+            .register();
+        reg.newAssetStoreType(Environment.class, Environment.getAssetMap(),
+                "environment", "environment@s")
+            .name("Environment")
+            .description("Represents the types of environments in the game.", autoGenMessage())
+            .since("1.0.0")
+            .toStringFunction(Environment::getId)
+            .register();
+        reg.newAssetStoreType(Fluid.class, Fluid.getAssetMap(), "fluid", "fluid@s")
+            .name("Fluid")
+            .description("Represents the types of fluids in the game.", autoGenMessage())
+            .since("1.0.0")
+            .toStringFunction(Fluid::getId)
+            .register();
+        reg.newAssetStoreType(Interaction.class, Interaction.getAssetMap(),
                 "interaction", "interaction@s")
             .name("Interaction")
             .description("Represents the types of interactions that can be performed by entities.", autoGenMessage())
             .since("1.0.0")
             .toStringFunction(Interaction::getId)
             .register();
-        AssetStoreRegistry.register(registration, RootInteraction.class, RootInteraction.getAssetMap(),
-                "rootinteraction", "rootinteraction@s")
-            .name("Interaction - Root")
-            .description("Represents the types of root interactions that can be performed by entities.", autoGenMessage())
-            .since("INSERT VERSION")
-            .register();
-        AssetStoreRegistry.register(registration, Item.class, Item.getAssetMap(), "item", "item@s")
+        reg.newAssetStoreType(Item.class, Item.getAssetMap(), "item", "item@s")
             .name("Item")
             .description("Represents the types of items in the game.", autoGenMessage())
             .examples("set {_i} to itemstack of Food_Fish_Grilled")
@@ -123,25 +117,31 @@ public class TypesAssetStore {
                 }
             })
             .register();
-        AssetStoreRegistry.register(registration, Projectile.class, Projectile.getAssetMap(), "projectile", "projectile@s")
+        reg.newAssetStoreType(Projectile.class, Projectile.getAssetMap(), "projectile", "projectile@s")
             .name("Projectile")
             .description("Represents the types of projectiles in the game.", autoGenMessage())
             .since("1.0.0")
             .toStringFunction(Projectile::getId)
             .register();
-        AssetStoreRegistry.register(registration, ResourceType.class, ResourceType.getAssetMap(), "resourcetype", "resourceType@s")
+        reg.newAssetStoreType(ResourceType.class, ResourceType.getAssetMap(), "resourcetype", "resourceType@s")
             .name("Resource Type")
             .description("Represents the types of resources in the game, such as woods and stones.", autoGenMessage())
             .since("1.0.0")
             .toStringFunction(ResourceType::getId)
             .register();
-        AssetStoreRegistry.register(registration, SoundEvent.class, SoundEvent.getAssetMap(), "soundevent", "soundevent@s")
+        reg.newAssetStoreType(RootInteraction.class, RootInteraction.getAssetMap(),
+                "rootinteraction", "rootinteraction@s")
+            .name("Interaction - Root")
+            .description("Represents the types of root interactions that can be performed by entities.", autoGenMessage())
+            .since("INSERT VERSION")
+            .register();
+        reg.newAssetStoreType(SoundEvent.class, SoundEvent.getAssetMap(), "soundevent", "soundevent@s")
             .name("Sound Event")
             .description("Represents the types of sounds in the game.", autoGenMessage())
             .since("1.0.0")
             .toStringFunction(SoundEvent::getId)
             .register();
-        AssetStoreRegistry.register(registration, Weather.class, Weather.getAssetMap(), "weather", "weather@s")
+        reg.newAssetStoreType(Weather.class, Weather.getAssetMap(), "weather", "weather@s")
             .name("Weather")
             .description("Represents the types of weather in the game.", autoGenMessage())
             .since("1.0.0")
