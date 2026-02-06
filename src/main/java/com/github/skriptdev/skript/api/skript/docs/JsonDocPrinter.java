@@ -413,7 +413,11 @@ public class JsonDocPrinter {
         List<PatternElement> patterns = syntaxInfo.getPatterns();
         if (!patterns.isEmpty()) {
             BsonArray patternArray = new BsonArray();
-            patterns.forEach(pattern -> patternArray.add(new BsonString(pattern.toString())));
+            patterns.forEach(pattern -> {
+                // Remove parse tags in patterns, ex: "(blah:blah|bloop:bloop)"
+                String removedParseTags = pattern.toString().replaceAll("[^()\\[\\]|:\\s]*:", "");
+                patternArray.add(new BsonString(removedParseTags));
+            });
             syntaxDoc.put("patterns", patternArray);
         }
 
