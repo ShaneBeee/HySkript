@@ -40,7 +40,7 @@ public class EvtPlayerCraftRecipe extends SystemEvent<EntityEventSystem<EntitySt
             .since("INSERT VERSION")
             .register();
 
-        reg.addSingleContextValue(CraftRecipeContext.class, int.class,
+        reg.addSingleContextValue(CraftRecipeContext.class, Integer.class,
             "quantity", CraftRecipeContext::getQuantity);
         reg.addSingleContextValue(CraftRecipeContext.class, CraftingRecipe.class,
             "recipe", CraftRecipeContext::getRecipe);
