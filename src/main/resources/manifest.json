@@ -2,13 +2,13 @@
   "Group": "skript",
   "Name": "HySkript",
   "Version": "$pluginVersion",
-  "Description": "Skripty Skripty gonna make a script!",
+  "Description": "Scripting the most out of your Hytale server.",
   "Authors": [
     {
       "Name": "ShaneBee"
     }
   ],
-  "Website": "null",
+  "Website": "https://github.com/SkriptDev/HySkript",
   "ServerVersion": "*",
   "Dependencies": {},
   "OptionalDependencies": {},
