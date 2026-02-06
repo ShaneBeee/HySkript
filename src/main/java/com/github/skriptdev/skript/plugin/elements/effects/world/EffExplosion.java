@@ -5,9 +5,11 @@ import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Location;
+import com.hypixel.hytale.server.core.asset.type.item.config.ItemTool;
+import com.hypixel.hytale.server.core.asset.type.item.config.ItemToolSpec;
 import com.hypixel.hytale.server.core.entity.ExplosionConfig;
 import com.hypixel.hytale.server.core.entity.ExplosionUtils;
-import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
+import com.hypixel.hytale.server.core.modules.interaction.interaction.config.client.ExplodeInteraction;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
@@ -30,7 +32,10 @@ public class EffExplosion extends Effect {
             .name("Explosion")
             .description("Creates an explosion at the specified location(s) with " +
                 "customizable block and entity damage radii.")
-            .experimental("This doesn't work as I expected it to (Needs some love!).")
+            .examples("create explosion at {location}",
+                "create explosion with radius 10 at {location}",
+                "create explosion with block radius 10 and with entity radius 15 at {location}")
+            .experimental("Currently no sound/particles.")
             .since("INSERT VERSION")
             .register();
     }
@@ -90,7 +95,7 @@ public class EffExplosion extends Effect {
                 Store<ChunkStore> chunkStoreStore = world.getChunkStore().getStore();
                 CommandBuffer<EntityStore> commandBuffer = StoreUtils.getCommandBuffer(entityStore);
 
-                ExplosionUtils.performExplosion(Damage.NULL_SOURCE,
+                ExplosionUtils.performExplosion(ExplodeInteraction.DAMAGE_SOURCE_EXPLOSION,
                     location.getPosition(),
                     config,
                     null,
@@ -123,6 +128,16 @@ public class EffExplosion extends Effect {
         private Config(Number blockRadius, Number entityRadius) {
             this.blockDamageRadius = blockRadius.intValue();
             this.entityDamageRadius = entityRadius.floatValue();
+            // The stuff you have to do to make things work in Hytale...
+            ItemToolSpec[] specs = new ItemToolSpec[]{
+                new ItemToolSpec("SoftBlocks", 2, 1),
+                new ItemToolSpec("Soils", 2, 1),
+                new ItemToolSpec("Woods", 2, 1),
+                new ItemToolSpec("Rocks", 2, 1),
+                new ItemToolSpec("Benches", 2, 1),
+                new ItemToolSpec("VolcanicRocks", 0.001f, 1),
+            };
+            this.itemTool = new ItemTool(specs, 1, null);
         }
     }
 
