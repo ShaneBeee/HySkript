@@ -1,5 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.functions;
 
+import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3f;
@@ -15,13 +16,13 @@ import org.bson.BsonDocument;
 
 public class DefaultFunctions {
 
-    public static void register() {
-        itemFunctions();
-        positionFunctions();
+    public static void register(SkriptRegistration reg) {
+        itemFunctions(reg);
+        positionFunctions(reg);
     }
 
-    private static void itemFunctions() {
-        Functions.newJavaFunction(new JavaFunction<>(
+    private static void itemFunctions(SkriptRegistration reg) {
+        Functions.newJavaFunction(reg, new JavaFunction<>(
                 "itemstack",
                 new FunctionParameter[]{
                     new FunctionParameter<>("type", Item.class, true),
@@ -50,8 +51,8 @@ public class DefaultFunctions {
             .register();
     }
 
-    private static void positionFunctions() {
-        Functions.newJavaFunction(new JavaFunction<>(
+    private static void positionFunctions(SkriptRegistration reg) {
+        Functions.newJavaFunction(reg, new JavaFunction<>(
                 "location",
                 new FunctionParameter[]{
                     new FunctionParameter<>("x", Number.class, true),
@@ -76,7 +77,7 @@ public class DefaultFunctions {
             .since("1.0.0")
             .register();
 
-        Functions.newJavaFunction(new JavaFunction<>(
+        Functions.newJavaFunction(reg,new JavaFunction<>(
                 "vector3i",
                 new FunctionParameter[]{
                     new FunctionParameter<>("x", Number.class, true),
@@ -99,7 +100,7 @@ public class DefaultFunctions {
             .since("1.0.0")
             .register();
 
-        Functions.newJavaFunction(new JavaFunction<>(
+        Functions.newJavaFunction(reg, new JavaFunction<>(
                 "vector3f",
                 new FunctionParameter[]{
                     new FunctionParameter<>("x", Number.class, true),
@@ -122,7 +123,7 @@ public class DefaultFunctions {
             .since("1.0.0")
             .register();
 
-        Functions.newJavaFunction(new JavaFunction<>(
+        Functions.newJavaFunction(reg, new JavaFunction<>(
                 "vector3d",
                 new FunctionParameter[]{
                     new FunctionParameter<>("x", Number.class, true),
@@ -145,7 +146,7 @@ public class DefaultFunctions {
             .since("1.0.0")
             .register();
 
-        Functions.newJavaFunction(new JavaFunction<>(
+        Functions.newJavaFunction(reg, new JavaFunction<>(
                 "world",
                 new FunctionParameter[]{
                     new FunctionParameter<>("name", String.class, true)

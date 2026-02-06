@@ -55,7 +55,7 @@ public class ElementRegistration {
         EventHandler.register(this.registration);
 
         // FUNCTIONS
-        DefaultFunctions.register();
+        DefaultFunctions.register(this.registration);
 
         // COMMAND
         ScriptCommand.register(this.registration);

@@ -111,7 +111,8 @@ public class MarkdownDocPrinter {
             Utils.log("Printing functions");
             file = getFile("functions");
             writer = new PrintWriter(file, StandardCharsets.UTF_8);
-            printFunctions(writer);
+            printFunctions(writer, registration);
+            printFunctions(writer, Parser.getMainRegistration());
             writer.close();
 
             Utils.log("Documentation printed!");
@@ -200,8 +201,8 @@ public class MarkdownDocPrinter {
     }
 
     @SuppressWarnings("unchecked")
-    private static void printFunctions(PrintWriter writer) {
-        Functions.getJavaFunctions().stream().sorted(Comparator.comparing(Function::getName)).forEach(function -> {
+    private static void printFunctions(PrintWriter writer, SkriptRegistration reg) {
+        Functions.getJavaFunctions(reg).stream().sorted(Comparator.comparing(Function::getName)).forEach(function -> {
             if (function instanceof JavaFunction<?> jf) {
                 FunctionParameter<?>[] parameters = jf.getParameters();
 
