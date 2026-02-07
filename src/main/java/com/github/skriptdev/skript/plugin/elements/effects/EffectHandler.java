@@ -2,6 +2,7 @@ package com.github.skriptdev.skript.plugin.elements.effects;
 
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.plugin.elements.effects.block.EffBreakBlock;
+import com.github.skriptdev.skript.plugin.elements.effects.entity.EffDamage;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffDropItem;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffEntityEffect;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffKill;
@@ -26,6 +27,7 @@ public class EffectHandler {
         EffBreakBlock.register(registration);
 
         // ENTITY
+        EffDamage.register(registration);
         EffDropItem.register(registration);
         EffEntityEffect.register(registration);
         EffInteraction.register(registration);
