@@ -4,9 +4,9 @@
 ![landscape](https://github.com/user-attachments/assets/2234f5ea-c2dc-4e79-b51c-4300b795e64f)
 
 
-HySkript is a [**Skript**](https://github.com/SkriptLang/Skript) like plugin for Hytale servers.  
-It allows writing your own little plugins in English like syntaxes.  
-This way you can program your server to do marvelous things without having to learn Java.  
+**HySkript** brings the power of intuitive scripting to Hytale.  
+Inspired by the legendary Minecraft plugin [**Skript**](https://github.com/SkriptLang/Skript), HySkript allows you to customize your server using a natural, English-like syntax.   
+Whether you're creating custom commands or complex game mechanics, you can bring your vision to life instantly—no Java knowledge required.
 
 ## Docs/Tutorials:
 Check out our [**wiki**](https://github.com/SkriptDev/HySkript/wiki)
