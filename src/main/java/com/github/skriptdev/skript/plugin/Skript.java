@@ -1,5 +1,6 @@
 package com.github.skriptdev.skript.plugin;
 
+import com.github.skriptdev.skript.api.skript.ErrorHandler;
 import com.github.skriptdev.skript.api.skript.ScriptsLoader;
 import com.github.skriptdev.skript.api.skript.addon.AddonLoader;
 import com.github.skriptdev.skript.api.skript.command.ArgUtils;
@@ -13,7 +14,6 @@ import com.github.skriptdev.skript.plugin.elements.events.EventHandler;
 import io.github.syst3ms.skriptparser.Parser;
 import io.github.syst3ms.skriptparser.config.Config;
 import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
-import io.github.syst3ms.skriptparser.lang.Statement;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
 import io.github.syst3ms.skriptparser.registration.SkriptAddon;
@@ -21,7 +21,6 @@ import io.github.syst3ms.skriptparser.variables.Variables;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
-import java.util.logging.Level;
 
 /**
  * Main class for the Skript aspects of HySkript.
@@ -86,6 +85,9 @@ public class Skript extends SkriptAddon {
         this.addonLoader = new AddonLoader();
         this.addonLoader.loadAddonsFromFolder();
 
+        // SETUP ERROR HANDLER
+        ErrorHandler.init();
+
         // LOAD VARIABLES
         loadVariables();
 
@@ -100,39 +102,6 @@ public class Skript extends SkriptAddon {
     private void preSetup() {
         ReflectionUtils.init();
         ArgUtils.init();
-
-        // Set up how HySkript handles IllegalStateExceptions
-        Statement.setIllegalStateHandler(e -> {
-            if (e.getMessage().contains("Assert not in thread!")) {
-                boolean failedInCommand = false;
-                for (StackTraceElement ste : e.getStackTrace()) {
-                    if (ste.getClassName().contains("ScriptCommandBuilder")) {
-                        failedInCommand = true;
-                        break;
-                    }
-                }
-                if (failedInCommand) {
-                    Utils.logToAdmins(Level.WARNING, "A command was executed on the wrong thread, see console for more info.");
-                    Utils.error("A command was executed on the wrong thread!");
-                    Utils.warn("If you have a regular/global command that a player is running, which executes code in a world, consider:");
-                    Utils.warn("  - Using the 'player command' or 'world command' command types.");
-                    Utils.warn("  - Using 'execute in %world%' section.");
-                    Utils.error("Original error message: %s", e.getMessage());
-                } else {
-                    Utils.logToAdmins(Level.WARNING, "Something was executed on the wrong thread.");
-                    if (e.getMessage().contains("World")) {
-                        Utils.error("A world was accessed on the wrong thread!");
-                        Utils.warn("Consider using 'execute in %world%' section.");
-                        Utils.error("Original error message: %s", e.getMessage());
-                    }
-                }
-            } else {
-                Utils.error("An error ocrrured while executing a script: %s", e.getMessage());
-                for (StackTraceElement stackTraceElement : e.getStackTrace()) {
-                    Utils.error("  - %s", stackTraceElement);
-                }
-            }
-        });
     }
 
     public void shutdown() {
