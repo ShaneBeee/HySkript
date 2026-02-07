@@ -37,7 +37,7 @@ public class EvtPlayerCraftRecipe extends SystemEvent<EntityEventSystem<EntitySt
             .examples("on player craft recipe:",
                 "\tif context-recipe-id = \"Salvage_Rock_Lime_Cobble\":",
                 "\t\tcancel event")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
 
         reg.addSingleContextValue(CraftRecipeContext.class, Integer.class,

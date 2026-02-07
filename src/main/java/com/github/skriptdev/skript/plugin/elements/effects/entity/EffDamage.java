@@ -40,7 +40,7 @@ public class EffDamage extends Effect {
                 "make player damage {_e} by 5",
                 "damage entities in radius 5 around player by 5 with cause Environmental",
                 "make player damage {_e::*} by 5 with cause Environmental")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
     }
 

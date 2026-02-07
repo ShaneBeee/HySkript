@@ -44,7 +44,7 @@ public class SecSendNotification extends CodeSection {
                 "send notification \"You better be careful!!!\" to world of player:",
                 "\titemstack: itemstack of deco_fire",
                 "\tstyle: danger")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
     }
 

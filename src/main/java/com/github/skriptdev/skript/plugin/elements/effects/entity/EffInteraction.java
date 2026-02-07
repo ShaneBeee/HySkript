@@ -35,7 +35,7 @@ public class EffInteraction extends Effect {
             .description("Performs a root interaction on an entity.",
                 "If an InteractionType is not specified, the `primary` InteractionType will be performed.")
             .examples("perform interaction Shovel_Dig on player")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
     }
 

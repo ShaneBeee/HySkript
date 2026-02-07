@@ -17,7 +17,7 @@ public class EffExecuteCommand extends Effect {
             .description("Execute a command as a player or console.")
             .examples("execute player command \"/inv clear\"",
                 "execute console command \"/stop\"")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
     }
 

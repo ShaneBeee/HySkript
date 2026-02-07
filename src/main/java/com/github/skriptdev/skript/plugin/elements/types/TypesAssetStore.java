@@ -133,7 +133,7 @@ public class TypesAssetStore {
                 "rootinteraction", "rootinteraction@s")
             .name("Interaction - Root")
             .description("Represents the types of root interactions that can be performed by entities.")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
         reg.newAssetStoreType(SoundEvent.class, SoundEvent.getAssetMap(), "soundevent", "soundevent@s")
             .name("Sound Event")

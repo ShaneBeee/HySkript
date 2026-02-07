@@ -36,7 +36,7 @@ public class EffExplosion extends Effect {
                 "create explosion with radius 10 at {location}",
                 "create explosion with block radius 10 and with entity radius 15 at {location}")
             .experimental("Currently no sound/particles.")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
     }
 

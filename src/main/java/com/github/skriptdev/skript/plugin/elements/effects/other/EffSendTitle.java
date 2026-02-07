@@ -25,7 +25,7 @@ public class EffSendTitle extends Effect {
                     "The title can be major or minor, depending on the syntax used.",
                 "Not sure what `major` is for, it doesn't seem to do anything different.")
             .examples("send major title \"Hello World!\" to player")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
 
     }

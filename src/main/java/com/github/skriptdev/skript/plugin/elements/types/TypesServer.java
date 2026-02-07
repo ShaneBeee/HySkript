@@ -74,7 +74,7 @@ public class TypesServer {
         registration.newEnumType(NotificationStyle.class, "notificationstyle", "notificationStyle@s")
             .name("Notification Style")
             .description("Represents the style of a notification sent to players.")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
         registration.newType(HytaleServer.class, "server", "server@s")
             .name("Server")

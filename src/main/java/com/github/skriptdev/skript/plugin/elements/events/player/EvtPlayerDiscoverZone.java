@@ -30,7 +30,7 @@ public class EvtPlayerDiscoverZone extends SystemEvent<EntityEventSystem<EntityS
             .experimental("This event doesn't seem to be called right now, server issues?!?!")
             .setHandledContexts(DiscoverZoneContext.class)
             .description("Called when a player discovers a zone.")
-            .since("INSERT VERSION")
+            .since("1.0.0")
             .register();
 
         reg.addSingleContextValue(DiscoverZoneContext.class, String.class,
