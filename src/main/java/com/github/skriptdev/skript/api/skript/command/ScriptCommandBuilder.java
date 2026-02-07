@@ -23,6 +23,7 @@ import io.github.syst3ms.skriptparser.file.FileSection;
 import io.github.syst3ms.skriptparser.lang.CodeSection;
 import io.github.syst3ms.skriptparser.lang.Statement;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
+import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.lang.entries.SectionConfiguration;
 import io.github.syst3ms.skriptparser.lang.entries.SectionLoader;
 import io.github.syst3ms.skriptparser.log.ErrorType;
@@ -129,8 +130,7 @@ public class ScriptCommandBuilder {
                             ScriptCommandBuilder.this.commandName, player);
 
                         createLocalVariables(commandContext, context);
-                        Statement.runAll(trigger, context);
-                        Variables.clearLocalVariables(context);
+                        TriggerMap.callTriggersByContext(context);
                     }
                 };
                 case 2 -> new AbstractWorldCommand(this.commandName, description) {
@@ -142,8 +142,7 @@ public class ScriptCommandBuilder {
                             ScriptCommandBuilder.this.commandName, commandContext.sender(), world);
 
                         createLocalVariables(commandContext, context);
-                        Statement.runAll(trigger, context);
-                        Variables.clearLocalVariables(context);
+                        TriggerMap.callTriggersByContext(context);
                     }
                 };
                 default -> new AbstractCommand(this.commandName, description) {
@@ -158,8 +157,7 @@ public class ScriptCommandBuilder {
                                 sender);
 
                             createLocalVariables(commandContext, context);
-                            Statement.runAll(trigger, context);
-                            Variables.clearLocalVariables(context);
+                            TriggerMap.callTriggersByContext(context);
                         });
                         return null;
                     }

@@ -5,8 +5,6 @@ import com.github.skriptdev.skript.plugin.HySk;
 import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.server.core.event.events.BootEvent;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
 import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
@@ -30,9 +28,7 @@ public class EvtBoot extends SkriptEvent {
         if (LISTENER == null) {
             LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(BootEvent.class, event -> {
                 BootContext bootContext = new BootContext(event);
-                for (Trigger trigger : TriggerMap.getTriggersByContext(BootContext.class)) {
-                    Statement.runAll(trigger, bootContext);
-                }
+                TriggerMap.callTriggersByContext(bootContext);
             });
         }
         return true;

@@ -46,9 +46,7 @@ public class EvtPlayerMouseClick extends SkriptEvent {
         if (LISTENER == null) {
             LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(PlayerMouseButtonEvent.class, event -> {
                 MouseClickContext context = new MouseClickContext(event);
-                for (Trigger trigger : TriggerMap.getTriggersByContext(MouseClickContext.class)) {
-                    Statement.runAll(trigger, context);
-                }
+                TriggerMap.callTriggersByContext(context);
             });
         }
         return true;

@@ -8,8 +8,6 @@ import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.event.events.entity.EntityRemoveEvent;
 import com.hypixel.hytale.server.core.universe.world.World;
 import io.github.syst3ms.skriptparser.lang.Expression;
-import io.github.syst3ms.skriptparser.lang.Statement;
-import io.github.syst3ms.skriptparser.lang.Trigger;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
 import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
@@ -36,9 +34,7 @@ public class EvtEntityRemove extends SkriptEvent {
         if (LISTENER == null) {
             LISTENER = HySk.getInstance().getEventRegistry().registerGlobal(EntityRemoveEvent.class, event -> {
                 EntityRemoveEventContext context = new EntityRemoveEventContext(event);
-                for (Trigger trigger : TriggerMap.getTriggersByContext(EntityRemoveEventContext.class)) {
-                    Statement.runAll(trigger, context);
-                }
+                TriggerMap.callTriggersByContext(context);
             });
         }
         return true;
