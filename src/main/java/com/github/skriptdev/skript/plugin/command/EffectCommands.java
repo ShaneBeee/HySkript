@@ -38,23 +38,26 @@ public class EffectCommands {
 
                 // PERM CHECK
                 PermissionsModule perm = PermissionsModule.get();
-                if (!allowOps) {
-                    PermissionProvider provider = perm.getFirstPermissionProvider();
-                    Set<String> groupsForUser = perm.getGroupsForUser(sender.getUuid());
-                    if (groupsForUser.contains("OP")) {
-                        boolean can = false;
+                PermissionProvider provider = perm.getFirstPermissionProvider();
+                Set<String> groupsForUser = perm.getGroupsForUser(sender.getUuid());
+
+                // If the player is an operator and allowOps is false, check their group/user permissions
+                if (!allowOps && groupsForUser.contains("OP")) {
+                    boolean can = false;
+                    // If the user explicitely has this permission, they can use effect commands
+                    if (provider.getUserPermissions(sender.getUuid()).contains(permission)) {
+                        can = true;
+                    } else {
                         // Check all groups
                         for (String group : groupsForUser) {
-                            // If the group has the explicit permission, they can use effect commands
+                            // If the group explicitely has this permission, they can use effect commands
                             if (provider.getGroupPermissions(group).contains(permission)) {
                                 can = true;
                                 break;
                             }
                         }
-                        if (!can) return;
-                    } else {
-                        return;
                     }
+                    if (!can) return;
                 } else if (!perm.hasPermission(sender.getUuid(), permission)) {
                     return;
                 }
