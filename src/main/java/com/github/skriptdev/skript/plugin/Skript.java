@@ -66,7 +66,14 @@ public class Skript extends SkriptAddon {
         Path skriptConfigPath = hySk.getDataDirectory().resolve("config.sk");
         SkriptLogger logger = new SkriptLogger(true);
         this.skriptConfig = new Config(skriptConfigPath, "/config.sk", logger);
-        Utils.setDebug(this.skriptConfig.getBoolean("debug"));
+
+        boolean debug = false;
+        // Apparently the config needs to parse by Type,
+        // But Types aren't loaded til later
+        String debugString = this.skriptConfig.getConfigValue("debug", String.class);
+        if (debugString != null && debugString.equalsIgnoreCase("true")) debug = true;
+        Utils.setDebug(debug);
+
         logger.finalizeLogs();
         for (LogEntry logEntry : logger.close()) {
             Utils.log(null, logEntry);
