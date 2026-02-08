@@ -28,7 +28,7 @@ public class EffExplosion extends Effect {
         reg.newEffect(EffExplosion.class,
                 "create explosion at %locations%",
                 "create explosion with radius %number% at %locations%",
-                "\"create explosion with block radius %number% [and] with entity radius %number% at %locations%\"")
+                "create explosion with block radius %number% [and] with entity radius %number% at %locations%")
             .name("Explosion")
             .description("Creates an explosion at the specified location(s) with " +
                 "customizable block and entity damage radii.")
