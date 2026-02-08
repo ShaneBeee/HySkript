@@ -12,7 +12,7 @@ effect-commands:
     # Whether or not ops can use effect commands.
     # If false, they will require the permission specified below in 'required-permission'.
 
-    required-permission: hyskript.effect-commands
+    required-permission: skript.hyskript.effect-commands
     # The permission required to use effect commands (if allow-ops is false).
 
     token: !
