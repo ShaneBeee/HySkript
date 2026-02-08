@@ -3,6 +3,11 @@
 debug: false
 # Whether or not to enable debug mode (maybe print more verbose logs to console).
 
+max-target-block-distance: 160
+# The maximum distance from a Player to a block to be considered a target block.
+# Default 160 = 5 chunks
+# Increasing this amount could cause performance issues, so test carefully.
+
 # Effect commands allow you to execute effects in chat.
 effect-commands:
     enabled: true

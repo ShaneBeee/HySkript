@@ -1,12 +1,12 @@
 package com.github.skriptdev.skript.api.skript.registration;
 
 import com.github.skriptdev.skript.api.utils.Utils;
+import com.github.skriptdev.skript.plugin.Skript;
 import com.hypixel.hytale.assetstore.JsonAsset;
 import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
 import io.github.syst3ms.skriptparser.docs.Documentation;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
-import io.github.syst3ms.skriptparser.registration.SkriptAddon;
 import io.github.syst3ms.skriptparser.types.Type;
 import io.github.syst3ms.skriptparser.types.TypeManager;
 import io.github.syst3ms.skriptparser.types.changers.Arithmetic;
@@ -28,8 +28,14 @@ import java.util.function.Supplier;
  */
 public class SkriptRegistration extends io.github.syst3ms.skriptparser.registration.SkriptRegistration {
 
-    public SkriptRegistration(SkriptAddon registerer) {
+    private final Skript skript;
+    public SkriptRegistration(Skript registerer) {
         super(registerer, new SkriptLogger(true));
+        this.skript = registerer;
+    }
+
+    public Skript getSkript() {
+        return this.skript;
     }
 
     @Override
