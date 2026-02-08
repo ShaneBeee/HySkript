@@ -13,7 +13,8 @@ import java.util.UUID;
 public class ExprUUID extends PropertyExpression<Object, UUID> {
 
     public static void register(SkriptRegistration registration) {
-        registration.newPropertyExpression(ExprUUID.class, UUID.class, "uuid", "objects")
+        registration.newPropertyExpression(ExprUUID.class, UUID.class,
+                "uuid", "players/playerrefs/worlds")
             .name("UUID of Object")
             .description("Get the UUID of a player, player ref, entity, or world.")
             .examples("set {_uuid} to uuid of {_player}")
