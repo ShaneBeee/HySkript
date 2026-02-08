@@ -1,8 +1,10 @@
 package com.github.skriptdev.skript.api.skript.docs;
 
+import com.github.skriptdev.skript.api.skript.addon.HySkriptAddon;
 import com.github.skriptdev.skript.api.skript.event.CancellableContext;
 import com.github.skriptdev.skript.api.utils.Utils;
 import com.github.skriptdev.skript.plugin.HySk;
+import com.github.skriptdev.skript.plugin.Skript;
 import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.util.BsonUtil;
 import io.github.syst3ms.skriptparser.Parser;
@@ -112,6 +114,18 @@ public class JsonDocPrinter {
             printSections(mainDocs, parserRegistration);
         }
 
+        // METADATA
+        BsonDocument meta = mainDocs.getDocument("metadata", new BsonDocument());
+        String version = "unknown";
+        if (this.addon instanceof HySkriptAddon hySkriptAddon) {
+            version = hySkriptAddon.getManifest().getVersion();
+        } else if (this.addon instanceof Skript skript) {
+            version = skript.getPlugin().getManifest().getVersion().toString();
+        }
+        meta.put("version", new BsonString(version));
+        mainDocs.put("metadata", meta);
+
+        // FINISHED
         Utils.log(this.sender, "Writing documentation to 'docs/%s/docs.json' file", addonName);
         File file = getFile();
         BsonUtil.writeDocument(file.toPath(), mainDocs, false);
