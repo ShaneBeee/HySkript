@@ -35,6 +35,13 @@ public class Utils {
         receiver.sendMessage(Message.raw(message));
     }
 
+    public static void sendTinyMessage(IMessageReceiver receiver, String message, Object... args) {
+        if (args.length > 0) {
+            message = String.format(message, args);
+        }
+        receiver.sendMessage(TinyMsg.parse(message));
+    }
+
     public static void log(Level level, String message, Object... args) {
         log(null, level, message, args);
     }

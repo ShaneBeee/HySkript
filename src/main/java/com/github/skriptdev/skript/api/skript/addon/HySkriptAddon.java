@@ -2,6 +2,7 @@ package com.github.skriptdev.skript.api.skript.addon;
 
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
+import fi.sulku.hytale.TinyMsg;
 import io.github.syst3ms.skriptparser.registration.SkriptAddon;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,16 +48,16 @@ public abstract class HySkriptAddon extends SkriptAddon {
 
     public final Message[] getInfo() {
         List<Message> info = new ArrayList<>();
-        info.add(Message.raw("Version: " + this.manifest.getVersion()));
+        info.add(TinyMsg.parse("Version: <color:#FADD89>" + this.manifest.getVersion()));
 
         String description = this.manifest.getDescription();
-        if (description != null) info.add(Message.raw("Description: " + description));
+        if (description != null) info.add(TinyMsg.parse("Description: <color:#FADD89>" + description));
 
         @Nullable String[] authors = this.manifest.getAuthors();
-        if (authors != null) info.add(Message.raw("Authors: " + String.join(", ", authors)));
+        if (authors != null) info.add(TinyMsg.parse("Authors: <color:#FADD89>" + String.join("<reset>, <color:#FADD89>", authors)));
 
         String website = this.manifest.getWebsite();
-        if (website != null) info.add(Message.raw("Website: ").insert(Message.raw(website).link(website)));
+        if (website != null) info.add(TinyMsg.parse("Website: <color:#0CE8C3><link:" + website + ">" + website));
 
         return info.toArray(Message[]::new);
     }

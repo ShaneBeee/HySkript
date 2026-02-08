@@ -17,6 +17,7 @@ import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalAr
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import io.github.syst3ms.skriptparser.registration.SkriptAddon;
 import org.jetbrains.annotations.NotNull;
@@ -170,9 +171,11 @@ public class SkriptCommand extends AbstractCommandCollection {
     }
 
     private void printInfo(IMessageReceiver sender) {
-        Utils.sendMessage(sender, "HySkript Version: %s", HySk.getInstance().getManifest().getVersion());
-        Utils.sendMessage(sender, "Hytale Version: %s (%s)", ManifestUtil.getImplementationVersion(), ManifestUtil.getPatchline());
-        Utils.sendMessage(sender, "Java Version: %s", System.getProperty("java.version"));
+        Utils.sendTinyMessage(sender, "HySkript Version: <color:#FADD89>%s",
+            HySk.getInstance().getManifest().getVersion());
+        Utils.sendTinyMessage(sender, "Hytale Version: <color:#FADD89>%s <reset>(<color:#8BFA89>%s<reset>)",
+            ManifestUtil.getImplementationVersion(), ManifestUtil.getPatchline());
+        Utils.sendTinyMessage(sender, "Java Version: <color:#FADD89>%s", System.getProperty("java.version"));
 
         List<SkriptAddon> addons = SkriptAddon.getAddons().stream()
             .filter(addon -> !addon.getAddonName().equalsIgnoreCase("skript-parser")
@@ -180,15 +183,40 @@ public class SkriptCommand extends AbstractCommandCollection {
             .toList();
 
         if (!addons.isEmpty()) {
-            Utils.sendMessage(sender, "Loaded Addons: %s");
-            addons.forEach(addon -> Utils.sendMessage(sender, " - %s", addon.getAddonName()));
+            Utils.sendTinyMessage(sender, "Loaded Addons (<color:#8BFA89>%s<reset>):", addons.size());
+            addons.forEach(addon -> {
+                if (addon instanceof HySkriptAddon hySkriptAddon) {
+                    Utils.sendTinyMessage(sender, " - <color:#F598F2>%s:", hySkriptAddon.getAddonName());
+                    for (Message s : hySkriptAddon.getInfo()) {
+                        sender.sendMessage(Message.raw("     ").insert(s));
+                    }
+                } else {
+                    Utils.sendTinyMessage(sender, " - <color:#F598F2>%s", addon.getAddonName());
+                }
+            });
         }
 
-        Message link = Message.raw("https://github.com/SkriptDev/HySkript")
-            .link("https://github.com/SkriptDev/HySkript")
-            .color("#0CE8C3");
-        Message website = Message.raw("Website: ").insert(link);
-        sender.sendMessage(website);
+        // Website
+        if (sender instanceof Player) {
+            Utils.sendTinyMessage(sender, "Website: <color:#0CE8C3><link:https://github.com/SkriptDev/HySkript>HySkript on GitHub");
+        } else {
+            Utils.sendTinyMessage(sender, "Website: <color:#0CE8C3>https://github.com/SkriptDev/HySkript");
+        }
+
+        // Issue Tracker
+        if (sender instanceof Player) {
+            Utils.sendTinyMessage(sender, "Issues: <color:#F06626><link:https://github.com/SkriptDev/HySkript/issues>GitHub Issue Tracker");
+        } else {
+            Utils.sendTinyMessage(sender, "Issues: <color:#F06626>https://github.com/SkriptDev/HySkript/issues");
+        }
+
+        // Docs
+        if (sender instanceof Player) {
+            Utils.sendTinyMessage(sender, "Docs: <color:#0CE8C3><link:https://skripthub.net/hyskript/docs/>SkriptHub Docs");
+        } else {
+            Utils.sendTinyMessage(sender, "Docs: <color:#0CE8C3>https://skripthub.net/hyskript/docs/");
+        }
+
     }
 
 }
