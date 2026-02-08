@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.util.MessageUtil;
 import fi.sulku.hytale.TinyMsg;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 
@@ -17,7 +18,8 @@ import java.util.logging.Level;
  */
 public class Utils {
 
-    static final Message CORE_PREFIX = TinyMsg.parse("<color:736E6E>[<gradient:07CAE5:0DD22B>HySkript<color:736E6E>] ");
+    private static boolean DEBUG = false;
+    private static final Message CORE_PREFIX = TinyMsg.parse("<color:736E6E>[<gradient:07CAE5:0DD22B>HySkript<color:736E6E>] ");
 
     /**
      * Send a message to a receiver.
@@ -64,7 +66,7 @@ public class Utils {
     public static void log(IMessageReceiver receiver, LogEntry logEntry) {
         String message = logEntry.getMessage();
         switch (logEntry.getType()) {
-            case DEBUG -> log(receiver, Level.FINE, message);
+            case DEBUG -> debug(message);
             case INFO -> log(receiver, Level.INFO, message);
             case ERROR -> log(receiver, Level.SEVERE, message);
             case WARNING -> log(receiver, Level.WARNING, message);
@@ -85,6 +87,33 @@ public class Utils {
 
     public static void warn(IMessageReceiver receiver, String message, Object... args) {
         log(receiver, Level.WARNING, message, args);
+    }
+
+    /**
+     * Set whether debug messages should print to the console.
+     *
+     * @param debug Whether to print debug messages
+     */
+    public static void setDebug(boolean debug) {
+        DEBUG = debug;
+        debug("Debug mode is now enabled");
+    }
+
+    /**
+     * Send a debug message to the console.
+     * This will only happen if `debug` is enabled in config.
+     *
+     * @param message Message to send
+     * @param args    Arguments for message formatting
+     */
+    public static void debug(String message, Object... args) {
+        if (!DEBUG) return;
+        if (args.length > 0) {
+            message = String.format(message, args);
+        }
+        Message parse = TinyMsg.parse("<color:#F095F0>" + message);
+        String ansi = MessageUtil.toAnsiString(parse).toAnsi();
+        log(Level.INFO, ansi);
     }
 
     /**
