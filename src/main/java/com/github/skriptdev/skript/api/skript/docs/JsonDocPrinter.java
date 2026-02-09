@@ -298,6 +298,8 @@ public class JsonDocPrinter {
                 String since = documentation.getSince();
                 if (since != null) {
                     functionDoc.put("since", new BsonArray(List.of(new BsonString(since))));
+                } else {
+                    Utils.warn(this.sender, "Function '%s' has no since tag!", name);
                 }
 
                 // RETURN TYPE
@@ -384,6 +386,8 @@ public class JsonDocPrinter {
             String since = documentation.getSince();
             if (since != null) {
                 syntaxDoc.put("since", new BsonArray(List.of(new BsonString(since))));
+            } else {
+                Utils.warn(this.sender, "Type '%s' has no since tag!", baseName);
             }
 
 
@@ -459,6 +463,8 @@ public class JsonDocPrinter {
         String since = documentation.getSince();
         if (since != null) {
             syntaxDoc.put("since", new BsonArray(List.of(new BsonString(since))));
+        } else {
+            Utils.warn(this.sender, "Syntax '%s' has no since tag!", syntaxInfo.getSyntaxClass().getSimpleName());
         }
     }
 
