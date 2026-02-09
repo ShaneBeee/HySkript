@@ -1,5 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.expressions.player;
 
+import com.github.skriptdev.skript.api.hytale.EntityComponentUtils;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.permissions.PermissionsModule;
@@ -39,7 +40,6 @@ public class ExprPlayerPermissionGroup implements Expression<String> {
         return true;
     }
 
-    @SuppressWarnings("removal")
     @Override
     public String[] getValues(@NotNull TriggerContext ctx) {
         List<String> groups = new ArrayList<>();
@@ -49,7 +49,7 @@ public class ExprPlayerPermissionGroup implements Expression<String> {
             if (o instanceof UUID u) {
                 groups.addAll(provider.getGroupsForUser(u));
             } else if (o instanceof Player player) {
-                UUID uuid = player.getUuid();
+                UUID uuid = EntityComponentUtils.getUUID(player);
                 if (uuid == null) continue;
                 groups.addAll(provider.getGroupsForUser(uuid));
             } else if (o instanceof PlayerRef ref) {
@@ -66,7 +66,7 @@ public class ExprPlayerPermissionGroup implements Expression<String> {
         return Optional.empty();
     }
 
-    @SuppressWarnings({"ConstantValue", "removal"})
+    @SuppressWarnings({"ConstantValue"})
     @Override
     public void change(@NotNull TriggerContext ctx, @NotNull ChangeMode changeMode, Object @NotNull [] changeWith) {
         if (changeWith == null) return;
@@ -80,7 +80,7 @@ public class ExprPlayerPermissionGroup implements Expression<String> {
             } else if (permissable instanceof PlayerRef ref) {
                 permChange(changeMode, provider, ref.getUuid(), permissions);
             } else if (permissable instanceof Player player) {
-                UUID uuid = player.getUuid();
+                UUID uuid = EntityComponentUtils.getUUID(player);
                 if (uuid == null) continue;
                 permChange(changeMode, provider, uuid, permissions);
             }

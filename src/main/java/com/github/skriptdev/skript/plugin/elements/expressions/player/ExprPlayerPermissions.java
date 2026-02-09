@@ -1,5 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.expressions.player;
 
+import com.github.skriptdev.skript.api.hytale.EntityComponentUtils;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.permissions.PermissionsModule;
@@ -44,7 +45,6 @@ public class ExprPlayerPermissions implements Expression<String> {
         return true;
     }
 
-    @SuppressWarnings("removal")
     @Override
     public String[] getValues(@NotNull TriggerContext ctx) {
         List<String> permissions = new ArrayList<>();
@@ -52,7 +52,7 @@ public class ExprPlayerPermissions implements Expression<String> {
         PermissionProvider provider = PermissionsModule.get().getFirstPermissionProvider();
         for (Object o : this.permissables.getArray(ctx)) {
             if (o instanceof Player player) {
-                UUID uuid = player.getUuid();
+                UUID uuid = EntityComponentUtils.getUUID(player);
                 if (uuid == null) continue;
                 permissions.addAll(provider.getUserPermissions(uuid));
             } else if (o instanceof PlayerRef playerRef) {
@@ -73,7 +73,7 @@ public class ExprPlayerPermissions implements Expression<String> {
         return Optional.empty();
     }
 
-    @SuppressWarnings({"ConstantValue", "removal"})
+    @SuppressWarnings({"ConstantValue"})
     @Override
     public void change(@NotNull TriggerContext ctx, @NotNull ChangeMode changeMode, Object @NotNull [] changeWith) {
         if (changeWith == null) return;
@@ -84,16 +84,16 @@ public class ExprPlayerPermissions implements Expression<String> {
         }
 
         PermissionProvider provider = PermissionsModule.get().getFirstPermissionProvider();
-        for (Object permissable : this.permissables.getArray(ctx)) {
-            if (permissable instanceof Player player) {
-                UUID uuid = player.getUuid();
+        for (Object permissible : this.permissables.getArray(ctx)) {
+            if (permissible instanceof Player player) {
+                UUID uuid = EntityComponentUtils.getUUID(player);
                 if (uuid == null) continue;
                 permChange(changeMode, provider, uuid, permissions);
-            } else if (permissable instanceof PlayerRef playerRef) {
+            } else if (permissible instanceof PlayerRef playerRef) {
                 permChange(changeMode, provider, playerRef.getUuid(), permissions);
-            } else if (permissable instanceof UUID uuid) {
+            } else if (permissible instanceof UUID uuid) {
                 permChange(changeMode, provider, uuid, permissions);
-            } else if (permissable instanceof String s) {
+            } else if (permissible instanceof String s) {
                 permChange(changeMode, provider, s, permissions);
             }
         }

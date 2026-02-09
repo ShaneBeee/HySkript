@@ -1,6 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.expressions.entity;
 
-import com.hypixel.hytale.protocol.GameMode;
+import com.github.skriptdev.skript.api.hytale.EntityComponentUtils;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -12,7 +12,8 @@ import org.jetbrains.annotations.Nullable;
 public class ExprName extends PropertyExpression<Object, String> {
 
     public static void register(SkriptRegistration registration) {
-        registration.newPropertyExpression(ExprName.class, String.class, "name[s]", "object")
+        registration.newPropertyExpression(ExprName.class, String.class,
+                "name[s]", "players/playerrefs/entities/worlds")
             .name("Name of Object")
             .description("Returns the name of an object.",
                 "Currently supports players, entities, and worlds.")
@@ -22,17 +23,17 @@ public class ExprName extends PropertyExpression<Object, String> {
             .register();
     }
 
-    @SuppressWarnings("removal") // #getLegacyDisplayName TODO (find a better solution?)
     @Override
     public @Nullable String getProperty(Object object) {
         return switch (object) {
             case PlayerRef playerRef -> playerRef.getUsername();
             case Player player -> player.getDisplayName();
-            case Entity entity -> entity.getLegacyDisplayName();
+            case Entity entity -> EntityComponentUtils.getName(entity);
             case World world -> world.getName();
-            case GameMode gameMode -> gameMode.name();
             default -> null;
         };
     }
+
+    // TODO set
 
 }

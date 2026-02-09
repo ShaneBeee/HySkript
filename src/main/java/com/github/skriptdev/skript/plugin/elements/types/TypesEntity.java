@@ -1,5 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.types;
 
+import com.github.skriptdev.skript.api.hytale.EntityComponentUtils;
 import com.github.skriptdev.skript.api.skript.registration.NPCRegistry;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.component.Ref;
@@ -17,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class TypesEntity {
 
-    @SuppressWarnings("removal") // LivingEntity::getLegacyDisplayName
     static void register(SkriptRegistration reg) {
         reg.newType(ActiveEntityEffect.class, "activeentityeffect", "activeEntityEffect@s")
             .name("Active Entity Effect")
@@ -26,7 +26,7 @@ public class TypesEntity {
             .toStringFunction(ActiveEntityEffect::toString)
             .register();
         reg.newType(Entity.class, "entity", "entit@y@ies")
-            .toStringFunction(Entity::toString) // TODO get its name or something
+            .toStringFunction(EntityComponentUtils::getName)
             .name("Entity")
             .description("Represents any Entity in the game, including Players and NPCs.")
             .since("1.0.0")
@@ -55,7 +55,7 @@ public class TypesEntity {
             .name("Living Entity")
             .description("Represents any living entity in the game, including players and mobs.")
             .since("1.0.0")
-            .toStringFunction(LivingEntity::getLegacyDisplayName)
+            .toStringFunction(EntityComponentUtils::getName)
             .register();
         reg.newType(NPCEntity.class, "npcentity", "npcEntit@y@ies")
             .name("NPC Entity")

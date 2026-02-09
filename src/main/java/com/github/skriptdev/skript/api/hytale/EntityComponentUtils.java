@@ -12,7 +12,9 @@ import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.entity.EntityUtils;
 import com.hypixel.hytale.server.core.entity.LivingEntity;
+import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.entity.movement.MovementStatesComponent;
+import com.hypixel.hytale.server.core.entity.nameplate.Nameplate;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.item.ItemComponent;
 import com.hypixel.hytale.server.core.modules.entitystats.EntityStatMap;
@@ -23,11 +25,66 @@ import io.github.syst3ms.skriptparser.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 /**
  * Quick utility class for accessing entity components.
  */
 @SuppressWarnings("UnusedReturnValue")
 public class EntityComponentUtils {
+
+    /**
+     * Get the UUID of an {@link Entity}
+     *
+     * @param entity Entity to get UUID from
+     * @return UUID of the entity, or null if the entity has no UUID component
+     */
+    public static @Nullable UUID getUUID(@NotNull Entity entity) {
+        Ref<EntityStore> reference = entity.getReference();
+        if (reference == null) return null;
+
+        Store<EntityStore> store = reference.getStore();
+        UUIDComponent component = store.getComponent(reference, UUIDComponent.getComponentType());
+        if (component == null) return null;
+        return component.getUuid();
+    }
+
+    /**
+     * Get the name of an {@link Entity}.
+     *
+     * @param entity Entity to get name from
+     * @return Name of the entity, or null if the entity has no name component
+     */
+    @SuppressWarnings("removal")
+    public static @NotNull String getName(Entity entity) {
+        Ref<EntityStore> reference = entity.getReference();
+        if (reference == null) return "no-reference";
+
+        Store<EntityStore> store = reference.getStore();
+        Nameplate component = store.getComponent(reference, Nameplate.getComponentType());
+        if (component != null) {
+            return component.getText();
+        }
+        // REMOVAL (we shouldn't be using this as a backup)
+        return entity.getLegacyDisplayName();
+    }
+
+    /**
+     * Set the name of an {@link Entity}.
+     *
+     * @param entity Entity to set name on
+     * @param name   New name for the entity
+     */
+    public static void setName(Entity entity, @NotNull String name) {
+        Ref<EntityStore> reference = entity.getReference();
+        if (reference == null) return;
+
+        Store<EntityStore> store = reference.getStore();
+        Nameplate component = store.getComponent(reference, Nameplate.getComponentType());
+        if (component != null) {
+            component.setText(name);
+        }
+    }
 
     /**
      * Get a component from an Entity
