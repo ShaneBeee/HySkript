@@ -22,6 +22,7 @@ public class SkriptConfig {
     private final int maxTargetBlockDistance;
     private final ConfigSection effectCommands;
     private final ConfigSection databases;
+    private final boolean commandsGeneratePermissions;
 
     public SkriptConfig(Skript skript) {
         Path skriptConfigPath = skript.getPlugin().getDataDirectory().resolve("config.sk");
@@ -71,6 +72,8 @@ public class SkriptConfig {
             // TODO update config
         }
 
+        // Set up commands generate permissions
+        this.commandsGeneratePermissions = this.config.getBoolean("commands-generate-permissions", true);
 
         logger.finalizeLogs();
         for (LogEntry logEntry : logger.close()) {
@@ -117,6 +120,15 @@ public class SkriptConfig {
      */
     public @Nullable ConfigSection getDatabases() {
         return this.databases;
+    }
+
+    /**
+     * Get whether commands should generate permissions.
+     *
+     * @return Whether commands should generate permissions.
+     */
+    public boolean getCommandsGeneratePermissions() {
+        return this.commandsGeneratePermissions;
     }
 
     private void updateConfig() {

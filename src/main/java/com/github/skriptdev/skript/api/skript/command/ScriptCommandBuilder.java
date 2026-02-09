@@ -1,6 +1,7 @@
 package com.github.skriptdev.skript.api.skript.command;
 
 import com.github.skriptdev.skript.plugin.HySk;
+import com.github.skriptdev.skript.plugin.Skript;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptCommand.PlayerScriptCommandContext;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptCommand.ScriptCommandContext;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptCommand.WorldScriptCommandContext;
@@ -43,6 +44,8 @@ import java.util.concurrent.CompletableFuture;
  * Builder for Script Commands.
  */
 public class ScriptCommandBuilder {
+
+    private static final boolean CAN_GENERATE_PERMISSION_DEFAULT = Skript.getInstance().getSkriptConfig().getCommandsGeneratePermissions();
 
     public static ScriptCommandBuilder create(int commandType, SkriptLogger logger) {
         return new ScriptCommandBuilder(commandType, logger);
@@ -112,8 +115,8 @@ public class ScriptCommandBuilder {
             description = "";
         }
 
-        Boolean canGeneratePermission = this.sec.getValue("can-generate-permission", Boolean.class).orElse(true);
-
+        Boolean canGeneratePermission = this.sec.getValue("can-generate-permission", Boolean.class)
+            .orElse(CAN_GENERATE_PERMISSION_DEFAULT);
 
         if (hasTrigger) {
             CodeSection trigger = triggerSec.get();

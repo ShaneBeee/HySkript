@@ -13,6 +13,11 @@ max-target-block-distance: 160
 # Default 160 = 5 chunks
 # Increasing this amount could cause performance issues, so test carefully.
 
+commands-generate-permissions: true
+# Hytale by default generates permissions for all commands.
+# If you want to disable this, set this to false.
+# You can also disable it per command in the command entries.
+
 # Effect commands allow you to execute effects in chat.
 effect-commands:
     enabled: true
