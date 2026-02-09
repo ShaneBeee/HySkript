@@ -12,7 +12,7 @@ import com.github.skriptdev.skript.api.utils.Utils;
 import com.github.skriptdev.skript.plugin.command.EffectCommands;
 import com.github.skriptdev.skript.plugin.elements.ElementRegistration;
 import com.github.skriptdev.skript.plugin.elements.events.EventHandler;
-import io.github.syst3ms.skriptparser.Parser;
+import com.hypixel.hytale.server.core.event.events.BootEvent;
 import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
@@ -102,7 +102,11 @@ public class Skript extends SkriptAddon {
         this.scriptsLoader.loadScripts(null, this.scriptsPath, false);
 
         // FINALIZE SCRIPT LOADING
-        Parser.getMainRegistration().getRegisterer().finishedLoading();
+        this.hySk.getEventRegistry().register(BootEvent.class, event -> {
+            Utils.debug("Hytale finished booting, starting post-load triggers...");
+            // Start any post-load triggers after Hytale finishes booting.
+            getAddons().forEach(SkriptAddon::finishedLoading);
+        });
     }
 
     public void shutdown() {
