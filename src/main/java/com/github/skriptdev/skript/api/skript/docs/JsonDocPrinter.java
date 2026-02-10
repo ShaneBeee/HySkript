@@ -24,8 +24,10 @@ import io.github.syst3ms.skriptparser.structures.functions.Function;
 import io.github.syst3ms.skriptparser.structures.functions.FunctionParameter;
 import io.github.syst3ms.skriptparser.structures.functions.Functions;
 import io.github.syst3ms.skriptparser.structures.functions.JavaFunction;
+import io.github.syst3ms.skriptparser.types.PatternType;
 import io.github.syst3ms.skriptparser.types.Type;
 import io.github.syst3ms.skriptparser.types.TypeManager;
+import io.github.syst3ms.skriptparser.util.StringUtils;
 import org.bson.BsonArray;
 import org.bson.BsonBoolean;
 import org.bson.BsonDocument;
@@ -135,7 +137,7 @@ public class JsonDocPrinter {
     private void printEvents(BsonDocument mainDocs, SkriptRegistration registration) {
         BsonArray eventsArray = mainDocs.getArray("events", new BsonArray());
 
-        List<ContextValue<?, ?>> contextValues = registration.getContextValues();
+        List<ContextValue<?, ?>> allContextValues = registration.getContextValues();
 
         registration.getEvents().forEach(event -> {
             Documentation documentation = event.getDocumentation();
@@ -156,20 +158,32 @@ public class JsonDocPrinter {
             });
             eventDoc.put("cancellable", new BsonBoolean(cancellable.get()));
 
+            // CONTEXT VALUES
             List<ContextValue<?, ?>> valuesForThisEvent = new ArrayList<>();
-            contextValues.forEach(contextValue -> {
+            allContextValues.forEach(contextValue -> {
                 if (event.getContexts().contains(contextValue.getContext())) {
                     valuesForThisEvent.add(contextValue);
                 }
             });
-            BsonArray eventValues = eventDoc.getArray("context values", new BsonArray());
+            BsonArray contextValues = eventDoc.getArray("context values", new BsonArray());
+
             if (!valuesForThisEvent.isEmpty()) {
+                // Append context values/description/type to the main description
+                BsonArray description = eventDoc.getArray("description", new BsonArray());
+                description.add(new BsonString(""));
+                description.add(new BsonString("**Context Values:**"));
+
                 valuesForThisEvent.forEach(contextValue -> {
-                    eventValues.add(new BsonString("context-" + contextValue.getPattern().toString()));
+                    ContextValue.State state = contextValue.getState();
+                    String contextState = state == ContextValue.State.PRESENT ? "" : state.name().toLowerCase(Locale.ROOT) + " ";
+                    contextValues.add(new BsonString(contextState + "context-" + contextValue.getPattern().toString()));
+                    description.add(new BsonString(getContextValueDescription(contextValue)));
                 });
+                eventDoc.put("description", description);
 
             }
-            eventDoc.put("context values", eventValues);
+            eventDoc.put("context values", contextValues);
+
             eventsArray.add(eventDoc);
         });
         mainDocs.put("events", eventsArray);
@@ -177,8 +191,9 @@ public class JsonDocPrinter {
 
     private void printStructures(BsonDocument mainDocs, SkriptRegistration registration) {
         BsonArray structuresArray = mainDocs.getArray("structures", new BsonArray());
+        List<ContextValue<?, ?>> allContextValues = registration.getContextValues();
 
-        registration.getEvents().forEach(event -> {
+        registration.getStructures().forEach(event -> {
             Documentation documentation = event.getDocumentation();
             if (documentation.isNoDoc()) return;
 
@@ -189,6 +204,32 @@ public class JsonDocPrinter {
             BsonDocument structureDoc = new BsonDocument();
             printDocumentation("structure", structureDoc, event);
             structuresArray.add(structureDoc);
+
+            // CONTEXT VALUES
+            List<ContextValue<?, ?>> valuesForThisStructure = new ArrayList<>();
+            allContextValues.forEach(contextValue -> {
+                if (event.getContexts().contains(contextValue.getContext())) {
+                    valuesForThisStructure.add(contextValue);
+                }
+            });
+            BsonArray contextValues = structureDoc.getArray("context values", new BsonArray());
+
+            if (!valuesForThisStructure.isEmpty()) {
+                // Append context values/description/type to the main description
+                BsonArray description = structureDoc.getArray("description", new BsonArray());
+                description.add(new BsonString(""));
+                description.add(new BsonString("**Context Values:**"));
+
+                valuesForThisStructure.forEach(contextValue -> {
+                    ContextValue.State state = contextValue.getState();
+                    String contextState = state == ContextValue.State.PRESENT ? "" : state.name().toLowerCase(Locale.ROOT) + " ";
+                    contextValues.add(new BsonString(contextState + "context-" + contextValue.getPattern().toString()));
+                    description.add(new BsonString(getContextValueDescription(contextValue)));
+                });
+                structureDoc.put("description", description);
+
+            }
+            structureDoc.put("context values", contextValues);
         });
 
         mainDocs.put("structures", structuresArray);
@@ -298,6 +339,8 @@ public class JsonDocPrinter {
                 String since = documentation.getSince();
                 if (since != null) {
                     functionDoc.put("since", new BsonArray(List.of(new BsonString(since))));
+                } else {
+                    Utils.warn(this.sender, "Function '%s' has no since tag!", name);
                 }
 
                 // RETURN TYPE
@@ -384,6 +427,8 @@ public class JsonDocPrinter {
             String since = documentation.getSince();
             if (since != null) {
                 syntaxDoc.put("since", new BsonArray(List.of(new BsonString(since))));
+            } else {
+                Utils.warn(this.sender, "Type '%s' has no since tag!", baseName);
             }
 
 
@@ -396,7 +441,7 @@ public class JsonDocPrinter {
     private void printSections(BsonDocument mainDocs, SkriptRegistration registration) {
         BsonArray sectionsArray = mainDocs.getArray("sections", new BsonArray());
         List<SyntaxInfo<? extends CodeSection>> sections = new ArrayList<>(registration.getSections());
-        sections.sort(Comparator.comparing(info -> info.getSyntaxClass().getSimpleName()));
+
         for (SyntaxInfo<? extends CodeSection> section : sections) {
             Documentation documentation = section.getDocumentation();
             if (documentation.isNoDoc()) continue;
@@ -459,6 +504,8 @@ public class JsonDocPrinter {
         String since = documentation.getSince();
         if (since != null) {
             syntaxDoc.put("since", new BsonArray(List.of(new BsonString(since))));
+        } else {
+            Utils.warn(this.sender, "Syntax '%s' has no since tag!", syntaxInfo.getSyntaxClass().getSimpleName());
         }
     }
 
@@ -509,6 +556,28 @@ public class JsonDocPrinter {
         String s = type + ":" + addonName + ":" + syntaxId;
         return new BsonString(s.toLowerCase(Locale.ROOT).replace(" ", "_"));
 
+    }
+
+    private String getContextValueDescription(ContextValue<?, ?> contextValue) {
+        String desc = contextValue.getDescription();
+        PatternType<?> returnType = contextValue.getReturnType();
+
+        boolean single = returnType.isSingle();
+        String form = single ? "a single" : "multiple";
+
+        String[] pluralForms = returnType.getType().getPluralForms();
+        String baseName = pluralForms.length > 0 && !single ? pluralForms[1] : pluralForms[0];
+        baseName = StringUtils.toCamelCase(baseName, false);
+
+        ContextValue.State state = contextValue.getState();
+        String stateName = state == ContextValue.State.PRESENT ? "" : state.name().toLowerCase(Locale.ROOT) + " ";
+
+        boolean canBeSet = contextValue.getListSetterFunction() != null || contextValue.getSingleSetterFunction() != null;
+
+        return String.format("`%scontext-%s`%s(Returns %s %s%s)",
+            stateName, contextValue.getPattern().toString(),
+            desc == null ? " " : " " + desc + " ",
+            form, baseName, canBeSet ? ", can be set" : "");
     }
 
 }

@@ -12,6 +12,7 @@ public class EffBreakBlock extends Effect {
 
     public static void register(SkriptRegistration reg) {
         reg.newEffect(EffBreakBlock.class, "break %blocks% [with settings %number%]")
+            .name("Break Block")
             .description("Breaks the specified blocks.",
                 "**Settings**:",
                 "I don't really know what this does yet, but from testing:",

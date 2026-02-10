@@ -1,64 +1,64 @@
 # HySkript Config
 
-hyskript-version: $pluginVersion
 # Do not change this value manually.
 # This is automatically updated when you update HySkript.
 # This is used to update the config if it's outdated.
+hyskript-version: $pluginVersion
 
-debug: false
 # Whether or not to enable debug mode (maybe print more verbose logs to console).
+debug: false
 
-max-target-block-distance: 160
 # The maximum distance from a Player to a block to be considered a target block.
 # Default 160 = 5 chunks
-# Increasing this amount could cause performance issues, so test carefully.
+# Increasing this amount could cause performance issues, so test thoroughly.
+max-target-block-distance: 160
 
-commands-generate-permissions: true
 # Hytale by default generates permissions for all commands.
 # If you want to disable this, set this to false.
 # You can also disable it per command in the command entries.
+commands-generate-permissions: true
 
 # Effect commands allow you to execute effects in chat.
 effect-commands:
-    enabled: true
-    # Whether or not effect commands are enabled.
+	# Whether or not effect commands are enabled.
+	enabled: true
 
-    allow-ops: false
-    # Whether or not ops can use effect commands.
-    # If false, they will require the permission specified below in 'required-permission'.
+	# Whether or not ops can use effect commands.
+	# If false, they will require the permission specified below in 'required-permission'.
+	allow-ops: false
 
-    required-permission: skript.hyskript.effect-commands
-    # The permission required to use effect commands (if allow-ops is false).
+	# The permission required to use effect commands (if allow-ops is false).
+	required-permission: skript.hyskript.effect-commands
 
-    token: !
-    # The token used to execute effects in chat.
+	# The token used to execute effects in chat.
+	token: !
 
 # Represents the database[s] used by HySkript to save variables to.
 # You can add as many databases as you want.
 databases:
 #   dummy: (This is the name of your database)
-#       type: json-database
-#       This is the type of database, currently only 'json-database' is supported
+#	   type: json-database
+#	   This is the type of database, currently only 'json-database' is supported
 #
-#       enabled: true
-#       Whether or not the database is enabled
+#	   enabled: true
+#	   Whether or not the database is enabled
 #
-#       file-type: json
-#       The file type of the database, currently only 'json' and 'bson' are supported
-#       'json' = Will save as a JSON file in text format (Easy to read/change if you need to).
-#       'bson' = Will save as a BSON file in binary format (This is what Hytale uses, much smaller file).
+#	   file-type: json
+#	   The file type of the database, currently only 'json' and 'bson' are supported
+#	   'json' = Will save as a JSON file in text format (Easy to read/change if you need to).
+#	   'bson' = Will save as a BSON file in binary format (This is what Hytale uses, much smaller file).
 #
-#       file: variables.json
-#       The file to save variables to.
+#	   file: variables.json
+#	   The file to save variables to.
 #
-#       pattern: .*
-#       The regex pattern to match variables to.
-#       '.*' = Will save all variables.
-#       '(?!-).*' = Will only save variables that don't start with '-' (ex: '{-some_var}' will not be saved).
+#	   pattern: .*
+#	   The regex pattern to match variables to.
+#	   '.*' = Will save all variables.
+#	   '(?!-).*' = Will only save variables that don't start with '-' (ex: '{-some_var}' will not be saved).
 
-    default:
-        type: json-database
-        enabled: true
-        file-type: json
-        file: variables.json
-        pattern: (?!-).*
+	default:
+		type: json-database
+		enabled: true
+		file-type: json
+		file: variables.json
+		pattern: (?!-).*

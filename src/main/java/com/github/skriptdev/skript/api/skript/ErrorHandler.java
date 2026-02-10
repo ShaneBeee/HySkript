@@ -21,7 +21,7 @@ public class ErrorHandler {
         for (SyntaxInfo<? extends Effect> effect : SyntaxManager.getEffects()) {
             EFFECT_MAP.put(effect.getSyntaxClass().getSimpleName(), effect);
         }
-        for (SkriptEventInfo<?> event : SyntaxManager.getEvents()) {
+        for (SkriptEventInfo<?> event : SyntaxManager.getTriggers()) {
             EVENT_MAP.put(event.getSyntaxClass().getSimpleName(), event);
         }
         setup();

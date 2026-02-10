@@ -15,14 +15,15 @@ import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class ExprPlayerSpawns implements Expression<Location> {
+public class ExprPlayerRespawnLocations implements Expression<Location> {
 
     public static void register(SkriptRegistration reg) {
-        reg.newExpression(ExprPlayerSpawns.class, Location.class, false,
+        reg.newExpression(ExprPlayerRespawnLocations.class, Location.class, false,
                 "[player] respawn locations of %player%",
                 "[player] respawn locations of %player% in %worlds%")
             .name("Player Respawn Locations")
@@ -57,11 +58,9 @@ public class ExprPlayerSpawns implements Expression<Location> {
 
         List<World> worlds = new ArrayList<>();
         if (this.worlds != null) {
-            for (World world : this.worlds.getArray(ctx)) {
-                worlds.add(world);
-            }
+            Collections.addAll(worlds, this.worlds.getArray(ctx));
         } else {
-            Universe.get().getWorlds().forEach((s, world) -> worlds.add(world));
+            Universe.get().getWorlds().forEach((_, world) -> worlds.add(world));
         }
 
         List<Location> spawns = new ArrayList<>();

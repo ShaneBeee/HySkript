@@ -10,14 +10,25 @@ import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Config for Skript
  */
 public class SkriptConfig {
 
-    private final Config config;
+    private Config config;
     private final boolean debug;
     private final int maxTargetBlockDistance;
     private final ConfigSection effectCommands;
@@ -40,8 +51,15 @@ public class SkriptConfig {
             logger.debug("Checking for update from: " + configVersion);
             Semver hySkriptVersion = skript.getPlugin().getManifest().getVersion();
             if (configVersion.compareTo(hySkriptVersion) < 0) {
-                logger.debug("Updating config to version: " + hySkriptVersion);
-                updateConfig();
+                logger.info("Updating config to version: " + hySkriptVersion);
+                try {
+                    // Update the config from the default config
+                    updateConfig(skriptConfigPath, hySkriptVersion.toString());
+                    // Reload the config so we have updated values
+                    this.config = new Config(skriptConfigPath, "/config.sk", logger);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 logger.debug("Config is up to date");
             }
@@ -51,10 +69,7 @@ public class SkriptConfig {
 
         // Set up max-target-block-distance
         this.maxTargetBlockDistance = this.config.getInt("max-target-block-distance");
-        if (this.maxTargetBlockDistance == -1) {
-            // This would happen if the config is missing this value
-            // TODO update config
-        } else if (this.maxTargetBlockDistance < 0) {
+        if (this.maxTargetBlockDistance < 0) {
             logger.error("max-target-block-distance must be greater than or equal to 0", ErrorType.STRUCTURE_ERROR);
         }
 
@@ -62,14 +77,12 @@ public class SkriptConfig {
         this.effectCommands = this.config.getConfigSection("effect-commands");
         if (this.effectCommands == null) {
             logger.error("Effect commands section not found in config.sk", ErrorType.STRUCTURE_ERROR);
-            // TODO update config
         }
 
         // Set up databases
         this.databases = this.config.getConfigSection("databases");
         if (this.databases == null) {
             logger.error("Databases section not found in config.sk", ErrorType.STRUCTURE_ERROR);
-            // TODO update config
         }
 
         // Set up commands generate permissions
@@ -131,8 +144,71 @@ public class SkriptConfig {
         return this.commandsGeneratePermissions;
     }
 
-    private void updateConfig() {
-        // TODO update config
+    @SuppressWarnings("resource")
+    private void updateConfig(Path userPath, String version) throws IOException {
+        Set<String> userKeys = Files.lines(userPath)
+            .map(String::trim)
+            .filter(l -> !l.startsWith("#") && l.contains(":"))
+            .map(l -> l.split(":")[0].trim())
+            .collect(Collectors.toSet());
+
+        InputStream stream = SkriptConfig.class.getResourceAsStream("/config.sk");
+        assert stream != null;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+             BufferedWriter writer = Files.newBufferedWriter(userPath, StandardOpenOption.APPEND)) {
+
+            List<String> commentBuffer = new ArrayList<>();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String trimmed = line.trim();
+
+                if (trimmed.startsWith("#")) {
+                    // It's a comment, save it for the next key we find
+                    commentBuffer.add(line);
+                } else if (trimmed.contains(":")) {
+                    String key = trimmed.split(":")[0].trim();
+
+                    if (!userKeys.contains(key)) {
+                        // User is missing this key!
+                        writer.newLine(); // Add spacing for readability
+
+                        // Write the buffered comments first
+                        for (String comment : commentBuffer) {
+                            writer.write(comment);
+                            writer.newLine();
+                        }
+                        // Write the actual key-value pair
+                        writer.write(line);
+                        writer.newLine();
+                    }
+                    // Clear buffer regardless of whether we wrote it or not
+                    commentBuffer.clear();
+                } else if (trimmed.isEmpty()) {
+                    commentBuffer.clear();
+                }
+            }
+        }
+
+        updateConfigVersion(userPath, version);
+    }
+
+    private void updateConfigVersion(Path userPath, String newVersion) throws IOException {
+        List<String> lines = Files.readAllLines(userPath);
+        boolean updated = false;
+
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i).trim();
+            if (line.startsWith("hyskript-version:")) {
+                lines.set(i, "hyskript-version: " + newVersion);
+                updated = true;
+                break;
+            }
+        }
+
+        if (updated) {
+            Files.write(userPath, lines);
+        }
     }
 
 }

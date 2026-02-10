@@ -38,14 +38,17 @@ public class EvtPlayerChat extends SkriptEvent {
         reg.newSingleContextValue(PlayerChatContext.class, String.class,
                 "message", PlayerChatContext::getMessage)
             .addSetter(PlayerChatContext::setMessage)
+            .description("The message sent by the player.")
             .register();
         reg.newSingleContextValue(PlayerChatContext.class, Message.class,
                 "message-format", PlayerChatContext::getMessageFormat)
             .addSetter(PlayerChatContext::setMessageFormat)
+            .description("The format of the message sent by the player.")
             .register();
         reg.newSingleContextValue(PlayerChatContext.class, String.class,
                 "format", PlayerChatContext::getFormat)
             .addSetter(PlayerChatContext::setFormat)
+            .description("The format of the message sent by the player.")
             .register();
         reg.addSingleContextValue(PlayerChatContext.class, PlayerRef.class,
             "sender", PlayerChatContext::getSender);

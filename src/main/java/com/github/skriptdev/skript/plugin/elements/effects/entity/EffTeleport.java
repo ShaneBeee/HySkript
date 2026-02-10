@@ -23,7 +23,7 @@ public class EffTeleport extends Effect {
             .name("Teleport")
             .description("Teleport entities to a location.")
             .examples("teleport all players to {_location}",
-                "teleport player to bed location of player")
+                "teleport player to first element of (respawn locations of player)")
             .since("1.0.0")
             .register();
     }

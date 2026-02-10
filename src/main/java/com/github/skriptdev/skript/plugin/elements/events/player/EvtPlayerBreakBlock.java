@@ -43,19 +43,21 @@ public class EvtPlayerBreakBlock extends SystemEvent<EntityEventSystem<EntitySto
 
         reg.newSingleContextValue(BreakBlockEventContext.class, Block.class,
                 "block", BreakBlockEventContext::getBlock)
-            .addSetter(BreakBlockEventContext::setTargetBlock).register();
-        reg.addSingleContextValue(BreakBlockEventContext.class, BlockType.class,
-            "blocktype", BreakBlockEventContext::getBlockType);
-        reg.addSingleContextValue(BreakBlockEventContext.class, Item.class,
-            "item-in-hand", BreakBlockEventContext::getItemInHand);
+            .addSetter(BreakBlockEventContext::setTargetBlock)
+            .description("The block that was broken, this can be set to a new block.")
+            .register();
         reg.addSingleContextValue(BreakBlockEventContext.class, World.class,
             "world", BreakBlockEventContext::getWorld);
         reg.addSingleContextValue(BreakBlockEventContext.class, BlockType.class,
             "blocktype", BreakBlockEventContext::getBlockType);
-        reg.addSingleContextValue(BreakBlockEventContext.class, Item.class,
-            "item-in-hand", BreakBlockEventContext::getItemInHand);
-        reg.addSingleContextValue(BreakBlockEventContext.class, ItemStack.class,
-            "itemstack-in-hand", BreakBlockEventContext::getItemStackInHand);
+        reg.newSingleContextValue(BreakBlockEventContext.class, Item.class,
+            "item-in-hand", BreakBlockEventContext::getItemInHand)
+            .description("The Item type of the ItemStack in the player's hand when they break the block.")
+            .register();
+        reg.newSingleContextValue(BreakBlockEventContext.class, ItemStack.class,
+            "itemstack-in-hand", BreakBlockEventContext::getItemStackInHand)
+            .description("The ItemStack in the player's hand when they break the block.")
+            .register();
     }
 
     private static BlockBreakEventSystem SYSTEM;

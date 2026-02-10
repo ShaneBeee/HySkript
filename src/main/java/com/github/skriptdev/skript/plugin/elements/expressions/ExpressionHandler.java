@@ -49,7 +49,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprChatMe
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprGameMode;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerPermissionGroup;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerPermissions;
-import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerSpawns;
+import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerRespawnLocations;
 import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprConsole;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprChunkAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprRelativePositionResolve;
@@ -118,7 +118,7 @@ public class ExpressionHandler {
         ExprGameMode.register(registration);
         ExprPlayerPermissionGroup.register(registration);
         ExprPlayerPermissions.register(registration);
-        ExprPlayerSpawns.register(registration);
+        ExprPlayerRespawnLocations.register(registration);
 
         // SERVER
         ExprConsole.register(registration);

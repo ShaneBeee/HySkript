@@ -89,7 +89,7 @@ public class ScriptCommand extends Structure implements ScriptCommandParent {
     }
 
     public static void register(SkriptRegistration reg) {
-        reg.newEvent(ScriptCommand.class,
+        reg.newStructure(ScriptCommand.class,
                 "*[global] command <.+>",
                 "*player command <.+>",
                 "*world command <.+>")
@@ -181,6 +181,11 @@ public class ScriptCommand extends Structure implements ScriptCommandParent {
     @Override
     public boolean check(@NotNull TriggerContext ctx) {
         return ctx instanceof ScriptCommandContext sctx && sctx.getCommand().equals(this.commandBuilder.getCommandName());
+    }
+
+    @Override
+    public void unload() {
+        this.commandBuilder.unregister();
     }
 
     @Override
