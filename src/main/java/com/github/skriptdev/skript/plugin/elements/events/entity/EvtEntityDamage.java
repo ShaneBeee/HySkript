@@ -36,11 +36,27 @@ public class EvtEntityDamage extends SkriptEvent {
             .since("1.0.0")
             .register();
 
-        reg.addSingleContextValue(EntityDamageContext.class, Entity.class, "victim", EntityDamageContext::getVictim);
-        reg.addSingleContextValue(EntityDamageContext.class, Entity.class, "attacker", EntityDamageContext::getAttacker);
-        reg.addSingleContextValue(EntityDamageContext.class, Float.class, "damage-amount", EntityDamageContext::getDamage);
-        reg.addSingleContextValue(EntityDamageContext.class, Damage.Source.class, "damage-source", EntityDamageContext::getDamageSource);
-        reg.addSingleContextValue(EntityDamageContext.class, DamageCause.class, "damage-cause", EntityDamageContext::getDamageCause);
+        reg.newSingleContextValue(EntityDamageContext.class, Entity.class,
+            "victim", EntityDamageContext::getVictim)
+            .description("The entity that was damaged.")
+            .register();
+        reg.newSingleContextValue(EntityDamageContext.class, Entity.class,
+            "attacker", EntityDamageContext::getAttacker)
+            .description("The entity that dealt the damage.")
+            .register();
+        reg.newSingleContextValue(EntityDamageContext.class, Float.class,
+                "damage-amount", EntityDamageContext::getDamage)
+            .description("The amount of damage dealt.")
+            .addSetter(EntityDamageContext::setDamage)
+            .register();
+        reg.newSingleContextValue(EntityDamageContext.class, Damage.Source.class,
+            "damage-source", EntityDamageContext::getDamageSource)
+            .description("The source of the damage.")
+            .register();
+        reg.newSingleContextValue(EntityDamageContext.class, DamageCause.class,
+            "damage-cause", EntityDamageContext::getDamageCause)
+            .description("The cause of the damage.")
+            .register();
     }
 
     private static EntityDamageSystem SYSTEM;
@@ -85,6 +101,10 @@ public class EvtEntityDamage extends SkriptEvent {
 
         public Float getDamage() {
             return this.damage.getAmount();
+        }
+
+        public void setDamage(Float damage) {
+            this.damage.setAmount(damage);
         }
 
         public Damage.Source getDamageSource() {

@@ -45,11 +45,22 @@ public class EvtPlayerPlaceBlock extends SystemEvent<EntityEventSystem<EntitySto
             .setHandledContexts(PlaceBlockContext.class)
             .register();
 
-        reg.addSingleContextValue(PlaceBlockContext.class, Item.class, "item-in-hand", PlaceBlockContext::getItemInHand);
-        reg.addSingleContextValue(PlaceBlockContext.class, ItemStack.class, "itemstack-in-hand", PlaceBlockContext::getItemStackInHand);
-        reg.addSingleContextValue(PlaceBlockContext.class, BlockType.class, "blocktype", PlaceBlockContext::getPlacedBlockType);
-        reg.newSingleContextValue(PlaceBlockContext.class, BlockType.class, "blocktype", PlaceBlockContext::getPreviousBlockType)
+        reg.newSingleContextValue(PlaceBlockContext.class, Item.class,
+                "item-in-hand", PlaceBlockContext::getItemInHand)
+            .description("The Item type of the ItemStack in the player's hand when they placed the block.")
+            .register();
+        reg.newSingleContextValue(PlaceBlockContext.class, ItemStack.class,
+                "itemstack-in-hand", PlaceBlockContext::getItemStackInHand)
+            .description("The ItemStack in the player's hand when they placed the block.")
+            .register();
+        reg.newSingleContextValue(PlaceBlockContext.class, BlockType.class,
+                "blocktype", PlaceBlockContext::getPlacedBlockType)
+            .description("The BlockType of the block that was placed by the player.")
+            .register();
+        reg.newSingleContextValue(PlaceBlockContext.class, BlockType.class,
+                "blocktype", PlaceBlockContext::getPreviousBlockType)
             .setState(ContextValue.State.PAST)
+            .description("The BlockType of the block before the player placed the block.")
             .register();
     }
 

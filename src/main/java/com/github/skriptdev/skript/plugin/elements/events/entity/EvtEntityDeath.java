@@ -51,21 +51,28 @@ public class EvtEntityDeath extends SkriptEvent {
             .since("1.0.0")
             .register();
 
-        reg.addSingleContextValue(EntityDeathContext.class,
-            Entity.class, "victim", EntityDeathContext::getVictim);
-        reg.addSingleContextValue(EntityDeathContext.class,
-            Entity.class, "attacker", EntityDeathContext::getAttacker);
+        reg.newSingleContextValue(EntityDeathContext.class,
+            Entity.class, "victim", EntityDeathContext::getVictim)
+            .description("The entity that died.")
+            .register();
+        reg.newSingleContextValue(EntityDeathContext.class,
+            Entity.class, "attacker", EntityDeathContext::getAttacker)
+            .description("The entity that killed the victim.")
+            .register();
         reg.addSingleContextValue(EntityDeathContext.class,
             Damage.Source.class, "damage-source", EntityDeathContext::getDamageSource);
         reg.addSingleContextValue(EntityDeathContext.class,
             DamageCause.class, "death-cause", EntityDeathContext::getDamageCause);
         reg.addSingleContextValue(EntityDeathContext.class,
             Damage.class, "death-info", EntityDeathContext::getDamage);
-        reg.addListContextValue(EntityDeathContext.class,
-            Item.class, "lost-items", EntityDeathContext::getItemsLostOnDeath);
+        reg.newListContextValue(EntityDeathContext.class,
+            Item.class, "lost-items", EntityDeathContext::getItemsLostOnDeath)
+            .description("The Item types of the ItemStacks lost on death.")
+            .register();
         reg.newListContextValue(EntityDeathContext.class,
                 ItemStack.class, "lost-itemstacks", EntityDeathContext::getItemStacksLostOnDeath)
             .setUsage(ContextValue.Usage.EXPRESSION_OR_ALONE)
+            .description("The ItemStacks lost on death.")
             .addListSetter(EntityDeathContext::setItemStacksLostOnDeath)
             .register();
         reg.newSingleContextValue(EntityDeathContext.class,
