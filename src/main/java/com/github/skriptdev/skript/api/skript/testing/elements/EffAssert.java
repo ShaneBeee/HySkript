@@ -16,6 +16,7 @@ public class EffAssert extends Effect {
 
     public static void register(SkriptRegistration reg) {
         reg.newEffect(EffAssert.class, "assert %=boolean% with %*string%")
+            .noDoc()
             .register();
     }
 

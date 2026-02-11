@@ -15,6 +15,11 @@ val hytaleVersion = "2026.02.06-aa1b071c2"
 // https://maven.hytale.com/pre-release/com/hypixel/hytale/Server/maven-metadata.xml
 // (Pre-releases shouldn't be used for production)
 
+// Location of the Hytale Server Assets
+// This is used in testing
+// Change this to wherever you have it on your computer
+val assetLocation= "/Users/ShaneBee/Desktop/Server/Hytale/Assets/Assets.zip"
+
 repositories {
     mavenCentral()
     mavenLocal()
@@ -46,8 +51,9 @@ tasks {
         dependsOn("jar")
         group = "application"
         description = "Runs the test runner"
-        mainClass.set("com.github.skriptdev.skript.api.skript.testing.TestRunner")
+        mainClass.set("com.github.skriptdev.skript.api.skript.testing.TestRunnerMain")
         classpath = sourceSets["main"].runtimeClasspath
+        args(hytaleVersion, assetLocation)
     }
     processResources {
         filesNotMatching("assets/**") {

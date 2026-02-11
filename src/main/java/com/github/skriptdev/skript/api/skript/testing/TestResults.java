@@ -38,8 +38,14 @@ public class TestResults {
         this.failureMap.put(test, value);
     }
 
-    @SuppressWarnings({"ResultOfMethodCallIgnored", "CallToPrintStackTrace"})
-    public void printToJsonFile() {
+    public void clear() {
+        this.success = true;
+        this.successMap.clear();
+        this.failureMap.clear();
+    }
+
+    @SuppressWarnings({"CallToPrintStackTrace"})
+    public void printToProperties() {
         Path resolve = HySk.getInstance().getDataDirectory().resolve("test-results.properties");
         try {
             Files.createDirectories(resolve.getParent());
@@ -52,7 +58,6 @@ public class TestResults {
         props.setProperty("success.count", Integer.toString(this.successMap.size()));
         props.setProperty("failure.count", Integer.toString(this.failureMap.size()));
 
-        // Store individual entries (handy for debugging in CI logs)
         for (var e : successMap.entrySet()) {
             props.setProperty("success." + e.getKey(), e.getValue());
         }
