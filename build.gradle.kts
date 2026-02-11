@@ -42,6 +42,13 @@ tasks {
             destinationDir = file("/Users/ShaneBee/Desktop/Server/Hytale/Creative/mods/")
         }
     }
+    register<JavaExec>("testRunner") {
+        dependsOn("jar")
+        group = "application"
+        description = "Runs the test runner"
+        mainClass.set("com.github.skriptdev.skript.api.skript.testing.TestRunner")
+        classpath = sourceSets["main"].runtimeClasspath
+    }
     processResources {
         filesNotMatching("assets/**") {
             expand("pluginVersion" to projectVersion, "hytaleVersion" to hytaleVersion)

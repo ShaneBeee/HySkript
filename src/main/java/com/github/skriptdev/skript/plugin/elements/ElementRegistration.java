@@ -1,6 +1,7 @@
 package com.github.skriptdev.skript.plugin.elements;
 
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.api.skript.testing.elements.ElementHandler;
 import com.github.skriptdev.skript.api.utils.Utils;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptCommand;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptSubCommand;
@@ -60,6 +61,9 @@ public class ElementRegistration {
         // COMMAND
         ScriptCommand.register(this.registration);
         ScriptSubCommand.register(this.registration);
+
+        // TEST STUFF TODO do a test check
+        ElementHandler.register(this.registration);
 
         // FINALIZE SETUP
         this.registration.register();

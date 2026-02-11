@@ -6,13 +6,13 @@ import com.github.skriptdev.skript.api.skript.addon.AddonLoader;
 import com.github.skriptdev.skript.api.skript.command.ArgUtils;
 import com.github.skriptdev.skript.api.skript.config.SkriptConfig;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.api.skript.testing.TestingThingy;
 import com.github.skriptdev.skript.api.skript.variables.JsonVariableStorage;
 import com.github.skriptdev.skript.api.utils.ReflectionUtils;
 import com.github.skriptdev.skript.api.utils.Utils;
 import com.github.skriptdev.skript.plugin.command.EffectCommands;
 import com.github.skriptdev.skript.plugin.elements.ElementRegistration;
 import com.github.skriptdev.skript.plugin.elements.events.EventHandler;
-import com.hypixel.hytale.server.core.event.events.BootEvent;
 import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
@@ -98,15 +98,17 @@ public class Skript extends SkriptAddon {
         loadVariables();
 
         // LOAD SCRIPTS
-        this.scriptsLoader = new ScriptsLoader(this);
-        this.scriptsLoader.loadScripts(null, this.scriptsPath, false);
+//        this.scriptsLoader = new ScriptsLoader(this);
+//        this.scriptsLoader.loadScripts(null, this.scriptsPath, false);
+//
+//        // FINALIZE SCRIPT LOADING
+//        this.hySk.getEventRegistry().register(BootEvent.class, event -> {
+//            Utils.debug("Hytale finished booting, starting post-load triggers...");
+//            // Start any post-load triggers after Hytale finishes booting.
+//            getAddons().forEach(SkriptAddon::finishedLoading);
+//        });
 
-        // FINALIZE SCRIPT LOADING
-        this.hySk.getEventRegistry().register(BootEvent.class, event -> {
-            Utils.debug("Hytale finished booting, starting post-load triggers...");
-            // Start any post-load triggers after Hytale finishes booting.
-            getAddons().forEach(SkriptAddon::finishedLoading);
-        });
+        TestingThingy.start(this);
     }
 
     public void shutdown() {
@@ -114,7 +116,10 @@ public class Skript extends SkriptAddon {
         EventHandler.shutdown();
 
         // SHUTDOWN SCRIPTS
-        this.scriptsLoader.shutdown();
+        if (this.scriptsLoader != null) {
+            // TODO fix later
+            this.scriptsLoader.shutdown();
+        }
 
         // SHUTDOWN VARIABLES
         Utils.log("Saving variables...");
@@ -189,7 +194,7 @@ public class Skript extends SkriptAddon {
      *
      * @return The Skript registration.
      */
-    public @NotNull io.github.syst3ms.skriptparser.registration.SkriptRegistration getSkriptRegistration() {
+    public @NotNull SkriptRegistration getSkriptRegistration() {
         return this.registration;
     }
 
