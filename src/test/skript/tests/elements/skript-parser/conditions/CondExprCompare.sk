@@ -1,4 +1,4 @@
-test "CondCompare":
+test "skript-parser-CondCompare":
 	assert 1 = 1 with "1 should equal 1"
 	assert 1 != 2 with "1 should not equal 2"
 

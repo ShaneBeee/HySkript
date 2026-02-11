@@ -1,4 +1,4 @@
-test "EffExit":
+test "skript-parser-EffExit":
 	assert {_a} is not set with "The variable should not be set yet"
 	loop 10 times:
 		set {_a} to loop-value

@@ -18,7 +18,7 @@ import java.util.Optional;
 public class EffAssert extends Effect {
 
     public static void register(SkriptRegistration reg) {
-        reg.newEffect(EffAssert.class, "assert <.+> with %*string%")
+        reg.newEffect(EffAssert.class, "assert <.+> with %string%")
             .noDoc()
             .register();
     }

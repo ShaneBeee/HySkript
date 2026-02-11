@@ -1,4 +1,4 @@
-test "EffChange":
+test "skript-parser-EffChange":
 	set {_a} to "ayy"
 	assert {_a} is "ayy" with "The var should be set"
 

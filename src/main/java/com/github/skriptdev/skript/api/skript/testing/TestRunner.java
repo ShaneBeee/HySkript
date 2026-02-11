@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.MessageUtil;
 import fi.sulku.hytale.TinyMsg;
+import io.github.syst3ms.skriptparser.lang.Statement;
 import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.LogType;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class TestRunner {
 
     private final TestResults testResults = new TestResults();
+    private final World world = Universe.get().getWorld("default");
 
     @SuppressWarnings("DataFlowIssue")
     public void start() {
@@ -37,10 +39,9 @@ public class TestRunner {
             loadTests();
             Utils.log("Finished loading test scripts!");
 
-            World world = Universe.get().getWorld("default");
-            if (world.isPaused()) world.setPaused(false);
+            if (this.world.isPaused()) this.world.setPaused(false);
 
-            world.execute(runTestsRunnable);
+            this.world.execute(runTestsRunnable);
         };
 
         // Delay start to make sure the server has finished loading
@@ -53,11 +54,20 @@ public class TestRunner {
     }
 
     private void runTests() {
-        TestContext testContext = new TestContext(this.testResults);
+        TestContext testContext = new TestContext(this.testResults, this.world);
+
+        // Catch exceptions and treat them as failures
+        Statement.setExceptionHandler(e ->
+            this.testResults.addFailure("Exception",
+                e.getClass().getSimpleName() + ": " + e.getMessage()));
+
+        // Run all the test triggers
         TriggerMap.callTriggersByContext(testContext);
 
+        // Process results
         this.testResults.process();
 
+        // Print results
         if (this.testResults.isSuccess()) {
             Message message = TinyMsg.parse("<green>All tests passed!");
             Utils.log(MessageUtil.toAnsiString(message).toAnsi());
@@ -68,9 +78,12 @@ public class TestRunner {
         }
 
         Utils.log("Finished running tests!");
-        this.testResults.printToProperties();
+
+        // Print results to file
+        this.testResults.printToJsonFile();
         this.testResults.clear();
 
+        // Shutdown server
         Runnable shutdownServer = () -> HytaleServer.get().shutdownServer();
         HytaleServer.SCHEDULED_EXECUTOR.schedule(shutdownServer, 2, TimeUnit.SECONDS);
     }

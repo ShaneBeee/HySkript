@@ -63,7 +63,7 @@ public class TestResults {
     }
 
     @SuppressWarnings({"CallToPrintStackTrace"})
-    public void printToProperties() {
+    public void printToJsonFile() {
         Path resolve = HySk.getInstance().getDataDirectory().resolve("test-results.json");
 
         try {

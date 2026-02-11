@@ -1,7 +1,7 @@
 function testFunc(s: string) :: string:
 	return "this is a test %{_s}%"
 
-test "EffReturn":
+test "skript-parser-EffReturn":
 	stop
 	# Broken function... TODO gotta check it out
 	set {_a} to testFunc("blah")

@@ -1,8 +1,10 @@
 package com.github.skriptdev.skript.api.skript.testing.elements;
 
+import com.github.skriptdev.skript.api.skript.event.WorldContext;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.api.skript.testing.TestResults;
 import com.github.skriptdev.skript.api.utils.Utils;
+import com.hypixel.hytale.server.core.universe.world.World;
 import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
 import io.github.syst3ms.skriptparser.lang.VariableString;
@@ -41,12 +43,14 @@ public class EvtTest extends SkriptEvent {
         return "test " + this.testSubject;
     }
 
-    public static final class TestContext implements TriggerContext {
+    public static final class TestContext implements WorldContext {
         private final TestResults testResults;
         private String testSubject;
+        private final World world;
 
-        public TestContext(TestResults testResults) {
+        public TestContext(TestResults testResults, World world) {
             this.testResults = testResults;
+            this.world = world;
         }
 
         public void setTestSubject(String testSubject) {
@@ -57,13 +61,18 @@ public class EvtTest extends SkriptEvent {
             return testSubject;
         }
 
+        public TestResults getTestResults() {
+            return this.testResults;
+        }
+
+        @Override
+        public World getWorld() {
+            return this.world;
+        }
+
         @Override
         public String getName() {
             return "test context";
-        }
-
-        public TestResults getTestResults() {
-            return this.testResults;
         }
     }
 

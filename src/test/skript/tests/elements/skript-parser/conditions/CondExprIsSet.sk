@@ -1,4 +1,4 @@
-test "CondExprIsSet":
+test "skript-parser-CondExprIsSet":
 	assert {_a} is not set with "The variable should not be set yet"
 	set {_a} to "blah"
 	assert {_a} is set with "The variable should now be set"

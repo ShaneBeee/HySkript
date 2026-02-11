@@ -1,0 +1,3 @@
+test "ExprWorld":
+	set {_w} to world named "default"
+	assert {_w} = event-world with "The default world should match our event-world"

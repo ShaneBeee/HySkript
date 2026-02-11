@@ -1,4 +1,4 @@
-test "ExprTernary":
+test "skript-parser-ExprTernary":
 	set {_a} to "test"
 	set {_b} to {_a} is set ? {_a} : "something else"
 	assert {_b} = "test" with "It should have picked up {_a}"

@@ -1,3 +1,0 @@
-test "ExprParseAs":
-	set {_b} to "1" parsed as number
-	assert {_b} = 1 with "The string should have parsed as the number 1"

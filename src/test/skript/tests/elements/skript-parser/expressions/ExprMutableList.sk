@@ -1,4 +1,4 @@
-test "ExprMutableList":
+test "skript-parser-ExprMutableList":
 	set {_a::*} to "nine", "three", "four" and "ten"
 	set {_a::*} to sorted {_a::*}
 	assert 1st element of {_a::*} = "four" with "Four should have been the first after sorting"

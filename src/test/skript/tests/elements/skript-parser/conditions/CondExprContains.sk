@@ -1,4 +1,4 @@
-test "CondExprContains":
+test "skript-parser-CondExprContains":
 	assert {_blah::*} does not contain "blah" with "The variable shouldn't contain the string"
 	add "blah" to {_blah::*}
 	assert {_blah::*} contains "blah" with "The variable should contain the string"

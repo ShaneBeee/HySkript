@@ -1,0 +1,3 @@
+test "ExprWorldSpawn":
+	set {_a} to world spawn of event-world
+	assert {_a} is set with "The variable should be set to spawn"
