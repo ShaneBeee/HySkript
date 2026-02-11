@@ -1,5 +1,6 @@
 package com.github.skriptdev.skript.api.hytale;
 
+import com.github.skriptdev.skript.api.hytale.utils.LocationUtils;
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.math.vector.Vector3d;
 
@@ -33,11 +34,13 @@ public enum Direction {
     }
 
     public Location apply(Location location, Number offset) {
-        return function.apply(location, offset);
+        Location clone = LocationUtils.clone(location);
+        return function.apply(clone, offset);
     }
 
     public Location apply(Location location) {
-        return function.apply(location, 1);
+        Location clone = LocationUtils.clone(location);
+        return function.apply(clone, 1);
     }
 
     public String getName() {

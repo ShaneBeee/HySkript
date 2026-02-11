@@ -1,4 +1,4 @@
-package com.github.skriptdev.skript.api.hytale;
+package com.github.skriptdev.skript.api.hytale.utils;
 
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;

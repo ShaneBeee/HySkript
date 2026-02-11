@@ -1,4 +1,4 @@
-package com.github.skriptdev.skript.api.hytale;
+package com.github.skriptdev.skript.api.hytale.utils;
 
 import com.hypixel.hytale.component.AddReason;
 import com.hypixel.hytale.component.Component;
