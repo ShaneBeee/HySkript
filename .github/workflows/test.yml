@@ -1,5 +1,8 @@
 name: Get Hytale Auth
-on: workflow_dispatch # Allows you to run it manually from the "Actions" tab
+on:
+  workflow_dispatch: # Allows you to run it manually from the "Actions" tab
+  push:
+    branches: [ dev/testing ]
 jobs:
   auth:
     runs-on: ubuntu-latest
@@ -9,3 +12,5 @@ jobs:
           wget https://downloader.hytale.com/hytale-downloader-linux-amd64 -O downloader
           chmod +x downloader
           ./downloader # This will print the URL and Code to the logs
+          echo "URL: ${{ steps.downloader.outputs.url }}"
+          echo "Code: ${{ steps.downloader.outputs.code }}"
