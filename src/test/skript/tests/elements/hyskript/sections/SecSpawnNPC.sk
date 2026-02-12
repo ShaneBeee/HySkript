@@ -1,0 +1,7 @@
+test "SecSpawnNPC":
+	set {_l} to world spawn location of event-world
+	spawn a sheep at {_l}:
+		set {_e} to event-spawned-npc
+
+	assert {_e} is set with "The sheep should have spawned"
+	assert "%{_e}%" = "NPCEntity{role=Sheep}" with "It should be a sheep"

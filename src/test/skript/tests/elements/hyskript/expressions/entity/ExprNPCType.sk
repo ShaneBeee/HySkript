@@ -1,0 +1,6 @@
+test "ExprNPCType":
+	set {_loc} to world spawn of event-world
+	spawn a sheep at {_loc}:
+		set {_e} to event-spawned-npc
+
+	assert npc type of {_e} == Sheep with "Should be a sheep, but found %npc type of {_e}%"

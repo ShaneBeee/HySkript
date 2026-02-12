@@ -1,0 +1,13 @@
+test "ExprBlockAt":
+	set {_loc} to location(0, 200, 0, event-world)
+	assert block at {_loc} is set with "The block should be set"
+	assert blocktype of block at {_loc} == Empty with "High chance a block that high is empty/air, but found: %block type of block at {_loc}%"
+
+	set blocktype of block at {_loc} to rock_stone
+	assert blocktype of block at {_loc} == rock_stone with "Blocktype should be rock_stone"
+
+	# Let's set it back in case we re-run a test on the same server
+	set blocktype of block at {_loc} to empty
+
+	set {_loc} to location(0, 0, 0, event-world)
+	assert blocktype of block at {_loc} == rock_bedrock with "It should be bedrock down there"

@@ -1,0 +1,4 @@
+test "ExprLocationOf":
+	set {_loc} to location(0, 0, 0, event-world)
+	set {_b} to block at {_loc}
+	assert location of {_b} = {_loc} with "The location of the block should be the same as the original location"
