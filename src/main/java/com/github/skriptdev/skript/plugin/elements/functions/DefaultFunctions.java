@@ -12,13 +12,105 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import io.github.syst3ms.skriptparser.structures.functions.FunctionParameter;
 import io.github.syst3ms.skriptparser.structures.functions.Functions;
 import io.github.syst3ms.skriptparser.structures.functions.JavaFunction;
+import io.github.syst3ms.skriptparser.util.SkriptDate;
+import io.github.syst3ms.skriptparser.util.Time;
 import org.bson.BsonDocument;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class DefaultFunctions {
 
     public static void register(SkriptRegistration reg) {
+        dateTimeFunctions(reg);
         itemFunctions(reg);
         positionFunctions(reg);
+    }
+
+    private static void dateTimeFunctions(SkriptRegistration reg) {
+        Functions.newJavaFunction(reg, new JavaFunction<>(
+                "date",
+                new FunctionParameter[]{
+                    new FunctionParameter<>("year", Number.class, true),
+                    new FunctionParameter<>("month", Number.class, true),
+                    new FunctionParameter<>("day", Number.class, true)
+                },
+                SkriptDate.class,
+                true
+            ) {
+                @Override
+                public SkriptDate[] executeSimple(Object[][] params) {
+                    Number year = (Number) params[0][0];
+                    Number month = (Number) params[1][0];
+                    Number day = (Number) params[2][0];
+                    LocalDateTime localDateTime = LocalDateTime.of(year.intValue(), month.intValue(),
+                        day.intValue(), 0, 0);
+                    long epochSecond = localDateTime.toEpochSecond(ZoneOffset.systemDefault().getRules().getOffset(localDateTime));
+                    return new SkriptDate[]{SkriptDate.of(epochSecond * 1000)};
+                }
+            })
+            .name("Date")
+            .description("Creates a new Date with the given parameters.")
+            .examples("set {_date} to date(2026, 1, 1)")
+            .since("INSERT VERSION")
+            .register();
+
+        Functions.newJavaFunction(reg, new JavaFunction<>(
+                "dateTime",
+                new FunctionParameter[]{
+                    new FunctionParameter<>("year", Number.class, true),
+                    new FunctionParameter<>("month", Number.class, true),
+                    new FunctionParameter<>("day", Number.class, true),
+                    new FunctionParameter<>("hour", Number.class, true),
+                    new FunctionParameter<>("minute", Number.class, true),
+                    new FunctionParameter<>("second", Number.class, true)
+                },
+                SkriptDate.class,
+                true) {
+                @Override
+                public SkriptDate[] executeSimple(Object[][] params) {
+                    Number year = (Number) params[0][0];
+                    Number month = (Number) params[1][0];
+                    Number day = (Number) params[2][0];
+                    Number hour = (Number) params[3][0];
+                    Number minute = (Number) params[4][0];
+                    Number second = (Number) params[5][0];
+                    LocalDateTime localDateTime = LocalDateTime.of(year.intValue(), month.intValue(),
+                        day.intValue(), hour.intValue(), minute.intValue(), second.intValue());
+                    long epochSecond = localDateTime.toEpochSecond(ZoneOffset.systemDefault().getRules().getOffset(localDateTime));
+                    return new SkriptDate[]{SkriptDate.of(epochSecond * 1000)};
+                }
+            })
+            .name("DateTime")
+            .description("Creates a new Date with a time with the given parameters.",
+                "Reminder this is on a 24 hour clock.")
+            .examples("set {_date} to dateTime(2026, 1, 1, 12, 30, 0)")
+            .since("INSERT VERSION")
+            .register();
+
+        Functions.newJavaFunction(reg, new JavaFunction<>(
+                "time",
+                new FunctionParameter[]{
+                    new FunctionParameter<>("hour", Number.class, true),
+                    new FunctionParameter<>("minute", Number.class, true),
+                    new FunctionParameter<>("second", Number.class, true)
+                },
+                Time.class,
+                true) {
+                @Override
+                public Time[] executeSimple(Object[][] params) {
+                    Number hour = (Number) params[0][0];
+                    Number minute = (Number) params[1][0];
+                    Number second = (Number) params[2][0];
+                    return new Time[]{Time.of(hour.intValue(), minute.intValue(), second.intValue(), 0)};
+                }
+            })
+            .name("Time")
+            .description("Creates a new Time with the given parameters.",
+                "Reminder this is on a 24 hour clock.")
+            .examples("set {_time} to time(12, 0, 0)")
+            .since("INSERT VERSION")
+            .register();
     }
 
     private static void itemFunctions(SkriptRegistration reg) {
@@ -77,7 +169,7 @@ public class DefaultFunctions {
             .since("1.0.0")
             .register();
 
-        Functions.newJavaFunction(reg,new JavaFunction<>(
+        Functions.newJavaFunction(reg, new JavaFunction<>(
                 "vector3i",
                 new FunctionParameter[]{
                     new FunctionParameter<>("x", Number.class, true),
