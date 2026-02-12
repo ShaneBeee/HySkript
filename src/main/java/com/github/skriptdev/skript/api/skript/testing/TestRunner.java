@@ -13,6 +13,7 @@ import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.LogType;
 import io.github.syst3ms.skriptparser.parsing.ScriptLoader;
+import io.github.syst3ms.skriptparser.registration.SkriptAddon;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -92,6 +93,8 @@ public class TestRunner {
         File scriptsDirectory = directory.toFile();
         Utils.log("Loading test directory '" + scriptsDirectory.getAbsolutePath() + "'...");
         List<String> scriptNames = loadScriptsInDirectory(scriptsDirectory);
+        SkriptAddon.getAddons().forEach(SkriptAddon::finishedLoading);
+
         Utils.log("Loaded " + scriptNames.size() + " scripts!");
     }
 
