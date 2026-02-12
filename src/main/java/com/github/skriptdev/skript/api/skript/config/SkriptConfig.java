@@ -8,6 +8,8 @@ import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
 import io.github.syst3ms.skriptparser.log.ErrorType;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
+import io.github.syst3ms.skriptparser.util.SkriptDate;
+import io.github.syst3ms.skriptparser.util.Time;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -87,6 +89,16 @@ public class SkriptConfig {
 
         // Set up commands generate permissions
         this.commandsGeneratePermissions = this.config.getBoolean("commands-generate-permissions", true);
+
+        // Setup Date/Time formats
+        String time = this.config.getString("default-time-format", "HH:mm:ss");
+        if (time != null) {
+            Time.setDefaultTimeFormat(time);
+        }
+        String date = this.config.getString("default-date-format", "EEEE dd MMMM yyyy HH:mm:ss");
+        if (date != null) {
+            SkriptDate.setDefaultDateFormat(date);
+        }
 
         logger.finalizeLogs();
         for (LogEntry logEntry : logger.close()) {

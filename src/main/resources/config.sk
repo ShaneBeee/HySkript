@@ -18,6 +18,13 @@ max-target-block-distance: 160
 # You can also disable it per command in the command entries.
 commands-generate-permissions: true
 
+# The default time and date formats.
+# Time: default would show as "17:30:00"
+default-time-format: HH:mm:ss
+
+# Date: default would show as "Thursday 12 February 2026 17:30:00"
+default-date-format: EEEE dd MMMM yyyy HH:mm:ss
+
 # Effect commands allow you to execute effects in chat.
 effect-commands:
 	# Whether or not effect commands are enabled.
