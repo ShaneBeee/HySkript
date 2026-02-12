@@ -1,0 +1,4 @@
+test "ExprDistance":
+	set {_a} to location(0, 0, 0, event-world)
+	set {_b} to location(0, 100, 0, event-world)
+	assert distance between {_a} and {_b} is 100 with "The locations are 100 blocks apart"

@@ -1,0 +1,7 @@
+test "skript-parser-EffExit":
+	assert {_a} is not set with "The variable should not be set yet"
+	loop 10 times:
+		set {_a} to loop-value
+		exit loop
+
+	assert {_a} = 1 with "The loop should have stopped after 1 iteration"

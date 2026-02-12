@@ -1,0 +1,5 @@
+test "ExprLocationDirection":
+	set {_l1} to location(0, 0, 0, event-world)
+	set {_l2} to location 10 blocks north of {_l1}
+	set {_distance} to distance between {_l1} and {_l2}
+	assert {_distance} is 10 with "The new location should be 10 blocks away, but found %{_distance}%"

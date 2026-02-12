@@ -1,0 +1,4 @@
+test "skript-parser-ExprElement":
+	set {_a::*} to "one", "two" and "three"
+	set {_b} to 2nd element of {_a::*}
+	assert {_b} is "two" with "The second element should have been 'two'"

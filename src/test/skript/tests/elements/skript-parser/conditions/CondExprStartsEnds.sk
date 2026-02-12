@@ -1,0 +1,4 @@
+test "skript-parser-CondExprStartsEnds":
+	# TODO neither of these seem to work
+	#assert ("blah" does not start with "cheese") with "Blah shouldn't start with cheese"
+	#assert ("cheese is the best" starts with "cheese") with "Cheese is the best should start with cheese"

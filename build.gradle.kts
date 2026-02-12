@@ -15,6 +15,11 @@ val hytaleVersion = "2026.02.06-aa1b071c2"
 // https://maven.hytale.com/pre-release/com/hypixel/hytale/Server/maven-metadata.xml
 // (Pre-releases shouldn't be used for production)
 
+// Location of the Hytale Server Assets
+// This is used in testing
+// Change this to wherever you have it on your computer
+val assetLocation = "/Users/ShaneBee/Desktop/Server/Hytale/Assets/Assets.zip"
+
 repositories {
     mavenCentral()
     mavenLocal()
@@ -34,6 +39,12 @@ dependencies {
     }
 }
 
+// This is used to enable Gson in the test environment via HytaleServer
+val testRunnerClasspath by configurations.creating {
+    extendsFrom(configurations.compileOnly.get())
+    isCanBeResolved = true
+}
+
 tasks {
     register("server", Copy::class) {
         dependsOn("jar")
@@ -41,6 +52,14 @@ tasks {
             include("HySkript-*.jar")
             destinationDir = file("/Users/ShaneBee/Desktop/Server/Hytale/Creative/mods/")
         }
+    }
+    register<JavaExec>("testRunner") {
+        dependsOn("jar")
+        group = "application"
+        mainClass.set("com.github.skriptdev.skript.api.skript.testing.TestRunnerMain")
+        args(hytaleVersion, assetLocation)
+
+        classpath = sourceSets["main"].runtimeClasspath + testRunnerClasspath
     }
     processResources {
         filesNotMatching("assets/**") {

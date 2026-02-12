@@ -1,0 +1,6 @@
+function testFunc(s: string) :: string:
+	return "this is a test %{_s}%"
+
+test "skript-parser-EffReturn":
+	set {_a} to testFunc("blah")
+	assert {_a} is "this is a test blah" with "The function should return the value, but found: %{_a}%"

@@ -1,0 +1,6 @@
+test "SecDropItem":
+	set {_l} to world spawn of event-world
+	drop ingredient_stick at {_l}:
+		set {_i} to event-item-component
+
+	assert {_i} is set with "The item should have dropped"

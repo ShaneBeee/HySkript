@@ -1,0 +1,7 @@
+test "ExprCast":
+	set {_a} to ingredient_poop as BlockType
+	assert class info of {_a} is "BlockType" with "The type should be BlockType"
+
+	set {_a} to 1 as float
+	assert {_a} is 1.0 with "The cast should work"
+	assert class info of {_a} is "Float" with "The type should be Float"

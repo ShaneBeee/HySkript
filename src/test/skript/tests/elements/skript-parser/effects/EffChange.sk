@@ -1,0 +1,13 @@
+test "skript-parser-EffChange":
+	set {_a} to "ayy"
+	assert {_a} is "ayy" with "The var should be set"
+
+	set {_b} to 0
+	add 10 to {_b}
+	assert {_b} is 10 with "The var should be 10 after adding"
+
+	remove 5 from {_b}
+	assert {_b} is 5 with "The var should be 5 after removing"
+
+	delete {_b}
+	assert {_b} is not set with "The var should be deleted"

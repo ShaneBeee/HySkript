@@ -6,6 +6,8 @@ import com.github.skriptdev.skript.api.skript.addon.AddonLoader;
 import com.github.skriptdev.skript.api.skript.command.ArgUtils;
 import com.github.skriptdev.skript.api.skript.config.SkriptConfig;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.api.skript.testing.TestProperties;
+import com.github.skriptdev.skript.api.skript.testing.TestRunner;
 import com.github.skriptdev.skript.api.skript.variables.JsonVariableStorage;
 import com.github.skriptdev.skript.api.utils.ReflectionUtils;
 import com.github.skriptdev.skript.api.utils.Utils;
@@ -106,6 +108,12 @@ public class Skript extends SkriptAddon {
             Utils.debug("Hytale finished booting, starting post-load triggers...");
             // Start any post-load triggers after Hytale finishes booting.
             getAddons().forEach(SkriptAddon::finishedLoading);
+
+            // RUN TESTS
+            if (TestProperties.ENABLED) {
+                TestRunner testRunner = new TestRunner();
+                testRunner.start();
+            }
         });
     }
 
@@ -189,7 +197,7 @@ public class Skript extends SkriptAddon {
      *
      * @return The Skript registration.
      */
-    public @NotNull io.github.syst3ms.skriptparser.registration.SkriptRegistration getSkriptRegistration() {
+    public @NotNull SkriptRegistration getSkriptRegistration() {
         return this.registration;
     }
 

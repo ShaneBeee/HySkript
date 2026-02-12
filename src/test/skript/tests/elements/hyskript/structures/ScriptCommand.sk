@@ -1,0 +1,8 @@
+command /letest:
+	trigger:
+		set {-var::in_command} to true
+
+test "ScriptCommand":
+	execute console command "/letest"
+	wait 1 tick # The command is async so we have to wait
+	assert {-var::in_command} is true with "The command should run and set the var"

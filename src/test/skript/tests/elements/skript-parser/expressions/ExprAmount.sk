@@ -1,0 +1,4 @@
+test "skript-parser-ExprAmount":
+	assert size of {_a::*} = 0 with "The unset variable should be empty"
+	set {_a::*} to 1, 2 and 3
+	assert size of {_a::*} = 3 with "The variable should have three elements"

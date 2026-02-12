@@ -1,0 +1,12 @@
+test "ExprClassInfoOf":
+	set {_i} to itemstack of ingredient_poop
+	assert classinfo of {_i} = "Item Stack" with "Should be an itemstack but found %classinfo of {_i}%"
+
+	set {_loc} to location(0, 0, 0, event-world)
+	assert classinfo of {_loc} = "Location" with "Should be a Location, but found %classinfo of {_loc}%"
+
+	set {_b} to block at {_loc}
+	assert classinfo of {_b} = "Block" with "Should be a block, but found %classinfo of {_b}%"
+
+	set {_bt} to blocktype of {_b}
+	assert classinfo of {_bt} = "BlockType" with "Should be a BlockType but found %classinfo of {_bt}%"

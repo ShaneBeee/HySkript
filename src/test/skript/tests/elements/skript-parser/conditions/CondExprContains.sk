@@ -1,0 +1,7 @@
+test "skript-parser-CondExprContains":
+	assert {_blah::*} does not contain "blah" with "The variable shouldn't contain the string"
+	add "blah" to {_blah::*}
+	assert {_blah::*} contains "blah" with "The variable should contain the string"
+
+	assert "blah blah blah" does not contain "cheese" with "The string shouldn't contain the substring"
+	assert "I love cheese" contains "cheese" with "The string should contain the substring"

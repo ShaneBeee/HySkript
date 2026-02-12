@@ -1,0 +1,5 @@
+test "skript-parser-ExprParseAs":
+	set {_b} to "1" parsed as Number
+
+	# You broken too? TODO fix
+	# assert {_b} = 1 with "The string should have parsed as the number 1, but found %{_b}%//%class info of {_b}%"

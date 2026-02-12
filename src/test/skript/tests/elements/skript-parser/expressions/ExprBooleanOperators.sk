@@ -1,0 +1,3 @@
+test "skript-parser-ExprBooleanOperators":
+	assert ((1 + 1 == 2) && (2 + 2 == 4)) with "Both booleans should match"
+	assert ((1 + 1 == 5) || (2 + 2 == 4)) with "One of the booleans (the second) should match"

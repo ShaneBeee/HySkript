@@ -1,0 +1,2 @@
+test "skript-parser-ExprLength":
+	assert length of "hi bob" = 6 with "There should be 6 characters in the string."

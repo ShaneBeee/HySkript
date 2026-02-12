@@ -23,6 +23,8 @@ This way the team can discuss with you whether or not we want this in HySkript.
 - Use descriptive commit messages
 - Use descriptive PR titles
 - Ensure you follow the code style of this project
+- Do make sure you add tests and run the test to make sure it works. 
+  - See the [Testing Guide](https://github.com/SkriptDev/HySkript/tree/master/src/test/README.md) for more information.
 
 ### Don't:
 - Don't commit directly to `master`
@@ -60,3 +62,6 @@ This way the team can discuss with you whether or not we want this in HySkript.
     - For expressions, please provide an example of using the getter as well as each changer you have applied.
     - For all others, please provide at least one example per pattern.
     - Please see other examples in HySkript for further inspiration.
+
+### Tests:
+See the [Testing Guide](https://github.com/SkriptDev/HySkript/tree/master/src/test/README.md) for more information.

@@ -1,0 +1,6 @@
+test "skript-parser-EffDoIf":
+	do set {_a} to 1 if 1 = 10
+	assert {_a} is not set with "The do should have been skipped"
+
+	do set {_a} to 1 if 1 = 1
+	assert {_a} is 1 with "The do should have been executed"

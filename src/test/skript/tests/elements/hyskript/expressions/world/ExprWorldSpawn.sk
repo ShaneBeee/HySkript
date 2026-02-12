@@ -1,0 +1,8 @@
+test "ExprWorldSpawn":
+	set {_a} to world spawn of event-world
+	assert {_a} is set with "The variable should be set to spawn"
+
+	set {_w} to world("default")
+	assert {_w} = event-world with "The world should match"
+	set {_b} to world spawn of {_w}
+	assert {_b} = {_a} with "The spawn should be the same"

@@ -1,0 +1,10 @@
+test "skript-parser-CondCompare":
+	assert 1 = 1 with "1 should equal 1"
+	assert 1 != 2 with "1 should not equal 2"
+
+	assert 1 < 2 with "1 should be less than 2"
+	assert 2 > 1 with "2 should be greater than 1"
+
+	set {_a} to ingredient_poop
+	set {_b} to ingredient_stick
+	assert {_a} != {_b} with "Poop and a stick should not be equal"

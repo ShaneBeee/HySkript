@@ -1,0 +1,4 @@
+test "skript-parser-CondExprIsEmpty":
+	#assert {_a::*} is empty with "The unset variable should be empty" TODO this fails, tries to compare to "empty" (Item/BlockType probably)
+	set {_a::*} to 1, 2 and 3
+	assert {_a::*} is not empty with "The variable should not be empty after setting it"

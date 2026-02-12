@@ -79,6 +79,11 @@ public class Utils {
         log(null, Level.INFO, message, args);
     }
 
+    public static void logColored(String message, Object... args) {
+        String ansi = MessageUtil.toAnsiString(TinyMsg.parse(message)).toAnsi();
+        log(null, Level.INFO, ansi, args);
+    }
+
     public static void log(IMessageReceiver receiver, String message, Object... args) {
         log(receiver, Level.INFO, message, args);
     }

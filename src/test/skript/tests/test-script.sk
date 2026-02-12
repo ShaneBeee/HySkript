@@ -1,0 +1,7 @@
+test "Basic HySkript Test":
+	set {_spawn} to world spawn of world("default")
+	assert {_spawn} is set with "The main spawn point of the world should be set"
+
+	spawn a sheep at {_spawn}:
+		set {_sheep} to event-spawned-entity
+		assert {_sheep} is set with "The sheep entity should be set"

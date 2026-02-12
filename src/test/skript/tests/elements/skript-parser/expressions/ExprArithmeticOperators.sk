@@ -1,0 +1,3 @@
+test "skript-parser-ExprArithmeticOperators":
+	assert 1 + 2 == 3 with "1 + 2 should equal 3"
+	assert 1 + 2 != 5 with "1 + 2 should not equal 5"
