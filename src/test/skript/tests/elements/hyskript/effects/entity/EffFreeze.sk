@@ -1,0 +1,9 @@
+test "EffFreeze":
+	spawn a sheep at world spawn of event-world:
+		set {_e} to event-spawned-entity
+
+	assert {_e} is not frozen with "The sheep shouldn't be frozen yet"
+	freeze {_e}
+	assert {_e} is frozen with "The sheep should now be frozen"
+	unfreeze {_e}
+	assert {_e} is not frozen with "The sheep should no longer be frozen"
