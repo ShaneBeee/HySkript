@@ -18,6 +18,7 @@ import com.github.skriptdev.skript.plugin.elements.effects.other.EffCancelEvent;
 import com.github.skriptdev.skript.plugin.elements.effects.other.EffDelay;
 import com.github.skriptdev.skript.plugin.elements.effects.player.EffKick;
 import com.github.skriptdev.skript.plugin.elements.effects.other.EffSendTitle;
+import com.github.skriptdev.skript.plugin.elements.effects.player.EffOpenItemContainer;
 import com.github.skriptdev.skript.plugin.elements.effects.server.EffServerShutdown;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffChunkRegenerate;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffExplosion;
@@ -51,8 +52,9 @@ public class EffectHandler {
         EffBan.register(registration);
         EffConnect.register(registration);
         EffKick.register(registration);
+        EffOpenItemContainer.register(registration);
 
-        // SERVERE
+        // SERVER
         EffServerShutdown.register(registration);
 
         // WORLD

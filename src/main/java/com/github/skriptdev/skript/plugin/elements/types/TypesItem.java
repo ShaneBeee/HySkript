@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.hypixel.hytale.codec.ExtraInfo;
 import com.hypixel.hytale.protocol.InventoryActionType;
+import com.hypixel.hytale.protocol.packets.interface_.Page;
 import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.CombinedItemContainer;
@@ -115,6 +116,11 @@ public class TypesItem {
             .name("Inventory Action Type")
             .description("Represents the types of actions that can be performed in an inventory.")
             .since("1.0.0")
+            .register();
+        reg.newEnumType(Page.class, "page", "page@s")
+            .name("Page")
+            .description("Represents a page type of an inventory.")
+            .since("INSERT VERSION")
             .register();
     }
 
