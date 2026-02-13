@@ -470,6 +470,15 @@ public class JsonDocPrinter {
         for (String s : documentation.getDescription()) {
             descriptionArray.add(new BsonString(s));
         }
+        // TEMP EXPERIMENTAL TODO
+        if (documentation.isExperimental()) {
+            descriptionArray.add(new BsonString(" "));
+            descriptionArray.add(new BsonString("**This feature is experimental and may change in future versions.**"));
+            String experimentalMessage = documentation.getExperimentalMessage();
+            if (experimentalMessage != null) {
+                descriptionArray.add(new BsonString(experimentalMessage));
+            }
+        }
         syntaxDoc.put("description", descriptionArray);
 
         // USAGE
