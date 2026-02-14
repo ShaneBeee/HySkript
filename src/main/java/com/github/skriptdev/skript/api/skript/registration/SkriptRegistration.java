@@ -92,7 +92,6 @@ public class SkriptRegistration extends io.github.syst3ms.skriptparser.registrat
             this.supplier = () -> assetStoreValues.values().stream().iterator();
             this.literalParser = s -> this.assetStoreValues.get(s.toLowerCase(Locale.ROOT).replace(" ", "_"));
             this.toStringFunction = JsonAsset::getId;
-            this.toVariableNameFunction = c -> baseName + ":" + c.getId().toLowerCase(Locale.ROOT).replace(" ", "_");
         }
 
         /**
@@ -242,7 +241,6 @@ public class SkriptRegistration extends io.github.syst3ms.skriptparser.registrat
             this.supplier = () -> this.values.values().iterator();
             this.literalParser = s -> this.values.get(s.toLowerCase(Locale.ROOT).replace(" ", "_"));
             this.toStringFunction = e -> e.name().toLowerCase(Locale.ROOT);
-            this.toVariableNameFunction = e -> this.baseName + ":" + e.name().toLowerCase(Locale.ROOT).replace(" ", "_");
         }
 
 

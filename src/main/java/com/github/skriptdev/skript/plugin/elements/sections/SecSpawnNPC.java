@@ -17,6 +17,7 @@ import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import io.github.syst3ms.skriptparser.parsing.ParserState;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import io.github.syst3ms.skriptparser.registration.context.ContextValue;
+import io.github.syst3ms.skriptparser.variables.VariableMap;
 import io.github.syst3ms.skriptparser.variables.Variables;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,26 +25,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SecSpawnNPC extends CodeSection {
 
-    public static class SpawnMobContext implements TriggerContext {
-
-        private final Entity entity;
-
-        public SpawnMobContext(Entity entity) {
-            this.entity = entity;
-        }
-
-        public Entity getEntity() {
-            return this.entity;
-        }
+    public record SpawnMobContext(Entity entity) implements TriggerContext {
 
         @Override
-        public String getName() {
-            return "spawn_mob";
+            public String getName() {
+                return "spawn_mob";
+            }
         }
-    }
 
     public static void register(SkriptRegistration registration) {
         registration.newSection(SecSpawnNPC.class, "spawn [a|an] %npcrole% at %location%")
@@ -58,11 +50,11 @@ public class SecSpawnNPC extends CodeSection {
             .register();
 
         registration.newSingleContextValue(SpawnMobContext.class, Entity.class,
-                "spawned-entity", SpawnMobContext::getEntity)
+                "spawned-entity", SpawnMobContext::entity)
             .setUsage(ContextValue.Usage.EXPRESSION_OR_ALONE)
             .register();
         registration.newSingleContextValue(SpawnMobContext.class, Entity.class,
-                "spawned-npc", SpawnMobContext::getEntity)
+                "spawned-npc", SpawnMobContext::entity)
             .setUsage(ContextValue.Usage.EXPRESSION_OR_ALONE)
             .register();
     }
@@ -105,22 +97,38 @@ public class SecSpawnNPC extends CodeSection {
         Vector3f rotation = location.getRotation().clone();
         if (Float.isNaN(rotation.getX())) rotation = Vector3f.ZERO;
 
+        AtomicReference<VariableMap> vars = new AtomicReference<>();
+        VariableMap variableMap = Variables.copyLocalVariables(ctx);
+        vars.set(variableMap);
+
         NPCPlugin.get().spawnEntity(store, roleSingle.get().index(), location.getPosition().clone(), rotation, null, (npcEntity, _, _) -> {
             SpawnMobContext spawnMobContext = new SpawnMobContext(npcEntity);
 
-            // Copy the variables from the main TriggerContext into the SpawnMobContext
-            Variables.copyLocalVariables(ctx, spawnMobContext);
+            // Copy the locals from the previous trigger into this context
+            Variables.setLocalVariables(spawnMobContext, vars.get());
+
             setNext(null);
             firstStatement.ifPresent(statement ->
                 Statement.runAll(statement, spawnMobContext));
 
             // After that is run, copy them back
-            Variables.copyLocalVariables(spawnMobContext, ctx);
+            VariableMap map = Variables.copyLocalVariables(spawnMobContext);
+            vars.set(map);
+
             // Clear locals from the no longer used SpawnMobContext
             Variables.clearLocalVariables(spawnMobContext);
-        }, null);
+        }, (npcEntity, entityStoreRef, entityStoreStore) -> {
+            nextStatement.ifPresent(statement -> {
+                // Take the previous local variables and use them again in this context
+                Variables.setLocalVariables(ctx, vars.get());
+                Statement.runAll(statement, ctx);
 
-        return nextStatement;
+                // Now we're done, we can clear them out
+                Variables.clearLocalVariables(ctx);
+            });
+        });
+
+        return Optional.empty();
     }
 
     @Override

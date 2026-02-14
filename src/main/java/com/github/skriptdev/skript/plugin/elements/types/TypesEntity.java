@@ -1,6 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.types;
 
-import com.github.skriptdev.skript.api.hytale.EntityUtils;
+import com.github.skriptdev.skript.api.hytale.utils.EntityUtils;
 import com.github.skriptdev.skript.api.skript.registration.NPCRegistry;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.component.Ref;

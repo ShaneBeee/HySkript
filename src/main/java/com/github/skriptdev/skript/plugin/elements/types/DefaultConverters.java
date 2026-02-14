@@ -1,6 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.types;
 
-import com.github.skriptdev.skript.api.hytale.EntityUtils;
+import com.github.skriptdev.skript.api.hytale.utils.EntityUtils;
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3f;

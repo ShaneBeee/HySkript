@@ -41,7 +41,7 @@ public class ExprWorldSpawn extends PropertyExpression<World, Location> {
         if (spawnProvider == null) return null;
 
         Transform spawnPoint = spawnProvider.getSpawnPoint(world, RANDOM_UUID);
-        return new Location(spawnPoint);
+        return new Location(world.getName(), spawnPoint);
     }
 
     @Override

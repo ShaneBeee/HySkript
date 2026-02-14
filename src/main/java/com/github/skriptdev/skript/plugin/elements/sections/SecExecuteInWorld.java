@@ -49,7 +49,7 @@ public class SecExecuteInWorld extends CodeSection {
                 // Place the variables back into the original context
                 // This is done in case World#execute is delayed
                 Variables.copyLocalVariables(dummy, ctx);
-                firstStatement.walk(ctx);
+                Statement.runAll(firstStatement, ctx);
 
                 // Clear out old variables
                 Variables.clearLocalVariables(dummy);

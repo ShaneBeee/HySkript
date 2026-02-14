@@ -1,6 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.types;
 
-import com.github.skriptdev.skript.api.hytale.EntityUtils;
+import com.github.skriptdev.skript.api.hytale.utils.EntityUtils;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.entity.entities.Player;

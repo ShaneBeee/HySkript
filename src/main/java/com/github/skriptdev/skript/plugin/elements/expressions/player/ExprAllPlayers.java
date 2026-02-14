@@ -1,6 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.expressions.player;
 
-import com.github.skriptdev.skript.api.hytale.PlayerUtils;
+import com.github.skriptdev.skript.api.hytale.utils.PlayerUtils;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.world.World;
 import io.github.syst3ms.skriptparser.lang.Expression;

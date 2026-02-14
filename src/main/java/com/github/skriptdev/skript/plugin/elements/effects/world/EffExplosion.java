@@ -1,6 +1,6 @@
 package com.github.skriptdev.skript.plugin.elements.effects.world;
 
-import com.github.skriptdev.skript.api.hytale.StoreUtils;
+import com.github.skriptdev.skript.api.hytale.utils.StoreUtils;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
