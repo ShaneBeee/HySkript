@@ -61,6 +61,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorld;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorldOf;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorldSpawn;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorldDateTime;
+import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprWorldTPS;
 
 public class ExpressionHandler {
 
@@ -139,6 +140,7 @@ public class ExpressionHandler {
         ExprWorldDateTime.register(registration);
         ExprWorldOf.register(registration);
         ExprWorldSpawn.register(registration);
+        ExprWorldTPS.register(registration);
 
         // TEST
         ExprCurrentContext.register(registration);

@@ -1,0 +1,6 @@
+test "ExprWorldTPS":
+	assert world tps of event-world = 30 with "The default should be 30"
+	set world tps of event-world to 10
+	assert world tps of event-world = 10 with "The tps should now be changed"
+	reset world tps of event-world
+	assert world tps of event-world = 30 with "The default should be 30 after reset"
