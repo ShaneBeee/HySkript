@@ -1,0 +1,5 @@
+test "ExprLocationOffset":
+	set {_loc} to location(0, 0, 0, event-world)
+	set {_newLoc} to {_loc} offset by vector3i(0, 10, 0)
+	set {_shouldBe} to location(0, 10, 0, event-world)
+	assert {_newLoc} = {_shouldBe} with "the locations should match after offsetting"
