@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.hypixel.hytale.codec.ExtraInfo;
 import com.hypixel.hytale.protocol.InventoryActionType;
+import com.hypixel.hytale.protocol.packets.interface_.Page;
 import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.CombinedItemContainer;
@@ -120,6 +121,11 @@ public class TypesItem {
                     return ItemStack.CODEC.decode(BsonDocument.parse(element.toString()), new ExtraInfo());
                 }
             })
+            .register();
+        reg.newEnumType(Page.class, "page", "page@s")
+            .name("Page")
+            .description("Represents a page type of an inventory window.")
+            .since("INSERT VERSION")
             .register();
     }
 
