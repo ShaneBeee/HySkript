@@ -1,0 +1,12 @@
+test "ExprCoordinates":
+	set {_loc} to location(0, 0, 0, event-world)
+	set x coord of {_loc} to 10
+	assert x coord of {_loc} = 10 with "The x coord should now be 10"
+	assert {_loc} = location(10, 0, 0, event-world) with "The locations should match after X change"
+
+	add 5 to y coord of {_loc}
+	assert {_loc} = location(10, 5, 0, event-world) with "The locations should match after Y change"
+
+	set {_vec} to vector3i(0, 0, 0)
+	add 5 to y coord of {_vec}
+	assert {_vec} = vector3i(0, 5, 0) with "The vectors should match after Y change"
