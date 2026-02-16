@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Handles the results of tests.
+ */
 public class TestResults {
 
     private boolean success = true;

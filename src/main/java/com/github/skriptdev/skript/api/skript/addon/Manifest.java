@@ -3,9 +3,13 @@ package com.github.skriptdev.skript.api.skript.addon;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Arrays;
 
+/**
+ * Represents a manifest of information about a {@link HySkriptAddon}
+ */
 public class Manifest {
 
     private static final BuilderCodec.Builder<Manifest> BUILDER = BuilderCodec.builder(Manifest.class, Manifest::new);
@@ -36,26 +40,52 @@ public class Manifest {
     private String[] authors;
     private String website;
 
+    @ApiStatus.Internal
     public String getMainClass() {
         return this.mainClass;
     }
 
+    /**
+     * Get the name of this addon.
+     *
+     * @return Name of addon
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Get the version of this addon.
+     *
+     * @return Version of addon
+     */
     public String getVersion() {
         return this.version;
     }
 
+    /**
+     * Get the description of this addon.
+     *
+     * @return Description of addon
+     */
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * Get the authors of this addon.
+     *
+     * @return Authors of addon
+     */
     public String[] getAuthors() {
         return this.authors;
     }
 
+    /**
+     * Get the website of this addon.
+     *
+     * @return Website of addon
+     */
     public String getWebsite() {
         return this.website;
     }

@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Runner for HySkript tests.
+ */
 public class TestRunner {
 
     private static final ScheduledExecutorService SCHEDULED = HytaleServer.SCHEDULED_EXECUTOR;

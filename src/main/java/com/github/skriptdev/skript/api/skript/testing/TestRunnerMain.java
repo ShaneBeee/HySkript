@@ -15,17 +15,25 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * Main runner for {@link TestRunner}.
+ */
 public class TestRunnerMain {
 
-    public static final String GREEN = "\u001B[92m";
-    public static final String LIGHT_GREY = "\u001B[37m";
-    public static final String RED = "\u001B[91m";
-    public static final String RESET = "\u001B[0m";
+    private static final String GREEN = "\u001B[92m";
+    private static final String LIGHT_GREY = "\u001B[37m";
+    private static final String RED = "\u001B[91m";
+    private static final String RESET = "\u001B[0m";
 
     private static String serverVersion;
     private static String pluginVersion;
     private static String assetPath;
 
+    /**
+     * Run the {@link TestRunner}
+     *
+     * @param args serverVersion, pluginVersion, assetPath
+     */
     static void main(String[] args) {
         serverVersion = args[0];
         pluginVersion = args[1];

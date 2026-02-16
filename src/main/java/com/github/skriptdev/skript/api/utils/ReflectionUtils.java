@@ -29,7 +29,7 @@ public class ReflectionUtils {
 
     /**
      * Get access to the HytaleBanProvider.
-     * This is currently private with no getter.
+     * <br>This is currently private with no getter.
      *
      * @return HytaleBanProvider
      */

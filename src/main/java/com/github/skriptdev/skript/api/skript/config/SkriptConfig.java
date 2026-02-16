@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Config for Skript
+ * Config for HySkript
  */
 public class SkriptConfig {
 

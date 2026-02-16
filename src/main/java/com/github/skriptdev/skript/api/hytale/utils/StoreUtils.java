@@ -6,6 +6,9 @@ import com.hypixel.hytale.component.Store;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * Utilities for a {@link Store Hytale Store}
+ */
 public class StoreUtils {
 
     @SuppressWarnings("unchecked")

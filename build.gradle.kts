@@ -90,7 +90,8 @@ tasks {
         options.encoding = Charsets.UTF_8.name()
         exclude(
             "com/github/skriptdev/skript/plugin/elements",
-            "com/github/skriptdev/skript/plugin/command"
+            "com/github/skriptdev/skript/plugin/command",
+            "com/github/skriptdev/skript/api/skript/testing/elements"
         )
         (options as StandardJavadocDocletOptions).links(
             "https://javadoc.io/doc/org.jetbrains/annotations/latest/",
