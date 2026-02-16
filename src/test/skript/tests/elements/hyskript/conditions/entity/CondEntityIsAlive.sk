@@ -1,0 +1,7 @@
+test "CondEntityIsAlive":
+	spawn a sheep at world spawn of event-world:
+		set {_e} to event-spawned-entity
+
+	assert {_e} is alive with "The sheep should be alive"
+	kill {_e}
+	assert {_e} is dead with "The sheep should be dead now"
