@@ -20,10 +20,7 @@ import io.github.syst3ms.skriptparser.registration.SkriptAddon;
 import io.github.syst3ms.skriptparser.registration.SkriptRegistration;
 import io.github.syst3ms.skriptparser.registration.SyntaxInfo;
 import io.github.syst3ms.skriptparser.registration.context.ContextValue;
-import io.github.syst3ms.skriptparser.structures.functions.Function;
 import io.github.syst3ms.skriptparser.structures.functions.FunctionParameter;
-import io.github.syst3ms.skriptparser.structures.functions.Functions;
-import io.github.syst3ms.skriptparser.structures.functions.JavaFunction;
 import io.github.syst3ms.skriptparser.types.PatternType;
 import io.github.syst3ms.skriptparser.types.Type;
 import io.github.syst3ms.skriptparser.types.TypeManager;
@@ -37,7 +34,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -276,84 +272,83 @@ public class JsonDocPrinter {
     @SuppressWarnings("unchecked")
     private void printFunctions(BsonDocument mainDocs, SkriptRegistration registration) {
         BsonArray functionsArray = mainDocs.getArray("functions", new BsonArray());
-        Functions.getJavaFunctions(registration).stream().sorted(Comparator.comparing(Function::getName)).forEach(function -> {
-            if (function instanceof JavaFunction<?> jf) {
-                Documentation documentation = jf.getDocumentation();
-                if (documentation.isNoDoc()) return;
+        for (SkriptRegistration.FunctionRegistrar<?> function : registration.getFunctions()) {
+            Documentation documentation = function.getDocumentation();
+            if (documentation.isNoDoc()) return;
 
-                BsonDocument functionDoc = new BsonDocument();
-                String name = documentation.getName();
-                if (name == null) name = function.getName();
+            BsonDocument functionDoc = new BsonDocument();
+            String name = documentation.getName();
+            if (name == null) name = function.getFunctionName();
 
-                functionDoc.put("name", new BsonString(name));
-                functionDoc.put("id", getId("function", name));
+            functionDoc.put("name", new BsonString(name));
+            functionDoc.put("id", getId("function", name));
 
-                // Create params
-                FunctionParameter<?>[] parameters = jf.getParameters();
+            // Create params
+            List<FunctionParameter<?>> parameters = function.getParams();
 
-                List<String> parameterNames = new ArrayList<>();
-                for (FunctionParameter<?> parameter : parameters) {
-                    Optional<? extends Type<?>> byClass = TypeManager.getByClass(parameter.getType());
-                    if (byClass.isPresent()) {
-                        Type<?> type = byClass.get();
-                        String typeName;
-                        if (parameter.isSingle()) {
-                            typeName = type.getBaseName();
-                        } else {
-                            typeName = type.getPluralForm();
-                        }
-                        String format = String.format("%s:%s", parameter.getName(), typeName);
-                        parameterNames.add(format);
+            List<String> parameterNames = new ArrayList<>();
+            for (FunctionParameter<?> parameter : parameters) {
+                Optional<? extends Type<?>> byClass = TypeManager.getByClass(parameter.getType());
+                if (byClass.isPresent()) {
+                    Type<?> type = byClass.get();
+                    String typeName;
+                    if (parameter.isSingle()) {
+                        typeName = type.getBaseName();
+                    } else {
+                        typeName = type.getPluralForm();
                     }
+                    String format = String.format("%s:%s", parameter.getName(), typeName);
+                    parameterNames.add(format);
                 }
-
-
-                // Create a pattern for a function
-                String pattern = String.format("%s(%s)", jf.getName(), String.join(", ", parameterNames));
-                functionDoc.put("patterns", new BsonArray(List.of(new BsonString(pattern))));
-
-                // DESCRIPTION
-                BsonArray descriptionArray = new BsonArray();
-                for (String s : documentation.getDescription()) {
-                    descriptionArray.add(new BsonString(s));
-                }
-                functionDoc.put("description", descriptionArray);
-
-                // USAGE
-                String usage = documentation.getUsage();
-                if (usage != null) {
-                    functionDoc.put("usage", new BsonString(usage));
-                }
-
-                // EXAMPLES
-                String[] examples = documentation.getExamples();
-                if (examples != null) {
-                    BsonArray exampleArray = new BsonArray();
-                    for (String s : examples) {
-                        exampleArray.add(new BsonString(s));
-                    }
-                    functionDoc.put("examples", exampleArray);
-                }
-
-                // SINCE
-                String since = documentation.getSince();
-                if (since != null) {
-                    functionDoc.put("since", new BsonArray(List.of(new BsonString(since))));
-                } else {
-                    Utils.warn(this.sender, "Function '%s' has no since tag!", name);
-                }
-
-                // RETURN TYPE
-                Optional<Class<?>> returnType = (Optional<Class<?>>) jf.getReturnType();
-                if (returnType.isPresent()) {
-                    Optional<? extends Type<?>> byClass = TypeManager.getByClass(returnType.get());
-                    byClass.ifPresent(type ->
-                        functionDoc.put("return type", new BsonString(type.getBaseName())));
-                }
-                functionsArray.add(functionDoc);
-
             }
-        });
+
+
+            // Create a pattern for a function
+            String pattern = String.format("%s(%s)", function.getFunctionName(), String.join(", ", parameterNames));
+            functionDoc.put("patterns", new BsonArray(List.of(new BsonString(pattern))));
+
+            // DESCRIPTION
+            BsonArray descriptionArray = new BsonArray();
+            for (String s : documentation.getDescription()) {
+                descriptionArray.add(new BsonString(s));
+            }
+            functionDoc.put("description", descriptionArray);
+
+            // USAGE
+            String usage = documentation.getUsage();
+            if (usage != null) {
+                functionDoc.put("usage", new BsonString(usage));
+            }
+
+            // EXAMPLES
+            String[] examples = documentation.getExamples();
+            if (examples != null) {
+                BsonArray exampleArray = new BsonArray();
+                for (String s : examples) {
+                    exampleArray.add(new BsonString(s));
+                }
+                functionDoc.put("examples", exampleArray);
+            }
+
+            // SINCE
+            String since = documentation.getSince();
+            if (since != null) {
+                functionDoc.put("since", new BsonArray(List.of(new BsonString(since))));
+            } else {
+                Utils.warn(this.sender, "Function '%s' has no since tag!", name);
+            }
+
+            // RETURN TYPE
+            Class<?> returnType = function.getReturnType();
+            if (returnType != null) {
+                Optional<? extends Type<?>> byClass = TypeManager.getByClass(returnType);
+                byClass.ifPresent(type ->
+                    functionDoc.put("return type", new BsonString(type.getBaseName())));
+            }
+            functionsArray.add(functionDoc);
+
+
+        }
         mainDocs.put("functions", functionsArray);
     }
 
