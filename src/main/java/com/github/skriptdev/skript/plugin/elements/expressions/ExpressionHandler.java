@@ -9,6 +9,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockSp
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeOfBlock;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockFluidLevel;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprHighestBlock;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprTargetBlockOfPlayer;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprActiveSlot;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntitiesInRadius;
@@ -84,6 +85,7 @@ public class ExpressionHandler {
         ExprBlockSphere.register(registration);
         ExprBlockTypeAtLocation.register(registration);
         ExprBlockTypeOfBlock.register(registration);
+        ExprHighestBlock.register(registration);
         ExprTargetBlockOfPlayer.register(registration);
 
         // ENTITY
