@@ -123,6 +123,13 @@ public class TypesAssetStore {
             .since("1.0.0")
             .toStringFunction(Projectile::getId)
             .register();
+//        reg.newAssetStoreType(ProjectileConfig.class, ProjectileConfig.getAssetMap(),
+//                "projectileconfig", "projectileConfig@s")
+//            .name("Projectile Config")
+//            .description("")
+//            .since("INSERT VERSION")
+//            .toStringFunction(ProjectileConfig::getId)
+//            .register();
         reg.newAssetStoreType(ResourceType.class, ResourceType.getAssetMap(), "resourcetype", "resourceType@s")
             .name("Resource Type")
             .description("Represents the types of resources in the game, such as woods and stones.")
