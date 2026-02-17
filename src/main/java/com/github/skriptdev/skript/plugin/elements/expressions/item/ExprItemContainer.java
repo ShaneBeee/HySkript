@@ -23,8 +23,7 @@ public class ExprItemContainer implements Expression<ItemContainer> {
                 "combined everything item container of %inventory%",
                 "combined hotbar first item container of %inventory%",
                 "combined storage first item container of %inventory%",
-                "combined backpack storage hotbar item container of %inventory%",
-                "combined armor hotbar storage item container of %inventory%")
+                "combined backpack storage hotbar item container of %inventory%")
             .name("Item Container of Inventory")
             .description("Returns different item containers of an inventory.",
                 "Theres also a few combined options (These are from Hytale).")
@@ -60,7 +59,6 @@ public class ExprItemContainer implements Expression<ItemContainer> {
             case 7 -> inventory.getCombinedHotbarFirst();
             case 8 -> inventory.getCombinedStorageFirst();
             case 9 -> inventory.getCombinedBackpackStorageHotbar();
-            case 10 -> inventory.getCombinedArmorHotbarStorage();
             default -> null;
         };
         return new ItemContainer[]{container};
@@ -79,7 +77,6 @@ public class ExprItemContainer implements Expression<ItemContainer> {
             case 7 -> "combined hotbar first";
             case 8 -> "combined storage first";
             case 9 -> "combined backpack storage hotbar";
-            case 10 -> "combined armor hotbar storage";
             default -> "unknown";
         };
         return type + " item container of " + this.inventory.toString(ctx, debug);
