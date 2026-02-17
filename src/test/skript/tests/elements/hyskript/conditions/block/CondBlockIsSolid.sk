@@ -1,0 +1,9 @@
+test "CondBlockIsSolid":
+	set {_block} to block at world spawn of event-world
+	set blocktype of {_block} to rock_stone
+	assert {_block} is solid with "The stone block should be solid"
+	assert blocktype of {_block} is solid with "The type of block should be solid"
+
+	set blocktype of {_block} to empty as BlockType
+	assert {_block} is not solid with "The empty block should not be solid"
+	assert blocktype of {_block} is not solid with "The type of block should not be solid"
