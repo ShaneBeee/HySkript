@@ -1,7 +1,8 @@
 # Contributing to HySkript
 
 > [!IMPORTANT]  
-> This document is a work in progress.
+> This document is a work in progress.  
+> Please check back regularly.
 
 ## Branches:
 - `master` = Current release only
@@ -66,5 +67,42 @@ This way the team can discuss with you whether or not we want this in HySkript.
     - For all others, please provide at least one example per pattern.
     - Please see other examples in HySkript for further inspiration.
 
-### Tests:
+## Registration:
+### Types:
+When registering a type, please first think about the type.  
+Also make sure to always include a name, description and since (see above).  
+Examples are not mandatory as they're often included in the expressions/effects/etc.
+
+#### Asset Store Types:
+There is a registration specifically for asset store types.  
+`SkriptRegistration#newAssetStoreType`  
+This one specifally includes a parser, supplier and toString methods.  
+They don't include serializers as Hytale may change these assets at any time.  
+
+#### Enum Types:
+There is a registration specifically for enum types.
+`SkriptRegistration#newEnumType`  
+This one specifally includes a parser, supplier and toString methods.  
+They don't include serializers as the enums could change at any point.
+
+#### Others:
+For all othrers you can register a new type.  
+`SkriptRegistration#newType`  
+By default nothing is included, so make sure to add what you feel is appropriate
+such as a parser, toString methods, serializer, etc.
+
+### Custom Type Classes:
+Custom type classes are highly discouraged.  
+
+#### Exceptions:
+Sometimes a custom type class is required.  
+A simple example in HySkript is the `Block` type class.  
+Hytale does not provide any reference to an actual block in the world.  
+Because of this, a custom block class was necessary.
+
+#### Before:
+If you feel a custom class is necessary, please discuss it with the team first.  
+Its better to get a yes/no before writing up a whole PR and having it turned down.
+
+## Tests:
 See the [Testing Guide](https://github.com/SkriptDev/HySkript/tree/master/src/test/README.md) for more information.
