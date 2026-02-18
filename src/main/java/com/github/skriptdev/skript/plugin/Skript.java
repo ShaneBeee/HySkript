@@ -80,10 +80,6 @@ public class Skript extends SkriptAddon {
         Utils.debug("Registering elements...");
         this.elementRegistration.registerElements();
 
-        // SETUP EFFECT COMMANDS
-        Utils.debug("Setting up effect commands...");
-        setupEffectCommands();
-
         // FINISH SETUP
         long fin = System.currentTimeMillis() - start;
         Utils.log("HySkript setup completed in %sms!", fin);
@@ -131,20 +127,6 @@ public class Skript extends SkriptAddon {
 
         // SHUTDOWN ADDONS
         this.addonLoader.shutdownAddons();
-    }
-
-    private void setupEffectCommands() {
-        ConfigSection effectCommandSection = this.skriptConfig.getEffectCommands();
-        if (effectCommandSection != null) {
-            if (effectCommandSection.getBoolean("enabled")) {
-                EffectCommands.register(this,
-                    effectCommandSection.getString("token"),
-                    effectCommandSection.getBoolean("allow-ops"),
-                    effectCommandSection.getString("required-permission"));
-            }
-        } else {
-            Utils.debug("Effect commands section is missing in config.sk");
-        }
     }
 
     private void loadVariables() {

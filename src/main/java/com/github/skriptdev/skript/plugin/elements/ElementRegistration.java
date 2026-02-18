@@ -1,9 +1,12 @@
 package com.github.skriptdev.skript.plugin.elements;
 
+import com.github.skriptdev.skript.api.skript.config.SkriptConfig;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.api.skript.testing.TestProperties;
 import com.github.skriptdev.skript.api.skript.testing.elements.ElementHandler;
 import com.github.skriptdev.skript.api.utils.Utils;
+import com.github.skriptdev.skript.plugin.Skript;
+import com.github.skriptdev.skript.plugin.command.EffectCommands;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptCommand;
 import com.github.skriptdev.skript.plugin.elements.command.ScriptSubCommand;
 import com.github.skriptdev.skript.plugin.elements.conditions.ConditionHandler;
@@ -16,6 +19,7 @@ import com.github.skriptdev.skript.plugin.elements.types.DefaultComparators;
 import com.github.skriptdev.skript.plugin.elements.types.DefaultConverters;
 import com.github.skriptdev.skript.plugin.elements.types.Types;
 import io.github.syst3ms.skriptparser.Parser;
+import io.github.syst3ms.skriptparser.config.Config;
 import io.github.syst3ms.skriptparser.structures.functions.Functions;
 
 public class ElementRegistration {
@@ -61,6 +65,10 @@ public class ElementRegistration {
         ScriptCommand.register(this.registration);
         ScriptSubCommand.register(this.registration);
 
+        // SETUP EFFECT COMMANDS
+        Utils.debug("Setting up effect commands...");
+        setupEffectCommands();
+
         // TEST ELEMENTS
         if (TestProperties.ENABLED) {
             ElementHandler.register(this.registration);
@@ -70,6 +78,22 @@ public class ElementRegistration {
         this.registration.register();
 
         printSyntaxCount();
+    }
+
+    private void setupEffectCommands() {
+        Skript skript = this.registration.getSkript();
+        SkriptConfig skriptConfig = skript.getSkriptConfig();
+        Config.ConfigSection effectCommandSection = skriptConfig.getEffectCommands();
+        if (effectCommandSection != null) {
+            if (effectCommandSection.getBoolean("enabled")) {
+                EffectCommands.register(skript,
+                    effectCommandSection.getString("token"),
+                    effectCommandSection.getBoolean("allow-ops"),
+                    effectCommandSection.getString("required-permission"));
+            }
+        } else {
+            Utils.debug("Effect commands section is missing in config.sk");
+        }
     }
 
     private void printSyntaxCount() {
