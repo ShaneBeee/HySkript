@@ -42,6 +42,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprDistanc
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprLocationDirection;
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprLocationOf;
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprLocationOffset;
+import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprLocationRotation;
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprMessage;
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprMessageColor;
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprMessageLink;
@@ -125,6 +126,7 @@ public class ExpressionHandler {
         ExprLocationDirection.register(registration);
         ExprLocationOf.register(registration);
         ExprLocationOffset.register(registration);
+        ExprLocationRotation.register(registration);
         ExprMessage.register(registration);
         ExprMessageColor.register(registration);
         ExprMessageLink.register(registration);
