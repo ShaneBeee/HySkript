@@ -11,6 +11,7 @@ import io.github.syst3ms.skriptparser.Parser;
 import io.github.syst3ms.skriptparser.docs.Documentation;
 import io.github.syst3ms.skriptparser.lang.CodeSection;
 import io.github.syst3ms.skriptparser.lang.Effect;
+import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.Structure;
 import io.github.syst3ms.skriptparser.lang.base.ConditionalExpression;
 import io.github.syst3ms.skriptparser.lang.base.ExecutableExpression;
@@ -24,6 +25,7 @@ import io.github.syst3ms.skriptparser.structures.functions.FunctionParameter;
 import io.github.syst3ms.skriptparser.types.PatternType;
 import io.github.syst3ms.skriptparser.types.Type;
 import io.github.syst3ms.skriptparser.types.TypeManager;
+import io.github.syst3ms.skriptparser.types.changers.ChangeMode;
 import io.github.syst3ms.skriptparser.util.StringUtils;
 import org.bson.BsonArray;
 import org.bson.BsonBoolean;
@@ -250,7 +252,29 @@ public class JsonDocPrinter {
                 if (returnTypeName == null) returnTypeName = returnType.getBaseName();
                 expressionDoc.put("return type", new BsonString(returnTypeName));
 
+                // Changers
                 Class<?> syntaxClass = expressionInfo.getSyntaxClass();
+                List<String> changers = new ArrayList<>();
+                try {
+                    Object o = syntaxClass.getConstructor().newInstance();
+                    if (o instanceof Expression<?> expression) {
+                        for (ChangeMode value : ChangeMode.values()) {
+                            if (expression.acceptsChange(value).isPresent()) {
+                                changers.add(value.name().toLowerCase(Locale.ROOT));
+                            }
+                        }
+
+                    }
+                    if (!changers.isEmpty()) {
+                        BsonArray changerArray = new BsonArray();
+                        changers.stream().sorted().forEach(s ->
+                            changerArray.add(new BsonString(s)));
+                        expressionDoc.put("changers", changerArray);
+                    }
+                } catch (Exception ignore) {
+
+                }
+
                 if (ExecutableExpression.class.isAssignableFrom(syntaxClass)) {
                     // TODO new section on the docs?!?!?!
                     exprsArray.add(expressionDoc);
