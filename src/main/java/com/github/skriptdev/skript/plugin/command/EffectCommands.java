@@ -1,9 +1,15 @@
 package com.github.skriptdev.skript.plugin.command;
 
 import com.github.skriptdev.skript.api.skript.event.PlayerContext;
+import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.api.utils.Utils;
+import com.github.skriptdev.skript.plugin.HySk;
 import com.github.skriptdev.skript.plugin.Skript;
 import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.server.core.command.system.AbstractCommand;
+import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
+import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.permissions.PermissionsModule;
@@ -13,26 +19,34 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.syst3ms.skriptparser.lang.Effect;
+import io.github.syst3ms.skriptparser.lang.TriggerContext;
 import io.github.syst3ms.skriptparser.log.LogEntry;
 import io.github.syst3ms.skriptparser.log.SkriptLogger;
 import io.github.syst3ms.skriptparser.parsing.ParserState;
 import io.github.syst3ms.skriptparser.parsing.SyntaxParser;
 import io.github.syst3ms.skriptparser.registration.context.ContextValue.Usage;
 import io.github.syst3ms.skriptparser.variables.Variables;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class EffectCommands {
 
     public static void register(Skript skript, String token, boolean allowOps, String permission) {
-        skript.getSkriptRegistration().newSingleContextValue(PlayerEffectContext.class, Player.class, "me", PlayerEffectContext::getPlayer)
+        SkriptRegistration reg = skript.getSkriptRegistration();
+        reg.newSingleContextValue(PlayerEffectContext.class, Player.class,
+                "me", PlayerEffectContext::getPlayer)
             .setUsage(Usage.EXPRESSION_OR_ALONE)
             .register();
 
-        skript.getPlugin().getEventRegistry().registerGlobal(PlayerChatEvent.class, event -> {
+        HySk plugin = skript.getPlugin();
+
+        plugin.getEventRegistry().registerGlobal(PlayerChatEvent.class, event -> {
             if (event.getContent().startsWith(token)) {
                 PlayerRef sender = event.getSender();
 
@@ -115,6 +129,13 @@ public class EffectCommands {
 
             }
         });
+
+        reg.newSingleContextValue(ConsoleEffectContext.class, CommandSender.class,
+            "sender", ConsoleEffectContext::getSender)
+            .setUsage(Usage.EXPRESSION_OR_ALONE)
+            .register();
+
+        plugin.getCommandRegistry().registerCommand(new EffectCommand(token));
     }
 
     private record PlayerEffectContext(Player player) implements PlayerContext {
@@ -126,6 +147,70 @@ public class EffectCommands {
         @Override
         public String getName() {
             return "player effect context";
+        }
+    }
+
+    private record ConsoleEffectContext(CommandSender sender) implements TriggerContext {
+
+        public CommandSender getSender() {
+            return this.sender;
+        }
+
+        @Override
+        public String getName() {
+            return "console effect context";
+        }
+    }
+
+    private static class EffectCommand extends AbstractCommand {
+
+        protected EffectCommand(String token) {
+            super("hyskript-effect-command", "Effect commands for console");
+            addAliases(token, "effect-command");
+            setAllowsExtraArguments(true);
+        }
+
+        @Override
+        protected @Nullable CompletableFuture<Void> execute(@NotNull CommandContext commandContext) {
+            CommandSender sender = commandContext.sender();
+            if (!(sender instanceof ConsoleSender)) {
+                return null;
+            }
+
+            String effectString = commandContext.getInputString().substring(2);
+
+            // Create dummy ParserState/Logger for effect commands
+            ParserState parserState = new ParserState();
+            parserState.setCurrentContexts(Set.of(ConsoleEffectContext.class));
+            SkriptLogger skriptLogger = new SkriptLogger(true);
+            skriptLogger.setFileInfo("dummy_cause_this_doesnt_matter.sk", List.of());
+
+            // Parse effect
+            Optional<? extends Effect> optionalEffect = SyntaxParser.parseEffect(effectString, parserState, skriptLogger);
+
+            // If no effect available, send logs
+            if (optionalEffect.isEmpty()) {
+                skriptLogger.finalizeLogs();
+                for (LogEntry logEntry : skriptLogger.close()) {
+                    Utils.log(sender, logEntry);
+                }
+                return null;
+            }
+
+            Effect effect = optionalEffect.get();
+
+            skriptLogger.info("Executing: '" + effectString + "'");
+            skriptLogger.finalizeLogs();
+            for (LogEntry logEntry : skriptLogger.close()) {
+                Utils.log(sender, logEntry);
+            }
+
+            ConsoleEffectContext context = new ConsoleEffectContext(sender);
+            effect.walk(context);
+            // Clear local variables to prevent memory leaks
+            Variables.clearLocalVariables(context);
+
+            return null;
         }
     }
 
