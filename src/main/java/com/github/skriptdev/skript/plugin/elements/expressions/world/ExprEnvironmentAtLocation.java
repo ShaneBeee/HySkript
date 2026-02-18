@@ -26,7 +26,6 @@ public class ExprEnvironmentAtLocation implements Expression<Environment> {
             .name("Environment at Location")
             .description("Get/set the environment at a location.")
             .since("INSERT VERSION")
-            .experimental("Setting does not appear to work.")
             .register();
     }
 
@@ -72,7 +71,17 @@ public class ExprEnvironmentAtLocation implements Expression<Environment> {
         int index = AssetStoreUtils.getEnvironmentIndex(env);
         Vector3i position = location.getPosition().toVector3i();
 
-        blockChunk.setEnvironment(position.getX(), position.getY(), position.getX(), index);
+        int x = position.getX();
+        int y = position.getY();
+        int z = position.getZ();
+
+        blockChunk.setEnvironment(x, y, z, index);
+
+        World world = Universe.get().getWorld(location.getWorld());
+        assert world != null;
+
+        long chunkIndex = ChunkUtil.indexChunkFromBlock(x, z);
+        world.getNotificationHandler().updateChunk(chunkIndex);
     }
 
     private BlockChunk getBlockChunk(Location location) {
@@ -82,7 +91,7 @@ public class ExprEnvironmentAtLocation implements Expression<Environment> {
 
         Vector3i position = location.getPosition().toVector3i();
 
-        WorldChunk chunk = world.getChunk(ChunkUtil.indexChunk(position.getX(), position.getZ()));
+        WorldChunk chunk = world.getChunk(ChunkUtil.indexChunkFromBlock(position.getX(), position.getZ()));
         if (chunk == null) return null;
 
         return chunk.getBlockChunk();
