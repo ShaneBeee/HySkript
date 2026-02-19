@@ -44,6 +44,7 @@ public class EvtEntityPickupItem extends SystemEvent<EntityEventSystem<EntitySto
         reg.newSingleContextValue(PickupItemContext.class, ItemStack.class,
                 "item-stack", PickupItemContext::getItemStack)
             .description("The ItemStack picked up by the entity.")
+            .addSetter(PickupItemContext::setItemStack)
             .register();
     }
 
@@ -82,6 +83,10 @@ public class EvtEntityPickupItem extends SystemEvent<EntityEventSystem<EntitySto
 
         public ItemStack getItemStack() {
             return this.event.getItemStack();
+        }
+
+        public void setItemStack(ItemStack itemStack) {
+            this.event.setItemStack(itemStack);
         }
 
         public Player getPlayer() {
