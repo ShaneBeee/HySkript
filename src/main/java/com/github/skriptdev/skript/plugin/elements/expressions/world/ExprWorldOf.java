@@ -2,6 +2,7 @@ package com.github.skriptdev.skript.plugin.elements.expressions.world;
 
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.server.core.entity.Entity;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import io.github.syst3ms.skriptparser.lang.Expression;
@@ -12,14 +13,15 @@ import io.github.syst3ms.skriptparser.types.changers.ChangeMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class ExprWorldOf implements Expression<World> {
 
     public static void register(SkriptRegistration registration) {
         registration.newExpression(ExprWorldOf.class, World.class,
-                true, "world of %location/entity%")
+                true, "world of %location/playerref/entity%")
             .name("World of")
-            .description("Get the world of a location/entity.",
+            .description("Get the world of a Location/Entity/PlayerRef.",
                 "The world of a location can also be set.")
             .examples("set {_world} to world of {_location}",
                 "set world of {_loc} to world of player")
@@ -43,6 +45,10 @@ public class ExprWorldOf implements Expression<World> {
         Object o = single.get();
         if (o instanceof Location location) {
             return new World[]{Universe.get().getWorld(location.getWorld())};
+        } else if (o instanceof PlayerRef ref) {
+            UUID worldUuid = ref.getWorldUuid();
+            if (worldUuid == null) return null;
+            return new World[]{Universe.get().getWorld(worldUuid)};
         } else if (o instanceof Entity entity) {
             return new World[]{entity.getWorld()};
         }
