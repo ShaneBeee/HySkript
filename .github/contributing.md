@@ -1,7 +1,8 @@
 # Contributing to HySkript
 
 > [!IMPORTANT]  
-> This document is a work in progress.
+> This document is a work in progress.  
+> Please check back regularly.
 
 ## Branches:
 - `master` = Current release only
@@ -32,6 +33,9 @@ This way the team can discuss with you whether or not we want this in HySkript.
 - We won't accept PRs that are just string-based changes. Your PR contribution should be code-based. (If you find a typo, report it and/or let one of the team members know.)
 - If a class seems outdated (in terms of formatting) please do not reformat the entire class for small changes (it makes PRs really difficult to read).
 - Don't break any current syntaxes (ie: removing/changing a pattern with a breaking change).
+- No chained expressions. These are really hard on the parser.
+    - Think of regular Skript and their ItemType chains
+    - Ex: `diamond sword of unbreaking 3 named "name" with lore "lore" with custom model data 1 .....`
 
 ## Code Style:
 ### Formatting:
@@ -46,12 +50,12 @@ This way the team can discuss with you whether or not we want this in HySkript.
 
 ### Naming
 - Class names are written in UpperCamelCase
-  - The file name should match its primary class name (e.g. `MyClass` goes in `MyClass.java.`)
+    - The file name should match its primary class name (e.g. `MyClass` goes in `MyClass.java.`)
 - Fields and methods named in `camelCase`.
-  - Static constant fields should be named in `UPPER_SNAKE_CASE`
+    - Static constant fields should be named in `UPPER_SNAKE_CASE`
 - Use prefixes only where their use has been already established (such as `ExprSomeRandomThing`)
-  - Otherwise, use postfixes where necessary
-  - Common occurrences include: Struct (Structure), Sec (Section),  Eff (Effect), Cond (Condition), Expr (Expression)
+    - Otherwise, use postfixes where necessary
+    - Common occurrences include: Struct (Structure), Sec (Section),  Eff (Effect), Cond (Condition), Expr (Expression)
 - Ensure variable/field names are descriptive.
 
 ### Syntax Docs:
@@ -63,5 +67,42 @@ This way the team can discuss with you whether or not we want this in HySkript.
     - For all others, please provide at least one example per pattern.
     - Please see other examples in HySkript for further inspiration.
 
-### Tests:
+## Registration:
+### Types:
+When registering a type, please first think about the type.  
+Also make sure to always include a name, description and since (see above).  
+Examples are not mandatory as they're often included in the expressions/effects/etc.
+
+#### Asset Store Types:
+There is a registration specifically for asset store types.  
+`SkriptRegistration#newAssetStoreType`  
+This one specifally includes a parser, supplier and toString methods.  
+They don't include serializers as Hytale may change these assets at any time.
+
+#### Enum Types:
+There is a registration specifically for enum types.
+`SkriptRegistration#newEnumType`  
+This one specifally includes a parser, supplier and toString methods.  
+They don't include serializers as the enums could change at any point.
+
+#### Others:
+For all othrers you can register a new type.  
+`SkriptRegistration#newType`  
+By default nothing is included, so make sure to add what you feel is appropriate
+such as a parser, toString methods, serializer, etc.
+
+### Custom Type Classes:
+Custom type classes are highly discouraged.
+
+#### Exceptions:
+Sometimes a custom type class is required.  
+A simple example in HySkript is the `Block` type class.  
+Hytale does not provide any reference to an actual block in the world.  
+Because of this, a custom block class was necessary.
+
+#### Before:
+If you feel a custom class is necessary, please discuss it with the team first.  
+Its better to get a yes/no before writing up a whole PR and having it turned down.
+
+## Tests:
 See the [Testing Guide](https://github.com/SkriptDev/HySkript/tree/master/src/test/README.md) for more information.
