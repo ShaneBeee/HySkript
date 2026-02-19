@@ -14,6 +14,8 @@ import io.github.syst3ms.skriptparser.lang.event.SkriptEvent;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class EvtPlayerChat extends SkriptEvent {
 
     public static void register(SkriptRegistration reg) {
@@ -54,6 +56,11 @@ public class EvtPlayerChat extends SkriptEvent {
             "sender", PlayerChatContext::getSender);
         reg.addSingleContextValue(PlayerChatContext.class, PlayerRef.class,
             "playerref", PlayerChatContext::getSender);
+        reg.newListContextValue(PlayerChatContext.class, PlayerRef.class,
+                "targets", PlayerChatContext::getTargets)
+            .addListSetter(PlayerChatContext::setTargets)
+            .description("The players that will receive the message. Can be set.")
+            .register();
     }
 
     private static EventRegistration<String, PlayerChatEvent> LISTENER;
@@ -134,6 +141,14 @@ public class EvtPlayerChat extends SkriptEvent {
 
         public PlayerRef getSender() {
             return this.event.getSender();
+        }
+
+        public PlayerRef[] getTargets() {
+            return this.event.getTargets().toArray(PlayerRef[]::new);
+        }
+
+        public void setTargets(PlayerRef[] targets) {
+            this.event.setTargets(List.of(targets));
         }
 
         @Override
