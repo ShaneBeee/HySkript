@@ -3,6 +3,7 @@ package com.github.skriptdev.skript.plugin.elements.events;
 
 import com.github.skriptdev.skript.api.hytale.Block;
 import com.github.skriptdev.skript.api.skript.event.BlockContext;
+import com.github.skriptdev.skript.api.skript.event.LocationContext;
 import com.github.skriptdev.skript.api.skript.event.PlayerContext;
 import com.github.skriptdev.skript.api.skript.event.PlayerRefContext;
 import com.github.skriptdev.skript.api.skript.event.WorldContext;
@@ -35,6 +36,7 @@ import com.github.skriptdev.skript.plugin.elements.events.server.EvtBoot;
 import com.github.skriptdev.skript.plugin.elements.events.server.EvtShutdown;
 import com.github.skriptdev.skript.plugin.elements.events.skript.EvtLoad;
 import com.github.skriptdev.skript.plugin.elements.events.world.EvtAtWorldTime;
+import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -94,6 +96,10 @@ public class EventHandler {
         reg.newSingleContextValue(BlockContext.class, Block.class,
                 "block", BlockContext::getBlock)
             .register();
+        reg.newSingleContextValue(LocationContext.class, Location.class,
+                "location", LocationContext::getLocation)
+            .setUsage(Usage.EXPRESSION_OR_ALONE)
+            .register();
         reg.newSingleContextValue(PlayerContext.class, Player.class,
                 "player", PlayerContext::getPlayer)
             .setUsage(Usage.EXPRESSION_OR_ALONE)
@@ -103,9 +109,9 @@ public class EventHandler {
             .setUsage(Usage.EXPRESSION_OR_ALONE)
             .register();
         reg.addSingleContextValue(PlayerRefContext.class, PlayerRef.class,
-                "playerref", PlayerRefContext::getPlayerRef);
+            "playerref", PlayerRefContext::getPlayerRef);
         reg.addSingleContextValue(PlayerRefContext.class, PlayerRef.class,
-                "player-ref", PlayerRefContext::getPlayerRef);
+            "player-ref", PlayerRefContext::getPlayerRef);
     }
 
 }
