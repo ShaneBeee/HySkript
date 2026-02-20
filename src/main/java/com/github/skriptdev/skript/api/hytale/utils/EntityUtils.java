@@ -124,10 +124,10 @@ public class EntityUtils {
     /**
      * Get a component from an Entity or create it if not present.
      *
-     * @param entity     Entity to get component from
-     * @param type       Component type to get
-     * @param <ECS> EntityStore Type
-     * @param <T>        Type of returned component
+     * @param entity Entity to get component from
+     * @param type   Component type to get
+     * @param <ECS>  EntityStore Type
+     * @param <T>    Type of returned component
      * @return Component from entity if available otherwise will create/add a new one
      */
     @SuppressWarnings("unchecked")
@@ -139,6 +139,41 @@ public class EntityUtils {
 
         Store<ECS> store = reference.getStore();
         return store.ensureAndGetComponent(reference, type);
+    }
+
+    /**
+     * Put a component on an Entity.
+     *
+     * @param entity    Entity to add component to
+     * @param type      Type of component to add
+     * @param component Component to add
+     * @param <ECS>     EntityStore Type
+     * @param <T>       Type of component
+     */
+    @SuppressWarnings("unchecked")
+    public static <ECS, T extends Component<ECS>> void putComponent(Entity entity, ComponentType<ECS, T> type, Component<ECS> component) {
+        Ref<ECS> reference = (Ref<ECS>) entity.getReference();
+        if (reference == null) {
+            throw new IllegalStateException("Entity '" + entity + "' does not have a reference");
+        }
+        reference.getStore().addComponent(reference, type, (T) component);
+    }
+
+    /**
+     * Try to remove a component from an Entity.
+     *
+     * @param entity Entity to remove component from
+     * @param type   Type of component to remove
+     * @param <ECS>  Store type
+     * @param <T>    Component type
+     */
+    @SuppressWarnings("unchecked")
+    public static <ECS, T extends Component<ECS>> void tryRemoveComponent(Entity entity, ComponentType<ECS, T> type) {
+        Ref<ECS> reference = (Ref<ECS>) entity.getReference();
+        if (reference == null) {
+            throw new IllegalStateException("Entity '" + entity + "' does not have a reference");
+        }
+        reference.getStore().tryRemoveComponent(reference, type);
     }
 
     /**
