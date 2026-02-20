@@ -46,7 +46,7 @@ public class ExprInventory implements Expression<Inventory> {
     @Override
     public Optional<Class<?>[]> acceptsChange(@NotNull ChangeMode mode) {
         if (mode == ChangeMode.ADD || mode == ChangeMode.DELETE) {
-            return Optional.of(new Class<?>[]{ItemStack.class});
+            return Optional.of(new Class<?>[]{ItemStack[].class});
         }
         return Optional.empty();
     }
