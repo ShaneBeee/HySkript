@@ -23,6 +23,7 @@ import com.github.skriptdev.skript.plugin.elements.effects.player.EffKick;
 import com.github.skriptdev.skript.plugin.elements.effects.other.EffSendTitle;
 import com.github.skriptdev.skript.plugin.elements.effects.player.EffOpenItemContainer;
 import com.github.skriptdev.skript.plugin.elements.effects.server.EffServerShutdown;
+import com.github.skriptdev.skript.plugin.elements.effects.world.EffChunkLoadAsync;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffChunkRegenerate;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffExplosion;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffInteraction;
@@ -64,6 +65,7 @@ public class EffectHandler {
         EffServerShutdown.register(registration);
 
         // WORLD
+        EffChunkLoadAsync.register(registration);
         EffChunkRegenerate.register(registration);
         EffExplosion.register(registration);
     }

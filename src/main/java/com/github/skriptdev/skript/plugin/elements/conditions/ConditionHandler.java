@@ -23,6 +23,7 @@ import com.github.skriptdev.skript.plugin.elements.conditions.player.CondPlayerM
 import com.github.skriptdev.skript.plugin.elements.conditions.player.CondPlayerMovementSprinting;
 import com.github.skriptdev.skript.plugin.elements.conditions.player.CondPlayerMovementSwimming;
 import com.github.skriptdev.skript.plugin.elements.conditions.player.CondPlayerMovementWalking;
+import com.github.skriptdev.skript.plugin.elements.conditions.world.CondChunkIsLoaded;
 import com.github.skriptdev.skript.plugin.elements.conditions.world.CondWorldTimePaused;
 
 public class ConditionHandler {
@@ -60,6 +61,7 @@ public class ConditionHandler {
         CondPlayerMovementWalking.register(registration);
 
         // WORLD
+        CondChunkIsLoaded.register(registration);
         CondWorldTimePaused.register(registration);
     }
 
