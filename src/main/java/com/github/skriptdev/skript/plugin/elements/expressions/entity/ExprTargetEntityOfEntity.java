@@ -1,6 +1,8 @@
 package com.github.skriptdev.skript.plugin.elements.expressions.entity;
 
+import com.github.skriptdev.skript.api.skript.config.SkriptConfig;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.github.skriptdev.skript.api.utils.Utils;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.entity.Entity;
@@ -17,7 +19,17 @@ import java.util.Optional;
 
 public class ExprTargetEntityOfEntity implements Expression<Entity> {
 
+    private static int MAX_DISTANCE = 160; // Default from config
+
     public static void register(SkriptRegistration reg) {
+        SkriptConfig skriptConfig = reg.getSkript().getSkriptConfig();
+        int anInt = skriptConfig.getMaxTargetBlockDistance();
+        if (anInt > 0) {
+            MAX_DISTANCE = anInt;
+        } else {
+            Utils.debug("'max-target-block-distance' from config.sk is not set or invalid, using default value: " + MAX_DISTANCE);
+        }
+
         reg.newExpression(ExprTargetEntityOfEntity.class, Entity.class, true,
                 "target entity of %entity%")
             .name("Target Entity of Entity")
@@ -48,7 +60,7 @@ public class ExprTargetEntityOfEntity implements Expression<Entity> {
         if (world == null || ref == null) return null;
 
         Store<EntityStore> store = world.getEntityStore().getStore();
-        Ref<EntityStore> targetEntity = TargetUtil.getTargetEntity(ref, store);
+        Ref<EntityStore> targetEntity = TargetUtil.getTargetEntity(ref, (float) MAX_DISTANCE, store);
         if (targetEntity == null || !targetEntity.isValid()) return null;
 
         // TODO better handling of this deprecation
