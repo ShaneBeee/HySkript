@@ -53,7 +53,7 @@ public enum Direction {
 
     private static Location create(Location location, Number offset, int x, int y, int z) {
         double value = offset.doubleValue();
-        Vector3d add = location.getPosition().add(x * value, y * value, z * value);
+        Vector3d add = location.getPosition().clone().add(x * value, y * value, z * value);
         return new Location(location.getWorld(), add);
     }
 
