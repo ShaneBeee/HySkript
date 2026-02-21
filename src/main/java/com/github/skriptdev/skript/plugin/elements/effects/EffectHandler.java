@@ -8,6 +8,7 @@ import com.github.skriptdev.skript.plugin.elements.effects.entity.EffDropItem;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffEntityEffect;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffFreeze;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffKill;
+import com.github.skriptdev.skript.plugin.elements.effects.entity.EffRemoveStatModifier;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffRide;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffShoot;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffSpawnEntity;
@@ -43,6 +44,7 @@ public class EffectHandler {
         EffFreeze.register(registration);
         EffInteraction.register(registration);
         EffKill.register(registration);
+        EffRemoveStatModifier.register(registration);
         EffRide.register(registration);
         EffShoot.register(registration);
         EffSpawnEntity.register(registration);
