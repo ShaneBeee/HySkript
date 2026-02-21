@@ -8,6 +8,7 @@ import com.github.skriptdev.skript.plugin.elements.conditions.entity.CondEntityI
 import com.github.skriptdev.skript.plugin.elements.conditions.entity.CondEntityIsTameable;
 import com.github.skriptdev.skript.plugin.elements.conditions.entity.CondEntityIsTamed;
 import com.github.skriptdev.skript.plugin.elements.conditions.item.CondInventoryCanHold;
+import com.github.skriptdev.skript.plugin.elements.conditions.other.CondObjectOfType;
 import com.github.skriptdev.skript.plugin.elements.conditions.player.CondPlayerHasPermission;
 import com.github.skriptdev.skript.plugin.elements.conditions.player.CondPlayerHasPlayedBefore;
 import com.github.skriptdev.skript.plugin.elements.conditions.player.CondPlayerMovementCrouching;
@@ -42,6 +43,9 @@ public class ConditionHandler {
 
         // ITEM
         CondInventoryCanHold.register(registration);
+
+        // OTHER
+        CondObjectOfType.register(registration);
 
         // PLAYER
         CondPlayerHasPermission.register(registration);
