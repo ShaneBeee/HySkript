@@ -9,6 +9,7 @@ public class SectionHandler {
         SecExecuteInWorld.register(registration);
         SecPlaySound.register(registration);
         SecSendNotification.register(registration);
+        SecSendTitle.register(registration);
         SecSpawnNPC.register(registration);
     }
 
