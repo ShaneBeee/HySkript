@@ -104,6 +104,11 @@ public class ExprValueWithin implements Expression<Object> {
     }
 
     @Override
+    public boolean isSingle() {
+        return this.objects.isSingle();
+    }
+
+    @Override
     public String toString(@NotNull TriggerContext ctx, boolean debug) {
         if (this.type != null) {
             return this.type.getBaseName() + " within " + this.objects.toString(ctx, debug);
