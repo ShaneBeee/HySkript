@@ -94,7 +94,8 @@ public class EffParticle extends Effect {
 
         // If no receivers were specified, use players in a radius of 75 of location
         if (receivers.isEmpty()) {
-            SpatialResource<Ref<EntityStore>, EntityStore> playerSpatialResource = store.getResource(EntityModule.get().getPlayerSpatialResourceType());
+            SpatialResource<Ref<EntityStore>, EntityStore> playerSpatialResource = store.getResource(EntityModule.get()
+                .getPlayerSpatialResourceType());
             ObjectList<Ref<EntityStore>> playerRefs = SpatialResource.getThreadLocalReferenceList();
             playerSpatialResource.getSpatialStructure().collect(pos, 75.0F, playerRefs);
             receivers.addAll(playerRefs);
