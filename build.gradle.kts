@@ -31,6 +31,7 @@ repositories {
 dependencies {
     compileOnly("com.hypixel.hytale:Server:${hytaleVersion}")
     compileOnly("org.jetbrains:annotations:26.0.2")
+    testImplementation("com.google.code.gson:gson:2.13.2")
     implementation("com.github.SkriptDev:skript-parser:1.0.9") {
         isTransitive = false
     }
@@ -59,7 +60,7 @@ tasks {
         mainClass.set("com.github.skriptdev.skript.api.skript.testing.TestRunnerMain")
         args(hytaleVersion, projectVersion, assetLocation)
 
-        classpath = sourceSets["main"].runtimeClasspath + testRunnerClasspath
+        classpath = sourceSets["test"].runtimeClasspath + testRunnerClasspath
     }
     processResources {
         filesNotMatching("assets/**") {
@@ -103,6 +104,10 @@ tasks {
 tasks.withType<Checkstyle> {
     // This one class is causing an issue on like 37 (not sure why)
     exclude("**/Block.java")
+}
+
+tasks.withType<Test>().configureEach {
+    enabled = false
 }
 
 checkstyle {
