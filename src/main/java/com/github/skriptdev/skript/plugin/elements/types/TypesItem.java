@@ -9,7 +9,6 @@ import com.hypixel.hytale.protocol.InventoryActionType;
 import com.hypixel.hytale.protocol.packets.interface_.Page;
 import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
-import com.hypixel.hytale.server.core.inventory.container.CombinedItemContainer;
 import com.hypixel.hytale.server.core.inventory.container.EmptyItemContainer;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.hypixel.hytale.server.core.inventory.container.SimpleItemContainer;
@@ -65,10 +64,10 @@ public class TypesItem {
                 public JsonElement serialize(@NotNull Gson gson, @NotNull ItemContainer value) {
                     BsonDocument document;
                     if (value instanceof EmptyItemContainer eic) {
-                        document = CombinedItemContainer.CODEC.encode(eic, new ExtraInfo()).asDocument();
+                        document = EmptyItemContainer.CODEC.encode(eic, new ExtraInfo()).asDocument();
                         document.put("type", new BsonString("empty"));
                     } else if (value instanceof SimpleItemContainer sic) {
-                        document = CombinedItemContainer.CODEC.encode(sic, new ExtraInfo()).asDocument();
+                        document = SimpleItemContainer.CODEC.encode(sic, new ExtraInfo()).asDocument();
                         document.put("type", new BsonString("simple"));
                     } else {
                         document = ItemContainer.CODEC.encode(value, new ExtraInfo()).asDocument();
@@ -86,7 +85,7 @@ public class TypesItem {
 
                     return switch (type) {
                         // "combined" stays as it was an old thing we used (backwards compatability)
-                        case "container", "combined" -> CombinedItemContainer.CODEC.decode(parse, new ExtraInfo());
+                        case "container", "combined" -> ItemContainer.CODEC.decode(parse, new ExtraInfo());
                         case "empty" -> EmptyItemContainer.CODEC.decode(parse, new ExtraInfo());
                         case "simple" -> SimpleItemContainer.CODEC.decode(parse, new ExtraInfo());
                         default -> null;
