@@ -8,6 +8,8 @@ import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
+import com.hypixel.hytale.server.core.asset.type.blocktype.config.Rotation;
+import com.hypixel.hytale.server.core.asset.type.blocktype.config.RotationTuple;
 import com.hypixel.hytale.server.core.asset.type.fluid.Fluid;
 import com.hypixel.hytale.server.core.entity.LivingEntity;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
@@ -18,6 +20,7 @@ import com.hypixel.hytale.server.core.modules.interaction.BlockHarvestUtils;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.chunk.BlockChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.ChunkColumn;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.FluidSection;
@@ -54,6 +57,10 @@ public class Block {
         this(world, location.getPosition().toVector3i());
     }
 
+    public WorldChunk getChunk() {
+        return this.world.getChunk(ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ()));
+    }
+
     public @NotNull BlockType getType() {
         BlockType blockType = this.world.getBlockType(this.pos);
         return blockType != null ? blockType : BlockType.EMPTY;
@@ -66,6 +73,56 @@ public class Block {
         } else {
             this.world.execute(r);
         }
+    }
+
+    /**
+     * Set the rotation of this block.
+     *
+     * @param rotation Rotation of block represented by a Vector3i(yaw, pitch, roll).
+     */
+    public void setRotation(Vector3i rotation) {
+        int blockId = BlockType.getAssetMap().getIndex(getType().getId());
+        WorldChunk chunk = getChunk();
+        BlockChunk blockChunk = chunk.getBlockChunk();
+        if (blockChunk == null) return;
+
+        Rotation pitch = getRotationFromInt(rotation.getX());
+        Rotation yaw = getRotationFromInt(rotation.getY());
+        Rotation roll = getRotationFromInt(rotation.getZ());
+        int rotationIndex = RotationTuple.of(yaw, pitch, roll).index();
+        blockChunk.setBlock(this.pos.getX(), this.pos.getY(), this.pos.getZ(),
+            blockId, rotationIndex, 0);
+    }
+
+    /**
+     * Get the rotation of this block.
+     *
+     * @return Rotation of block represented as a Vector3i(yaw, pitch, roll).
+     */
+    public Vector3i getRotation() {
+        int blockRotationIndex = getWorld().getBlockRotationIndex(this.pos.getX(), this.pos.getY(), this.pos.getZ());
+        RotationTuple rotationTuple = RotationTuple.get(blockRotationIndex);
+
+        int yaw = getIntFromRotation(rotationTuple.yaw());
+        int pitch = getIntFromRotation(rotationTuple.pitch());
+        int roll = getIntFromRotation(rotationTuple.roll());
+        return new Vector3i(pitch, yaw, roll);
+    }
+
+    private Rotation getRotationFromInt(int v) {
+        if (v < 90) return Rotation.None;
+        else if (v < 180) return Rotation.Ninety;
+        else if (v < 270) return Rotation.OneEighty;
+        else return Rotation.TwoSeventy;
+    }
+
+    private int getIntFromRotation(Rotation rotation) {
+        return switch (rotation) {
+            case None -> 0;
+            case Ninety -> 90;
+            case OneEighty -> 180;
+            case TwoSeventy -> 270;
+        };
     }
 
     public byte getFluidLevel() {
