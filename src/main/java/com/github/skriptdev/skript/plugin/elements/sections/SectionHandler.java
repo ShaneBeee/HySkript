@@ -8,6 +8,7 @@ public class SectionHandler {
         SecApplyStatModifier.register(registration);
         SecDropItem.register(registration);
         SecExecuteInWorld.register(registration);
+        SecParticle.register(registration);
         SecPlaySound.register(registration);
         SecSendNotification.register(registration);
         SecSendTitle.register(registration);

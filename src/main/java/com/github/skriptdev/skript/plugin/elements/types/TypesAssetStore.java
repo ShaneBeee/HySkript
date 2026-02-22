@@ -16,6 +16,7 @@ import com.hypixel.hytale.server.core.asset.type.item.config.CraftingRecipe;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.asset.type.item.config.ItemQuality;
 import com.hypixel.hytale.server.core.asset.type.item.config.ResourceType;
+import com.hypixel.hytale.server.core.asset.type.particle.config.ParticleSystem;
 import com.hypixel.hytale.server.core.asset.type.projectile.config.Projectile;
 import com.hypixel.hytale.server.core.asset.type.soundevent.config.SoundEvent;
 import com.hypixel.hytale.server.core.asset.type.weather.config.Weather;
@@ -124,6 +125,8 @@ public class TypesAssetStore {
             .description("Represents the quality of items in the game.")
             .since("1.1.0")
             .toStringFunction(ItemQuality::getId)
+            .register();
+        reg.newAssetStoreType(ParticleSystem.class, ParticleSystem.getAssetMap(), "particle", "particle@s")
             .register();
         reg.newAssetStoreType(Projectile.class, Projectile.getAssetMap(), "projectile", "projectile@s")
             .name("Projectile")

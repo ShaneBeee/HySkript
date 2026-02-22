@@ -29,6 +29,7 @@ import com.github.skriptdev.skript.plugin.elements.effects.world.EffChunkLoadAsy
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffChunkRegenerate;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffExplosion;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffInteraction;
+import com.github.skriptdev.skript.plugin.elements.effects.world.EffParticle;
 
 public class EffectHandler {
 
@@ -72,6 +73,7 @@ public class EffectHandler {
         EffChunkLoadAsync.register(registration);
         EffChunkRegenerate.register(registration);
         EffExplosion.register(registration);
+        EffParticle.register(registration);
     }
 
 }
