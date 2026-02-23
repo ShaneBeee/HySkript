@@ -7,6 +7,7 @@ import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.Statement;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
 import io.github.syst3ms.skriptparser.parsing.ParseContext;
+import io.github.syst3ms.skriptparser.variables.VariableMap;
 import io.github.syst3ms.skriptparser.variables.Variables;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,21 +39,18 @@ public class SecExecuteInWorld extends CodeSection {
     public Optional<? extends Statement> walk(@NotNull TriggerContext ctx) {
         Optional<? extends Statement> first = getFirst();
         if (first.isPresent()) {
-            Optional<? extends World> single = this.world.getSingle(ctx);
+            Optional<? extends World> worldOptional = this.world.getSingle(ctx);
 
             // Copy variables from the time this code executes
-            TriggerContext dummy = TriggerContext.DUMMY;
-            Variables.copyLocalVariables(ctx, dummy);
-
+            VariableMap variableMap = Variables.copyLocalVariables(ctx);
             Statement firstStatement = first.get();
-            single.ifPresent(world -> world.execute(() -> {
+            worldOptional.ifPresent(world -> world.execute(() -> {
                 // Place the variables back into the original context
                 // This is done in case World#execute is delayed
-                Variables.copyLocalVariables(dummy, ctx);
+                Variables.setLocalVariables(ctx, variableMap);
                 Statement.runAll(firstStatement, ctx);
 
                 // Clear out old variables
-                Variables.clearLocalVariables(dummy);
                 Variables.clearLocalVariables(ctx);
             }));
         }
