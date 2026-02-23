@@ -32,7 +32,7 @@ dependencies {
     compileOnly("com.hypixel.hytale:Server:${hytaleVersion}")
     compileOnly("org.jetbrains:annotations:26.0.2")
     testImplementation("com.google.code.gson:gson:2.13.2")
-    implementation("com.github.SkriptDev:skript-parser:1.0.9") {
+    implementation("com.github.SkriptDev:skript-parser:1.0.10") {
         isTransitive = false
     }
     implementation("com.github.Zoltus:TinyMessage:2.0.1") {
