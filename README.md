@@ -23,7 +23,7 @@ Make sure to check out the "HySkript" channels!
 - Hytale Server (version information will come in the future)
 
 ## Download:
-You can find our downloads on the [**releases page**](https://github.com/SkriptDev/HySkript/releases)
+You can find our downloads on [**CurseForge**](https://www.curseforge.com/hytale/mods/hyskript/files)
 
 ## Issues:
 If you find any issues, please report them on our [**issues page**](https://github.com/SkriptDev/HySkript/issues)
