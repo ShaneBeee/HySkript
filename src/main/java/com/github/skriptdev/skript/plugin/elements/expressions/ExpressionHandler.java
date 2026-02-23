@@ -75,6 +75,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayer
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerRespawnLocations;
 import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprConsole;
 import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprServerViewRadius;
+import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprAllWorlds;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprChunkAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprEnvironmentAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprRelativePositionResolve;
@@ -178,6 +179,7 @@ public class ExpressionHandler {
         ExprServerViewRadius.register(registration);
 
         // WORLD
+        ExprAllWorlds.register(registration);
         ExprChunkAtLocation.register(registration);
         ExprEnvironmentAtLocation.register(registration);
         ExprRelativePositionResolve.register(registration);

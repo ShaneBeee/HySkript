@@ -27,6 +27,7 @@ import com.github.skriptdev.skript.plugin.elements.effects.player.EffOpenItemCon
 import com.github.skriptdev.skript.plugin.elements.effects.server.EffServerShutdown;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffChunkLoadAsync;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffChunkRegenerate;
+import com.github.skriptdev.skript.plugin.elements.effects.world.EffCreateWorld;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffExplosion;
 import com.github.skriptdev.skript.plugin.elements.effects.entity.EffInteraction;
 import com.github.skriptdev.skript.plugin.elements.effects.world.EffParticle;
@@ -72,6 +73,7 @@ public class EffectHandler {
         // WORLD
         EffChunkLoadAsync.register(registration);
         EffChunkRegenerate.register(registration);
+        EffCreateWorld.register(registration);
         EffExplosion.register(registration);
         EffParticle.register(registration);
     }
