@@ -40,6 +40,7 @@ public class HySk extends JavaPlugin {
     protected void start() {
         this.skript = new Skript(this);
         new SkriptCommand(getCommandRegistry());
+        BstatsMetrics.registerMetrics(this);
     }
 
     /**
