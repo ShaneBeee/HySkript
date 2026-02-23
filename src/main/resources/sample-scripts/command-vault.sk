@@ -1,0 +1,11 @@
+# Player Vaults
+# This little snippet includes a command where a player can open their own storage vaults
+
+player command /vault:
+	trigger:
+		# If the vault isn't created yet, create it
+		if {vaults::%uuid of player%} is not set:
+			set {vaults::%uuid of player%} to itemContainer(36) # Use whatever size you'd like
+
+		# Then open it to the player
+		open {vaults::%uuid of player%} to player
