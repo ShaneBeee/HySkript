@@ -1,13 +1,11 @@
 package com.github.skriptdev.skript.plugin.elements.effects.entity;
 
-import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.component.Store;
+import com.github.skriptdev.skript.api.hytale.utils.EntityUtils;
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
-import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.syst3ms.skriptparser.lang.Effect;
 import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
@@ -45,15 +43,21 @@ public class EffTeleport extends Effect {
         Location location = this.location.getSingle(ctx).orElse(null);
         if (location == null || entities == null) return;
 
-        World world = Universe.get().getWorld(location.getWorld());
+        World worldTp = Universe.get().getWorld(location.getWorld());
 
         for (Entity entity : entities) {
-            Ref<EntityStore> reference = entity.getReference();
-            assert reference != null;
-            Store<EntityStore> store = reference.getStore();
+            Runnable tpRunnable = () -> {
+                Teleport teleport = Teleport.createForPlayer(worldTp, location.getPosition(), location.getRotation());
+                EntityUtils.putComponent(entity, Teleport.getComponentType(), teleport);
+            };
 
-            Teleport teleport = Teleport.createForPlayer(world, location.getPosition(), location.getRotation());
-            store.addComponent(reference, Teleport.getComponentType(), teleport);
+            World world = entity.getWorld();
+            assert world != null;
+            if (world.isInThread()) {
+                tpRunnable.run();
+            } else {
+                world.execute(tpRunnable);
+            }
         }
     }
 
