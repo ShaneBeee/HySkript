@@ -13,6 +13,7 @@ import io.github.syst3ms.skriptparser.lang.CodeSection;
 import io.github.syst3ms.skriptparser.lang.Effect;
 import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.Structure;
+import io.github.syst3ms.skriptparser.lang.TriggerContext;
 import io.github.syst3ms.skriptparser.lang.base.ConditionalExpression;
 import io.github.syst3ms.skriptparser.lang.base.ExecutableExpression;
 import io.github.syst3ms.skriptparser.pattern.PatternElement;
@@ -159,8 +160,10 @@ public class JsonDocPrinter {
             // CONTEXT VALUES
             List<ContextValue<?, ?>> valuesForThisEvent = new ArrayList<>();
             allContextValues.forEach(contextValue -> {
-                if (event.getContexts().contains(contextValue.getContext())) {
-                    valuesForThisEvent.add(contextValue);
+                for (Class<? extends TriggerContext> context : event.getContexts()) {
+                    if (contextValue.getContext().isAssignableFrom(context) && !valuesForThisEvent.contains(contextValue)) {
+                        valuesForThisEvent.add(contextValue);
+                    }
                 }
             });
             BsonArray contextValues = eventDoc.getArray("context values", new BsonArray());
