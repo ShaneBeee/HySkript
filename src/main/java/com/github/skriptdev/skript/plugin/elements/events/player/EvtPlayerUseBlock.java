@@ -40,6 +40,10 @@ public class EvtPlayerUseBlock extends SystemEvent<EntityEventSystem<EntityStore
             .name("Player Use Block")
             .description("Called when a player uses a block.",
                 "Pre is cancellable, post is not.")
+            .examples("on pre player use block:",
+                "\tif \"%event-blocktype%\" contains \"Bed\":",
+                "\t\tcancel event",
+                "\t\tsend \"No sleepy time for you!\" to player")
             .since("1.0.0")
             .register();
 
