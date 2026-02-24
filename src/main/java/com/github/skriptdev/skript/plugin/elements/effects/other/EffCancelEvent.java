@@ -32,11 +32,11 @@ public class EffCancelEvent extends Effect {
         }
         this.cancel = matchedPattern == 0;
         for (Class<? extends TriggerContext> currentContext : parseContext.getParserState().getCurrentContexts()) {
-            if (!CancellableContext.class.isAssignableFrom(currentContext)) {
-                parseContext.getLogger().error("This event cannot be cancelled", ErrorType.SEMANTIC_ERROR);
-                return false;
+            if (CancellableContext.class.isAssignableFrom(currentContext)) {
+                return true;
             }
         }
+        parseContext.getLogger().error("This event cannot be cancelled", ErrorType.SEMANTIC_ERROR);
         return true;
     }
 
