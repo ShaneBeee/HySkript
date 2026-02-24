@@ -135,6 +135,9 @@ public class TypesAssetStore {
             .toStringFunction(ItemQuality::getId)
             .register();
         reg.newAssetStoreType(ParticleSystem.class, ParticleSystem.getAssetMap(), "particle", "particle@s")
+            .name("Particle")
+            .description("Represents the types of particles in the game.")
+            .since("INSERT VERSION")
             .register();
         reg.newAssetStoreType(Projectile.class, Projectile.getAssetMap(), "projectile", "projectile@s")
             .name("Projectile")
