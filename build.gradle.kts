@@ -32,6 +32,11 @@ dependencies {
     compileOnly("com.hypixel.hytale:Server:${hytaleVersion}")
     compileOnly("org.jetbrains:annotations:26.0.2")
     testImplementation("com.google.code.gson:gson:2.13.2")
+
+    // bStats
+    implementation("org.bstats:bstats-hytale:3.2.1")
+
+    // Skript-Parser
     implementation("com.github.SkriptDev:skript-parser:1.0.10") {
         isTransitive = false
     }
@@ -77,6 +82,7 @@ tasks {
         archiveClassifier.set("")
         relocate("io.github.syst3ms", "com.github.skriptdev.skript")
         relocate("fi.sulku.hytale", "com.github.skriptdev.skript.tinymessage")
+        relocate("org.bstats", "com.github.skriptdev.skript.bstats")
     }
     jar {
         dependsOn(shadowJar)
