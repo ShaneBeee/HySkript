@@ -48,7 +48,7 @@ public class EffTeleport extends Effect {
         for (Entity entity : entities) {
             Runnable tpRunnable = () -> {
                 Teleport teleport = Teleport.createForPlayer(worldTp, location.getPosition(), location.getRotation());
-                EntityUtils.putComponent(entity, Teleport.getComponentType(), teleport);
+                EntityUtils.addComponent(entity, Teleport.getComponentType(), teleport);
             };
 
             World world = entity.getWorld();

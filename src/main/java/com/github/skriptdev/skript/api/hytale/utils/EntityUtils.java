@@ -142,11 +142,29 @@ public class EntityUtils {
     }
 
     /**
-     * Put a component on an Entity.
+     * Add a component on an Entity.
      *
      * @param entity    Entity to add component to
      * @param type      Type of component to add
      * @param component Component to add
+     * @param <ECS>     EntityStore Type
+     * @param <T>       Type of component
+     */
+    @SuppressWarnings("unchecked")
+    public static <ECS, T extends Component<ECS>> void addComponent(Entity entity, ComponentType<ECS, T> type, Component<ECS> component) {
+        Ref<ECS> reference = (Ref<ECS>) entity.getReference();
+        if (reference == null) {
+            throw new IllegalStateException("Entity '" + entity + "' does not have a reference");
+        }
+        reference.getStore().addComponent(reference, type, (T) component);
+    }
+
+    /**
+     * Put a component on an Entity.
+     *
+     * @param entity    Entity to put component on
+     * @param type      Type of component to put
+     * @param component Component to put
      * @param <ECS>     EntityStore Type
      * @param <T>       Type of component
      */
@@ -156,7 +174,7 @@ public class EntityUtils {
         if (reference == null) {
             throw new IllegalStateException("Entity '" + entity + "' does not have a reference");
         }
-        reference.getStore().addComponent(reference, type, (T) component);
+        reference.getStore().putComponent(reference, type, (T) component);
     }
 
     /**
