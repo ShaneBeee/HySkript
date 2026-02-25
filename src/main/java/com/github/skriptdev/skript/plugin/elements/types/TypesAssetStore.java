@@ -17,6 +17,7 @@ import com.hypixel.hytale.server.core.asset.type.item.config.CraftingRecipe;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.asset.type.item.config.ItemQuality;
 import com.hypixel.hytale.server.core.asset.type.item.config.ResourceType;
+import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
 import com.hypixel.hytale.server.core.asset.type.particle.config.ParticleSystem;
 import com.hypixel.hytale.server.core.asset.type.projectile.config.Projectile;
 import com.hypixel.hytale.server.core.asset.type.soundevent.config.SoundEvent;
@@ -127,12 +128,17 @@ public class TypesAssetStore {
                 }
             })
             .register();
-        reg.newAssetStoreType(ItemQuality.class, ItemQuality.getAssetMap(),
-                "itemquality", "itemQuality@s")
+        reg.newAssetStoreType(ItemQuality.class, ItemQuality.getAssetMap(), "itemquality", "itemQuality@s")
             .name("Item Quality")
             .description("Represents the quality of items in the game.")
             .since("1.1.0")
             .toStringFunction(ItemQuality::getId)
+            .register();
+        reg.newAssetStoreType(ModelAsset.class, ModelAsset.getAssetMap(), "modelasset", "modelAsset@s")
+            .name("Model Asset")
+            .description("Represents the types of models in the game.")
+            .since("INSERT VERSION")
+            .toStringFunction(ModelAsset::getId)
             .register();
         reg.newAssetStoreType(ParticleSystem.class, ParticleSystem.getAssetMap(), "particle", "particle@s")
             .name("Particle")
