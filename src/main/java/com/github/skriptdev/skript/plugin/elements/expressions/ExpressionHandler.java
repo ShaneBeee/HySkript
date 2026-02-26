@@ -7,6 +7,7 @@ import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockHe
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockIterator;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockRotation;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockSphere;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTint;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeOfBlock;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockFluidLevel;
@@ -104,6 +105,7 @@ public class ExpressionHandler {
         ExprBlockIterator.register(registration);
         ExprBlockRotation.register(registration);
         ExprBlockSphere.register(registration);
+        ExprBlockTint.register(registration);
         ExprBlockTypeAtLocation.register(registration);
         ExprBlockTypeOfBlock.register(registration);
         ExprHighestBlock.register(registration);
