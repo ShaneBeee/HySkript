@@ -74,6 +74,10 @@ import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayer
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerPermissionGroup;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerPermissions;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerRespawnLocations;
+import com.github.skriptdev.skript.plugin.elements.expressions.ref.ExprComponentsInRadius;
+import com.github.skriptdev.skript.plugin.elements.expressions.ref.ExprEntityRef;
+import com.github.skriptdev.skript.plugin.elements.expressions.ref.ExprRefComponent;
+import com.github.skriptdev.skript.plugin.elements.expressions.ref.ExprRefInRadius;
 import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprConsole;
 import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprServerViewRadius;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprAllWorlds;
@@ -175,6 +179,12 @@ public class ExpressionHandler {
         ExprPlayerPermissionGroup.register(registration);
         ExprPlayerPermissions.register(registration);
         ExprPlayerRespawnLocations.register(registration);
+
+        // REF
+        ExprComponentsInRadius.register(registration);
+        ExprEntityRef.register(registration);
+        ExprRefComponent.register(registration);
+        ExprRefInRadius.register(registration);
 
         // SERVER
         ExprConsole.register(registration);

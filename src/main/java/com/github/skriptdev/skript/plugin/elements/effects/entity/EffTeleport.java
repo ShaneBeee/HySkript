@@ -1,11 +1,14 @@
 package com.github.skriptdev.skript.plugin.elements.effects.entity;
 
 import com.github.skriptdev.skript.api.hytale.utils.EntityUtils;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.syst3ms.skriptparser.lang.Effect;
 import io.github.syst3ms.skriptparser.lang.Expression;
 import io.github.syst3ms.skriptparser.lang.TriggerContext;
@@ -17,46 +20,65 @@ public class EffTeleport extends Effect {
 
     public static void register(SkriptRegistration registration) {
         registration.newEffect(EffTeleport.class,
-                "teleport %entities% to %location%")
+                "teleport %refs/entities% to %location%")
             .name("Teleport")
-            .description("Teleport entities to a location.")
+            .description("Teleport entities/references to a location.")
             .examples("teleport all players to {_location}",
                 "teleport player to first element of (respawn locations of player)")
             .since("1.0.0")
             .register();
     }
 
-    private Expression<Entity> entities;
+    private Expression<?> entities;
     private Expression<Location> location;
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, @NotNull ParseContext parseContext) {
-        this.entities = (Expression<Entity>) expressions[0];
+        this.entities = expressions[0];
         this.location = (Expression<Location>) expressions[1];
         return true;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked", "ConstantValue"})
     @Override
     protected void execute(@NotNull TriggerContext ctx) {
-        Entity[] entities = this.entities.getArray(ctx);
+        Object[] objects = this.entities.getArray(ctx);
         Location location = this.location.getSingle(ctx).orElse(null);
-        if (location == null || entities == null) return;
+        if (location == null || objects == null) return;
 
-        World worldTp = Universe.get().getWorld(location.getWorld());
+        World worldTo = Universe.get().getWorld(location.getWorld());
 
-        for (Entity entity : entities) {
+        for (Object object : objects) {
+            Teleport teleport = Teleport.createForPlayer(worldTo, location.getPosition(), location.getRotation());
+
+            World worldFrom;
+            if (object instanceof Entity entity) {
+                worldFrom = entity.getWorld();
+            } else if (object instanceof Ref ref) {
+                Store store = ref.getStore();
+                worldFrom = ((Store<EntityStore>) store).getExternalData().getWorld();
+            } else {
+                continue;
+            }
+
             Runnable tpRunnable = () -> {
-                Teleport teleport = Teleport.createForPlayer(worldTp, location.getPosition(), location.getRotation());
-                EntityUtils.addComponent(entity, Teleport.getComponentType(), teleport);
+                if (object instanceof Entity entity) {
+                    EntityUtils.addComponent(entity, Teleport.getComponentType(), teleport);
+                } else if (object instanceof Ref ref) {
+                    Store store = ref.getStore();
+                    store.addComponent(ref, Teleport.getComponentType(), teleport);
+                }
             };
 
-            World world = entity.getWorld();
-            assert world != null;
-            if (world.isInThread()) {
+            if (worldFrom == null) {
+                continue;
+            }
+
+            if (worldFrom.isInThread()) {
                 tpRunnable.run();
             } else {
-                world.execute(tpRunnable);
+                worldFrom.execute(tpRunnable);
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.github.skriptdev.skript.api.hytale.utils;
 
 import com.github.skriptdev.skript.api.skript.registration.NPCRegistry;
-import com.github.skriptdev.skript.api.utils.Utils;
 import com.hypixel.hytale.component.AddReason;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
@@ -225,8 +224,8 @@ public class EntityUtils {
         return store.getComponent(reference, MovementStatesComponent.getComponentType());
     }
 
-    @SuppressWarnings({"DataFlowIssue", "deprecation"})
-    public static @NotNull Pair<Entity, ItemComponent> dropItem(Store<EntityStore> store, ItemStack itemStack,
+    @SuppressWarnings({"DataFlowIssue"})
+    public static @NotNull Pair<Ref<EntityStore>, ItemComponent> dropItem(Store<EntityStore> store, ItemStack itemStack,
                                                                 Location location, Vector3f velocity, float pickupDelay) {
         if (itemStack.isEmpty() || !itemStack.isValid()) {
             return new Pair<>(null, null);
@@ -246,9 +245,9 @@ public class EntityUtils {
             itemComponent.setPickupDelay(pickupDelay);
         }
 
-        store.addEntity(itemEntityHolder, AddReason.SPAWN);
+        Ref<EntityStore> ref = store.addEntity(itemEntityHolder, AddReason.SPAWN);
 
-        return new Pair<>(com.hypixel.hytale.server.core.entity.EntityUtils.getEntity(itemEntityHolder), itemComponent);
+        return new Pair<>(ref, itemComponent);
     }
 
     public static boolean isTameable(NPCEntity npcEntity) {
@@ -297,7 +296,6 @@ public class EntityUtils {
 
         NPCRegistry.NPCRole parse = NPCRegistry.parse(roleName);
 
-        Utils.log("Changing role to %s", parse.name());
         RoleChangeSystem.requestRoleChange(reference, currentRole, parse.index(), true, store);
     }
 
