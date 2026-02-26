@@ -26,6 +26,7 @@ import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.FluidSection;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import io.github.syst3ms.skriptparser.util.color.Color;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,8 +58,12 @@ public class Block {
         this(world, location.getPosition().toVector3i());
     }
 
+    public long getChunkIndex() {
+        return ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ());
+    }
+
     public WorldChunk getChunk() {
-        return this.world.getChunk(ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ()));
+        return this.world.getChunk(getChunkIndex());
     }
 
     public @NotNull BlockType getType() {
@@ -73,6 +78,10 @@ public class Block {
         } else {
             this.world.execute(r);
         }
+    }
+
+    public void updateChunk() {
+        getWorld().getNotificationHandler().updateChunk(getChunkIndex());
     }
 
     /**
@@ -125,9 +134,34 @@ public class Block {
         };
     }
 
+    public Color getTint() {
+        BlockChunk blockChunk = getChunk().getBlockChunk();
+        if (blockChunk == null) return null;
+
+        int x = this.pos.getX() % 32;
+        int z = this.pos.getZ() % 32;
+        int tintInt = blockChunk.getTint(x, z);
+        return Color.of(tintInt);
+    }
+
+    public void setTint(Color color) {
+        setTint(color, true);
+    }
+
+    public void setTint(Color color, boolean updateChunk) {
+        BlockChunk blockChunk = getChunk().getBlockChunk();
+        if (blockChunk == null) return;
+
+        int x = this.pos.getX() % 32;
+        int z = this.pos.getZ() % 32;
+        blockChunk.setTint(x, z, color.toJavaColor().getRGB());
+        if (updateChunk) {
+            updateChunk();
+        }
+    }
+
     public byte getFluidLevel() {
-        long index = ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ());
-        WorldChunk chunk = this.world.getChunk(index);
+        WorldChunk chunk = this.world.getChunk(getChunkIndex());
         if (chunk == null) return 0;
 
         Ref<ChunkStore> columnRef = chunk.getReference();
@@ -147,8 +181,7 @@ public class Block {
     }
 
     public void setFluidLevel(byte level) {
-        long index = ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ());
-        this.world.getChunkAsync(index).thenApply((chunk) -> {
+        this.world.getChunkAsync(getChunkIndex()).thenApply((chunk) -> {
             Ref<ChunkStore> columnRef = chunk.getReference();
             Store<ChunkStore> store = columnRef.getStore();
             ChunkColumn column = store.getComponent(columnRef, ChunkColumn.getComponentType());
@@ -181,8 +214,7 @@ public class Block {
     }
 
     public void setFluid(@NotNull Fluid fluid, @Nullable Integer level) {
-        long index = ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ());
-        this.world.getChunkAsync(index).thenApply((chunk) -> {
+        this.world.getChunkAsync(getChunkIndex()).thenApply((chunk) -> {
             Ref<ChunkStore> columnRef = chunk.getReference();
             Store<ChunkStore> store = columnRef.getStore();
             ChunkColumn column = store.getComponent(columnRef, ChunkColumn.getComponentType());
@@ -217,7 +249,7 @@ public class Block {
     }
 
     public void damage(@Nullable LivingEntity performer, @Nullable ItemStack itemStack, float damage) {
-        WorldChunk chunk = this.world.getChunk(ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ()));
+        WorldChunk chunk = this.world.getChunk(getChunkIndex());
         if (chunk == null) return;
 
         Ref<ChunkStore> ref = chunk.getReference();
@@ -252,7 +284,7 @@ public class Block {
     }
 
     public float getBlockHealth() {
-        WorldChunk chunk = this.world.getChunk(ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ()));
+        WorldChunk chunk = getChunk();
         if (chunk == null) return 0;
 
         Ref<ChunkStore> ref = chunk.getReference();
@@ -265,7 +297,7 @@ public class Block {
     }
 
     public void setBlockHealth(float health) {
-        WorldChunk chunk = this.world.getChunk(ChunkUtil.indexChunkFromBlock(this.pos.getX(), this.pos.getZ()));
+        WorldChunk chunk = getChunk();
         if (chunk == null) return;
 
         Ref<ChunkStore> ref = chunk.getReference();
