@@ -18,7 +18,7 @@ public class BstatsMetrics {
         metrics.addCustomChart(new DrilldownPie("plugin_version_drilldown_pie", () -> {
             Semver version = plugin.getManifest().getVersion();
             DrilldownMap map = new DrilldownMap();
-            map.put(version.getMajor() + "." + version.getMinor(), version.toString());
+            map.put(version.getMajor() + "." + version.getMinor() + ".x", version.toString());
             return map.getMap();
         }));
 
