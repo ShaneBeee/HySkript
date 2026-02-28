@@ -15,9 +15,11 @@ import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprHighest
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprTargetBlockOfPlayer;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprActiveSlot;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntitiesInRadius;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityAttitude;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityComponents;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityModel;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityStamina;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprLockedTarget;
 import com.github.skriptdev.skript.plugin.elements.expressions.item.ExprItemQuality;
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprValueWithin;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerDefenseLevel;
@@ -114,6 +116,7 @@ public class ExpressionHandler {
         // ENTITY
         ExprActiveSlot.register(registration);
         ExprEntitiesInRadius.register(registration);
+        ExprEntityAttitude.register(registration);
         ExprEntityComponents.register(registration);
         ExprEntityHeadRotation.register(registration);
         ExprEntityHealth.register(registration);
@@ -123,6 +126,7 @@ public class ExpressionHandler {
         ExprEntityStat.register(registration);
         ExprEntityVelocity.register(registration);
         ExprHeldItem.register(registration);
+        ExprLockedTarget.register(registration);
         ExprName.register(registration);
         ExprNPCType.register(registration);
         ExprTargetEntityOfEntity.register(registration);

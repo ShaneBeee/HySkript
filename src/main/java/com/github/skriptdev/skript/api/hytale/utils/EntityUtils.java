@@ -23,6 +23,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import com.hypixel.hytale.server.npc.role.Role;
+import com.hypixel.hytale.server.npc.role.support.MarkedEntitySupport;
 import com.hypixel.hytale.server.npc.systems.RoleChangeSystem;
 import io.github.syst3ms.skriptparser.util.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -297,6 +298,30 @@ public class EntityUtils {
         NPCRegistry.NPCRole parse = NPCRegistry.parse(roleName);
 
         RoleChangeSystem.requestRoleChange(reference, currentRole, parse.index(), true, store);
+    }
+
+    public static void clearMarkedEntity(NPCEntity npcEntity) {
+        clearMarkedEntity(npcEntity, null);
+    }
+
+    public static void clearMarkedEntity(NPCEntity npcEntity, @Nullable Entity target) {
+        Role role = npcEntity.getRole();
+        assert role != null;
+        MarkedEntitySupport markedEntitySupport = role.getMarkedEntitySupport();
+        if (target != null) {
+            Ref<EntityStore> reference = target.getReference();
+            assert reference != null;
+
+            for (int i = 0; i < markedEntitySupport.getEntityTargets().length; i++) {
+                if (markedEntitySupport.hasMarkedEntity(reference, i)) {
+                    markedEntitySupport.clearMarkedEntity(i);
+                }
+            }
+        } else {
+            for (int i = 0; i < markedEntitySupport.getMarkedEntitySlotCount(); i++) {
+                markedEntitySupport.clearMarkedEntity(i);
+            }
+        }
     }
 
 }

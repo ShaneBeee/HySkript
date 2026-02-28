@@ -5,6 +5,7 @@ import com.github.skriptdev.skript.api.skript.registration.NPCRegistry;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.RemoveReason;
+import com.hypixel.hytale.server.core.asset.type.attitude.Attitude;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.entity.LivingEntity;
 import com.hypixel.hytale.server.core.entity.effect.ActiveEntityEffect;
@@ -21,7 +22,7 @@ public class TypesEntity {
     private static final Changer<Entity> ENTITY_CHANGER = new Changer<>() {
         @Override
         public Class<?>[] acceptsChange(@NotNull ChangeMode mode) {
-            if (mode == ChangeMode.DELETE) return new Class<?>[] {Entity.class};
+            if (mode == ChangeMode.DELETE) return new Class<?>[]{Entity.class};
             return null;
         }
 
@@ -55,6 +56,11 @@ public class TypesEntity {
             .description("Represents an active EntityEffect applied to an entity.")
             .since("1.0.0")
             .toStringFunction(ActiveEntityEffect::toString)
+            .register();
+        reg.newEnumType(Attitude.class, "attitude", "attitude@s")
+            .name("Attitude")
+            .description("Represents the attitude of an NPC Entity towards another entity.")
+            .since("INSERT VERSION")
             .register();
         reg.newType(Entity.class, "entity", "entit@y@ies")
             .name("Entity")
