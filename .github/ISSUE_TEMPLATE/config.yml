@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: 📖 HySkript Docs
-    url: https://github.com/SkriptDev/HySkript/wiki
+    url: https://skripthub.net/hyskript/docs/
     about: Find HySkript's docs and 100's of examples
   - name: 💻 Support
     url: https://discord.gg/phpWHGU
