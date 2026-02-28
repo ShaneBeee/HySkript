@@ -30,7 +30,8 @@ public class HySk extends JavaPlugin {
      */
     @Override
     protected void setup() {
-        // Unused - for now
+        // Setup early so addons can register from this
+        this.skript = new Skript(this);
     }
 
     /**
@@ -38,7 +39,8 @@ public class HySk extends JavaPlugin {
      */
     @Override
     protected void start() {
-        this.skript = new Skript(this);
+        // After addons load, startup Skript
+        this.skript.start();
         new SkriptCommand(getCommandRegistry());
         BstatsMetrics.registerMetrics(this);
     }

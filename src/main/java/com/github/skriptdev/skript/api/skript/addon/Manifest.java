@@ -40,6 +40,18 @@ public class Manifest {
     private String[] authors;
     private String website;
 
+    private Manifest() {
+    }
+
+    public Manifest(String mainClass, String name, String version, String description, String[] authors, String website) {
+        this.mainClass = mainClass;
+        this.name = name;
+        this.version = version;
+        this.description = description;
+        this.authors = authors;
+        this.website = website;
+    }
+
     @ApiStatus.Internal
     public String getMainClass() {
         return this.mainClass;

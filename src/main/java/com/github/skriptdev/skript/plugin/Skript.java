@@ -3,6 +3,7 @@ package com.github.skriptdev.skript.plugin;
 import com.github.skriptdev.skript.api.skript.ErrorHandler;
 import com.github.skriptdev.skript.api.skript.ScriptsLoader;
 import com.github.skriptdev.skript.api.skript.addon.AddonLoader;
+import com.github.skriptdev.skript.api.skript.addon.HySkriptAddon;
 import com.github.skriptdev.skript.api.skript.command.ArgUtils;
 import com.github.skriptdev.skript.api.skript.config.SkriptConfig;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
@@ -15,6 +16,7 @@ import com.github.skriptdev.skript.plugin.elements.ElementRegistration;
 import com.github.skriptdev.skript.plugin.elements.events.EventHandler;
 import com.github.skriptdev.skript.plugin.elements.events.server.EvtBoot;
 import com.hypixel.hytale.server.core.event.events.BootEvent;
+import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import io.github.syst3ms.skriptparser.config.Config.ConfigSection;
 import io.github.syst3ms.skriptparser.lang.TriggerMap;
 import io.github.syst3ms.skriptparser.log.LogEntry;
@@ -33,19 +35,27 @@ public class Skript extends SkriptAddon {
 
     public static Skript INSTANCE;
     private final HySk hySk;
-    private final SkriptConfig skriptConfig;
+    private final AddonLoader addonLoader;
     private final Path scriptsPath;
+    private SkriptConfig skriptConfig;
     private SkriptRegistration registration;
     private ElementRegistration elementRegistration;
-    private AddonLoader addonLoader;
     private ScriptsLoader scriptsLoader;
+    private boolean isAcceptingRegistrations = true;
 
     Skript(HySk hySk) {
         super("HySkript");
-        long start = System.currentTimeMillis();
         INSTANCE = this;
         this.hySk = hySk;
+        this.addonLoader = new AddonLoader();
         this.scriptsPath = hySk.getDataDirectory().resolve("scripts");
+    }
+
+    void start() {
+        // Stop accepting registrations after Skript starts to load
+        this.isAcceptingRegistrations = false;
+
+        long start = System.currentTimeMillis();
 
         Utils.log(" ");
         Utils.log("Setting up HySkript!");
@@ -86,8 +96,7 @@ public class Skript extends SkriptAddon {
         Utils.log("HySkript setup completed in %sms!", fin);
 
         // LOAD ADDONS
-        this.addonLoader = new AddonLoader();
-        this.addonLoader.loadAddonsFromFolder();
+        this.addonLoader.loadAddons();
 
         // SETUP ERROR HANDLER
         Utils.debug("Setting up error handler...");
@@ -185,6 +194,32 @@ public class Skript extends SkriptAddon {
      */
     public @NotNull SkriptRegistration getSkriptRegistration() {
         return this.registration;
+    }
+
+    /**
+     * Check if HySkript is accepting registrations.
+     *
+     * @return True if HySkript is accepting registrations, false otherwise.
+     */
+    public boolean isAcceptingRegistrations() {
+        return this.isAcceptingRegistrations;
+    }
+
+    /**
+     * Register an addon to HySkript.
+     * <br>ONLY use this when registering a plugin/mod as an addon.
+     * <br>Regular addons are self registereing.
+     *
+     * @param plugin     Main plugin instance
+     * @param addonClass Class of the addon
+     * @param <T>        Type of the addon
+     * @return New instance of the addon
+     */
+    public <T extends HySkriptAddon> T registerAddon(JavaPlugin plugin, Class<T> addonClass) {
+        if (!this.isAcceptingRegistrations) {
+            throw new IllegalStateException("Cannot register addons after the HySkript has started!");
+        }
+        return this.addonLoader.registerAddon(plugin, addonClass);
     }
 
     public ElementRegistration getElementRegistration() {
