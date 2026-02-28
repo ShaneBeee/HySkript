@@ -141,3 +141,9 @@ publishing {
         }
     }
 }
+
+tasks.withType<GenerateModuleMetadata>().configureEach {
+    // This resolves the "implicit dependency" failure by forcing
+    // metadata generation to wait for the JAR task.
+    mustRunAfter(tasks.named("jar"))
+}
