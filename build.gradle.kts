@@ -37,7 +37,7 @@ dependencies {
     implementation("org.bstats:bstats-hytale:3.2.1")
 
     // Skript-Parser
-    implementation("com.github.SkriptDev:skript-parser:1.0.10") {
+    implementation("com.github.SkriptDev:skript-parser:1.0.11") {
         isTransitive = false
     }
     implementation("com.github.Zoltus:TinyMessage:2.0.1") {
