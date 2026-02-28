@@ -6,8 +6,10 @@ public class SectionHandler {
 
     public static void register(SkriptRegistration registration) {
         SecApplyStatModifier.register(registration);
+        SecCreateWorld.register(registration);
         SecDropItem.register(registration);
         SecExecuteInWorld.register(registration);
+        SecParticle.register(registration);
         SecPlaySound.register(registration);
         SecSendNotification.register(registration);
         SecSendTitle.register(registration);

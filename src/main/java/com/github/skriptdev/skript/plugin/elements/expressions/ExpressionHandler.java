@@ -5,7 +5,9 @@ import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockAt
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockFluid;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockHealth;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockIterator;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockRotation;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockSphere;
+import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTint;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockTypeOfBlock;
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprBlockFluidLevel;
@@ -13,8 +15,11 @@ import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprHighest
 import com.github.skriptdev.skript.plugin.elements.expressions.block.ExprTargetBlockOfPlayer;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprActiveSlot;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntitiesInRadius;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityAttitude;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityComponents;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityModel;
 import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprEntityStamina;
+import com.github.skriptdev.skript.plugin.elements.expressions.entity.ExprLockedTarget;
 import com.github.skriptdev.skript.plugin.elements.expressions.item.ExprItemQuality;
 import com.github.skriptdev.skript.plugin.elements.expressions.other.ExprValueWithin;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerDefenseLevel;
@@ -72,8 +77,13 @@ import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayer
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerPermissionGroup;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerPermissions;
 import com.github.skriptdev.skript.plugin.elements.expressions.player.ExprPlayerRespawnLocations;
+import com.github.skriptdev.skript.plugin.elements.expressions.ref.ExprComponentsInRadius;
+import com.github.skriptdev.skript.plugin.elements.expressions.ref.ExprEntityRef;
+import com.github.skriptdev.skript.plugin.elements.expressions.ref.ExprRefComponent;
+import com.github.skriptdev.skript.plugin.elements.expressions.ref.ExprRefInRadius;
 import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprConsole;
 import com.github.skriptdev.skript.plugin.elements.expressions.server.ExprServerViewRadius;
+import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprAllWorlds;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprChunkAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprEnvironmentAtLocation;
 import com.github.skriptdev.skript.plugin.elements.expressions.world.ExprRelativePositionResolve;
@@ -95,7 +105,9 @@ public class ExpressionHandler {
         ExprBlockFluidLevel.register(registration);
         ExprBlockHealth.register(registration);
         ExprBlockIterator.register(registration);
+        ExprBlockRotation.register(registration);
         ExprBlockSphere.register(registration);
+        ExprBlockTint.register(registration);
         ExprBlockTypeAtLocation.register(registration);
         ExprBlockTypeOfBlock.register(registration);
         ExprHighestBlock.register(registration);
@@ -104,14 +116,17 @@ public class ExpressionHandler {
         // ENTITY
         ExprActiveSlot.register(registration);
         ExprEntitiesInRadius.register(registration);
+        ExprEntityAttitude.register(registration);
         ExprEntityComponents.register(registration);
         ExprEntityHeadRotation.register(registration);
         ExprEntityHealth.register(registration);
+        ExprEntityModel.register(registration);
         ExprEntityScale.register(registration);
         ExprEntityStamina.register(registration);
         ExprEntityStat.register(registration);
         ExprEntityVelocity.register(registration);
         ExprHeldItem.register(registration);
+        ExprLockedTarget.register(registration);
         ExprName.register(registration);
         ExprNPCType.register(registration);
         ExprTargetEntityOfEntity.register(registration);
@@ -171,11 +186,18 @@ public class ExpressionHandler {
         ExprPlayerPermissions.register(registration);
         ExprPlayerRespawnLocations.register(registration);
 
+        // REF
+        ExprComponentsInRadius.register(registration);
+        ExprEntityRef.register(registration);
+        ExprRefComponent.register(registration);
+        ExprRefInRadius.register(registration);
+
         // SERVER
         ExprConsole.register(registration);
         ExprServerViewRadius.register(registration);
 
         // WORLD
+        ExprAllWorlds.register(registration);
         ExprChunkAtLocation.register(registration);
         ExprEnvironmentAtLocation.register(registration);
         ExprRelativePositionResolve.register(registration);

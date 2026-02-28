@@ -80,7 +80,7 @@ public class EffRide extends Effect {
             Ref<EntityStore> vehicleRef = entity.getReference();
 
             MountedComponent comp = new MountedComponent(vehicleRef, offset, MountController.Minecart);
-            EntityUtils.putComponent(passenger, MountedComponent.getComponentType(), comp);
+            EntityUtils.addComponent(passenger, MountedComponent.getComponentType(), comp);
         } else if (vehicle instanceof Block block) {
 
             Ref<EntityStore> passengerRef = passenger.getReference();

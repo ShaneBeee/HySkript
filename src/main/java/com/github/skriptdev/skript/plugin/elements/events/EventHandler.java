@@ -6,6 +6,7 @@ import com.github.skriptdev.skript.api.skript.event.BlockContext;
 import com.github.skriptdev.skript.api.skript.event.LocationContext;
 import com.github.skriptdev.skript.api.skript.event.PlayerContext;
 import com.github.skriptdev.skript.api.skript.event.PlayerRefContext;
+import com.github.skriptdev.skript.api.skript.event.RefContext;
 import com.github.skriptdev.skript.api.skript.event.WorldContext;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
 import com.github.skriptdev.skript.plugin.elements.events.entity.EvtEntityDamage;
@@ -35,7 +36,9 @@ import com.github.skriptdev.skript.plugin.elements.events.player.EvtPlayerUseBlo
 import com.github.skriptdev.skript.plugin.elements.events.server.EvtBoot;
 import com.github.skriptdev.skript.plugin.elements.events.server.EvtShutdown;
 import com.github.skriptdev.skript.plugin.elements.events.skript.EvtLoad;
+import com.github.skriptdev.skript.plugin.elements.events.skript.EvtPeriodical;
 import com.github.skriptdev.skript.plugin.elements.events.world.EvtAtWorldTime;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -79,6 +82,7 @@ public class EventHandler {
 
         // SKRIPT
         EvtLoad.register(registration);
+        EvtPeriodical.register(registration);
 
         // WORLD
         EvtAtWorldTime.register(registration);
@@ -104,14 +108,16 @@ public class EventHandler {
                 "player", PlayerContext::getPlayer)
             .setUsage(Usage.EXPRESSION_OR_ALONE)
             .register();
-        reg.newSingleContextValue(WorldContext.class, World.class,
-                "world", WorldContext::getWorld)
-            .setUsage(Usage.EXPRESSION_OR_ALONE)
-            .register();
         reg.addSingleContextValue(PlayerRefContext.class, PlayerRef.class,
             "playerref", PlayerRefContext::getPlayerRef);
         reg.addSingleContextValue(PlayerRefContext.class, PlayerRef.class,
             "player-ref", PlayerRefContext::getPlayerRef);
+        reg.addSingleContextValue(RefContext.class, Ref.class,
+                "ref", RefContext::getRef);
+        reg.newSingleContextValue(WorldContext.class, World.class,
+                "world", WorldContext::getWorld)
+            .setUsage(Usage.EXPRESSION_OR_ALONE)
+            .register();
     }
 
 }

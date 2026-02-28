@@ -11,11 +11,14 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.asset.type.entityeffect.config.EntityEffect;
 import com.hypixel.hytale.server.core.asset.type.environment.config.Environment;
 import com.hypixel.hytale.server.core.asset.type.fluid.Fluid;
+import com.hypixel.hytale.server.core.asset.type.gameplay.GameplayConfig;
 import com.hypixel.hytale.server.core.asset.type.item.config.BlockGroup;
 import com.hypixel.hytale.server.core.asset.type.item.config.CraftingRecipe;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.asset.type.item.config.ItemQuality;
 import com.hypixel.hytale.server.core.asset.type.item.config.ResourceType;
+import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
+import com.hypixel.hytale.server.core.asset.type.particle.config.ParticleSystem;
 import com.hypixel.hytale.server.core.asset.type.projectile.config.Projectile;
 import com.hypixel.hytale.server.core.asset.type.soundevent.config.SoundEvent;
 import com.hypixel.hytale.server.core.asset.type.weather.config.Weather;
@@ -92,6 +95,13 @@ public class TypesAssetStore {
             .since("1.0.0")
             .toStringFunction(Fluid::getId)
             .register();
+        reg.newAssetStoreType(GameplayConfig.class, GameplayConfig.getAssetMap(),
+                "gameplayconfig", "gameplayConfig@s")
+            .name("Gameplay Config")
+            .description("Represents the types of gameplay configurations in the game.")
+            .toStringFunction(GameplayConfig::getId)
+            .since("INSERT VERSION")
+            .register();
         reg.newAssetStoreType(Interaction.class, Interaction.getAssetMap(),
                 "interaction", "interaction@s")
             .name("Interaction")
@@ -118,12 +128,22 @@ public class TypesAssetStore {
                 }
             })
             .register();
-        reg.newAssetStoreType(ItemQuality.class, ItemQuality.getAssetMap(),
-                "itemquality", "itemQuality@s")
+        reg.newAssetStoreType(ItemQuality.class, ItemQuality.getAssetMap(), "itemquality", "itemQuality@s")
             .name("Item Quality")
             .description("Represents the quality of items in the game.")
             .since("1.1.0")
             .toStringFunction(ItemQuality::getId)
+            .register();
+        reg.newAssetStoreType(ModelAsset.class, ModelAsset.getAssetMap(), "modelasset", "modelAsset@s")
+            .name("Model Asset")
+            .description("Represents the types of models in the game.")
+            .since("INSERT VERSION")
+            .toStringFunction(ModelAsset::getId)
+            .register();
+        reg.newAssetStoreType(ParticleSystem.class, ParticleSystem.getAssetMap(), "particle", "particle@s")
+            .name("Particle")
+            .description("Represents the types of particles in the game.")
+            .since("INSERT VERSION")
             .register();
         reg.newAssetStoreType(Projectile.class, Projectile.getAssetMap(), "projectile", "projectile@s")
             .name("Projectile")

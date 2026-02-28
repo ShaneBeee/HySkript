@@ -1,12 +1,13 @@
 package com.github.skriptdev.skript.plugin.elements.sections;
 
 import com.github.skriptdev.skript.api.hytale.utils.EntityUtils;
+import com.github.skriptdev.skript.api.skript.event.RefContext;
 import com.github.skriptdev.skript.api.skript.registration.SkriptRegistration;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Location;
 import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
-import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.item.ItemComponent;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -21,7 +22,6 @@ import io.github.syst3ms.skriptparser.parsing.ParserState;
 import io.github.syst3ms.skriptparser.util.Pair;
 import io.github.syst3ms.skriptparser.variables.Variables;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -38,16 +38,15 @@ public class SecDropItem extends CodeSection {
                 "drop %item/itemstack% at %location% with velocity %vector3f% [and] [with] pickup delay %duration%")
             .name("Drop Item")
             .description("Drops the specified items.")
-            .examples("drop ingredient_poop at location of player",
-                "drop {_itemstack} at location of player with pickup delay 10 seconds",
-                "drop {_i} at location of player with velocity vector3f(0,1,0) and with pickup delay 5 seconds")
+            .examples("drop ingredient_poop at location of player:",
+                "drop {_itemstack} at location of player with pickup delay 10 seconds:",
+                "drop {_i} at location of player with velocity vector3f(0,1,0) and with pickup delay 5 seconds:",
+                "\tset {_ref} to event-ref")
             .since("1.0.0")
             .register();
 
         reg.addSingleContextValue(ItemComponentContext.class, ItemComponent.class,
             "item-component", ItemComponentContext::getItemComponent);
-        reg.addSingleContextValue(ItemComponentContext.class, Entity.class,
-            "item-entity", ItemComponentContext::getEntity);
     }
 
     private Expression<?> items;
@@ -135,8 +134,8 @@ public class SecDropItem extends CodeSection {
         setNext(null);
 
         Runnable dropRunnable = () -> {
-            Pair<Entity, ItemComponent> pair = EntityUtils.dropItem(store, itemStack, location, velocity, pickupDelay);
-            ItemComponentContext itemContext = new ItemComponentContext(pair.getFirst(), pair.getSecond());
+            Pair<Ref<EntityStore>, ItemComponent> pair = EntityUtils.dropItem(store, itemStack, location, velocity, pickupDelay);
+            ItemComponentContext itemContext = new ItemComponentContext(pair.getSecond(), pair.getFirst());
 
             // Copy variables from the previous context into our section context
             Variables.copyLocalVariables(ctx, itemContext);
@@ -166,28 +165,30 @@ public class SecDropItem extends CodeSection {
         return "drop " + this.items.toString(ctx, debug) + " at " + this.location.toString(ctx, debug) + velocity + pickupDelay;
     }
 
-    public static class ItemComponentContext implements TriggerContext {
+    public static class ItemComponentContext implements RefContext<EntityStore> {
 
-        private final @Nullable Entity entity;
         private final ItemComponent component;
+        private final Ref<EntityStore> ref;
 
-        public ItemComponentContext(@Nullable Entity entity, ItemComponent component) {
-            this.entity = entity;
+        public ItemComponentContext(ItemComponent component, Ref<EntityStore> ref) {
             this.component = component;
+            this.ref = ref;
         }
 
         public ItemComponent getItemComponent() {
             return this.component;
         }
 
-        public @Nullable Entity getEntity() {
-            return this.entity;
+        @Override
+        public Ref<EntityStore> getRef() {
+            return this.ref;
         }
 
         @Override
         public String getName() {
             return "item component context";
         }
+
     }
 
 }

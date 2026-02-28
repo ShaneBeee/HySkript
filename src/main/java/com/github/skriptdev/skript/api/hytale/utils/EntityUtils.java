@@ -1,7 +1,6 @@
 package com.github.skriptdev.skript.api.hytale.utils;
 
 import com.github.skriptdev.skript.api.skript.registration.NPCRegistry;
-import com.github.skriptdev.skript.api.utils.Utils;
 import com.hypixel.hytale.component.AddReason;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
@@ -24,6 +23,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import com.hypixel.hytale.server.npc.role.Role;
+import com.hypixel.hytale.server.npc.role.support.MarkedEntitySupport;
 import com.hypixel.hytale.server.npc.systems.RoleChangeSystem;
 import io.github.syst3ms.skriptparser.util.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -142,11 +142,29 @@ public class EntityUtils {
     }
 
     /**
-     * Put a component on an Entity.
+     * Add a component on an Entity.
      *
      * @param entity    Entity to add component to
      * @param type      Type of component to add
      * @param component Component to add
+     * @param <ECS>     EntityStore Type
+     * @param <T>       Type of component
+     */
+    @SuppressWarnings("unchecked")
+    public static <ECS, T extends Component<ECS>> void addComponent(Entity entity, ComponentType<ECS, T> type, Component<ECS> component) {
+        Ref<ECS> reference = (Ref<ECS>) entity.getReference();
+        if (reference == null) {
+            throw new IllegalStateException("Entity '" + entity + "' does not have a reference");
+        }
+        reference.getStore().addComponent(reference, type, (T) component);
+    }
+
+    /**
+     * Put a component on an Entity.
+     *
+     * @param entity    Entity to put component on
+     * @param type      Type of component to put
+     * @param component Component to put
      * @param <ECS>     EntityStore Type
      * @param <T>       Type of component
      */
@@ -156,7 +174,7 @@ public class EntityUtils {
         if (reference == null) {
             throw new IllegalStateException("Entity '" + entity + "' does not have a reference");
         }
-        reference.getStore().addComponent(reference, type, (T) component);
+        reference.getStore().putComponent(reference, type, (T) component);
     }
 
     /**
@@ -207,8 +225,8 @@ public class EntityUtils {
         return store.getComponent(reference, MovementStatesComponent.getComponentType());
     }
 
-    @SuppressWarnings({"DataFlowIssue", "deprecation"})
-    public static @NotNull Pair<Entity, ItemComponent> dropItem(Store<EntityStore> store, ItemStack itemStack,
+    @SuppressWarnings({"DataFlowIssue"})
+    public static @NotNull Pair<Ref<EntityStore>, ItemComponent> dropItem(Store<EntityStore> store, ItemStack itemStack,
                                                                 Location location, Vector3f velocity, float pickupDelay) {
         if (itemStack.isEmpty() || !itemStack.isValid()) {
             return new Pair<>(null, null);
@@ -228,9 +246,9 @@ public class EntityUtils {
             itemComponent.setPickupDelay(pickupDelay);
         }
 
-        store.addEntity(itemEntityHolder, AddReason.SPAWN);
+        Ref<EntityStore> ref = store.addEntity(itemEntityHolder, AddReason.SPAWN);
 
-        return new Pair<>(com.hypixel.hytale.server.core.entity.EntityUtils.getEntity(itemEntityHolder), itemComponent);
+        return new Pair<>(ref, itemComponent);
     }
 
     public static boolean isTameable(NPCEntity npcEntity) {
@@ -279,8 +297,31 @@ public class EntityUtils {
 
         NPCRegistry.NPCRole parse = NPCRegistry.parse(roleName);
 
-        Utils.log("Changing role to %s", parse.name());
         RoleChangeSystem.requestRoleChange(reference, currentRole, parse.index(), true, store);
+    }
+
+    public static void clearMarkedEntity(NPCEntity npcEntity) {
+        clearMarkedEntity(npcEntity, null);
+    }
+
+    public static void clearMarkedEntity(NPCEntity npcEntity, @Nullable Entity target) {
+        Role role = npcEntity.getRole();
+        assert role != null;
+        MarkedEntitySupport markedEntitySupport = role.getMarkedEntitySupport();
+        if (target != null) {
+            Ref<EntityStore> reference = target.getReference();
+            assert reference != null;
+
+            for (int i = 0; i < markedEntitySupport.getEntityTargets().length; i++) {
+                if (markedEntitySupport.hasMarkedEntity(reference, i)) {
+                    markedEntitySupport.clearMarkedEntity(i);
+                }
+            }
+        } else {
+            for (int i = 0; i < markedEntitySupport.getMarkedEntitySlotCount(); i++) {
+                markedEntitySupport.clearMarkedEntity(i);
+            }
+        }
     }
 
 }
