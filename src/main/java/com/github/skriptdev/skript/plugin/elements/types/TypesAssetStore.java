@@ -100,7 +100,7 @@ public class TypesAssetStore {
             .name("Gameplay Config")
             .description("Represents the types of gameplay configurations in the game.")
             .toStringFunction(GameplayConfig::getId)
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
         reg.newAssetStoreType(Interaction.class, Interaction.getAssetMap(),
                 "interaction", "interaction@s")
@@ -137,13 +137,13 @@ public class TypesAssetStore {
         reg.newAssetStoreType(ModelAsset.class, ModelAsset.getAssetMap(), "modelasset", "modelAsset@s")
             .name("Model Asset")
             .description("Represents the types of models in the game.")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .toStringFunction(ModelAsset::getId)
             .register();
         reg.newAssetStoreType(ParticleSystem.class, ParticleSystem.getAssetMap(), "particle", "particle@s")
             .name("Particle")
             .description("Represents the types of particles in the game.")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
         reg.newAssetStoreType(Projectile.class, Projectile.getAssetMap(), "projectile", "projectile@s")
             .name("Projectile")

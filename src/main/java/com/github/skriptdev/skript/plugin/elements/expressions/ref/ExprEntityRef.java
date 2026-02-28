@@ -20,7 +20,7 @@ public class ExprEntityRef implements Expression<Ref> {
             .description("Get the reference of an entity.")
             .examples("set {_ref} to reference of player",
                 "set {_ref} to ref of event-entity")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

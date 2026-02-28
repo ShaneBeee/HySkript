@@ -36,7 +36,7 @@ public class EffParticle extends Effect {
                 "If you would like more options, use the particle spawn section.")
             .examples("draw particle Want_Food_Corn at {_loc} for player",
                 "draw particle Splash at location of player ~ vector3d(0, 0.5, 0)")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

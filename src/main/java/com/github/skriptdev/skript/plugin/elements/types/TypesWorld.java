@@ -31,7 +31,7 @@ public class TypesWorld {
             .name("Reference")
             .description("Represents a reference to different objects in a world, such as entities and chunk components.",
                 "References are the base of how Hytale holds objects in a world/chunk (store).")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .toStringFunction(ref ->
                 String.format("Ref{store=%s, index=%s}",
                     ref.getStore().getClass().getSimpleName(),

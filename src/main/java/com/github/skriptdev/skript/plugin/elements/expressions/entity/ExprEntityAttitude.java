@@ -23,7 +23,7 @@ public class ExprEntityAttitude implements Expression<Attitude> {
                 "Cannot be set, instead use the Entity Attitude effect to apply a timed attitude change.")
             .examples("set {_a} to attitude of target entity of player towards player",
                 "if attitude of target entity of player towards player = neutral:")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

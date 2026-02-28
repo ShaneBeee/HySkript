@@ -53,7 +53,7 @@ public class SecParticle extends CodeSection {
                 "\trotation: vector3f(0.5, 1, 1)",
                 "\tcolor: red",
                 "\tscale: 0.5")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

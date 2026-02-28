@@ -32,7 +32,7 @@ public class ExprEntityModel extends PropertyExpression<Entity, ModelAsset> {
             .description("Get/resete the model of an entity.")
             .examples("set {_model} to model component of player",
                 "reset model component of player")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

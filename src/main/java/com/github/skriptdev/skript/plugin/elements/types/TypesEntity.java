@@ -60,7 +60,7 @@ public class TypesEntity {
         reg.newEnumType(Attitude.class, "attitude", "attitude@s")
             .name("Attitude")
             .description("Represents the attitude of an NPC Entity towards another entity.")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
         reg.newType(Entity.class, "entity", "entit@y@ies")
             .name("Entity")

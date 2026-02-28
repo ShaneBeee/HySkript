@@ -19,7 +19,7 @@ public class ExprAllWorlds implements Expression<Object> {
                 "all world keys")
             .name("All Worlds")
             .description("Get all worlds or their names.")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

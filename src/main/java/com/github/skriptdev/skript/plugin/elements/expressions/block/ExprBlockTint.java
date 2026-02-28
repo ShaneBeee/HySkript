@@ -27,7 +27,7 @@ public class ExprBlockTint extends PropertyExpression<Block, Color> {
             .examples("set {_color} to block tint of target block of player",
                 "set block tint of block at player's location to red",
                 "set block tint of blocks in radius 3 around player to color from hex \"#3caba9\"")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

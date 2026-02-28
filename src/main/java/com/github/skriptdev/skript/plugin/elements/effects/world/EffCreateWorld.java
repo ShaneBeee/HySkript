@@ -29,7 +29,7 @@ public class EffCreateWorld extends Effect {
                 "The code run after this effect will be delayed until the world is loaded.")
             .examples("create world named \"le_test_world\"",
                 "create world named \"le_test_world\" with gameplay config ForgottenTemple")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

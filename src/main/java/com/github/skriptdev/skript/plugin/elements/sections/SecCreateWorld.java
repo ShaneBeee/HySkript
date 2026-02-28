@@ -51,7 +51,7 @@ public class SecCreateWorld extends CodeSection {
                 "\trun_in_world:",
                 "\t\tset {_spawn} to world spawn of event-world",
                 "\t\tteleport {_player} to {_spawn}")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

@@ -23,7 +23,7 @@ public class ExprBlockRotation implements Expression<Vector3i> {
                 "Do note that only increments of 90 degrees are supported (0, 90, 180, 270).",
                 "Caution: This allows you to rotate blocks in ways they're not meant to... have fun, be careful!")
             .examples("set block rotation of block at player to vector3i(0, 180, 0)")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

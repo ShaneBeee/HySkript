@@ -28,7 +28,7 @@ public class EffEntityModel extends Effect {
                 "To remove/reset use the entity model expression.")
             .examples("apply model sheep to player",
                 "apply model Skeleton_Sand_Archer with scale 2 to player")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

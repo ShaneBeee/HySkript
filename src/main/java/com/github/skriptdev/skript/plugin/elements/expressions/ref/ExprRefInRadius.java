@@ -29,7 +29,7 @@ public class ExprRefInRadius implements Expression<Ref> {
             .examples("loop refs in radius 10 around player:",
                 "\tif item component of loop-value is set:",
                 "\t\tteleport loop-ref to player")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

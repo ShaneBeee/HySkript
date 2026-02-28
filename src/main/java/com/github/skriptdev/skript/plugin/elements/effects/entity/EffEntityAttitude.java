@@ -31,7 +31,7 @@ public class EffEntityAttitude extends Effect {
                 "If using the optional duration, this will last then revert back to its original attitude.",
                 "**NOTE**: This is not persistent.")
             .examples("make target entity of player friendly to player for 10 minutes")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

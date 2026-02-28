@@ -32,7 +32,7 @@ public class ExprRefComponent implements Expression<Object> {
             .description("Get the specified component of a reference.")
             .examples("loop refs in radius 10 around player:",
                 "\tset {_item} to item component of loop-ref")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

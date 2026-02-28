@@ -43,7 +43,7 @@ public class ExprComponentsInRadius implements Expression<Object> {
             .description("Get all components of a specific type within a radius around a location.",
                 "Currently supported types: " + supportedTypes + ".")
             .examples("loop ItemComponent components in radius 10 around player")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 

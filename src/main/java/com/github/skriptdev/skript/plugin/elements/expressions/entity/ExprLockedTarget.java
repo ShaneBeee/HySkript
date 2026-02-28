@@ -28,7 +28,7 @@ public class ExprLockedTarget implements Expression<Object> {
             .name("NPCEntity Locked Target")
             .description("Get/set/clear the locked target entity of an NPCEntity.",
                 "This represents the entity an NPC is locked on to, such as a skeleton attacking a player.")
-            .since("INSERT VERSION")
+            .since("1.2.0")
             .register();
     }
 
